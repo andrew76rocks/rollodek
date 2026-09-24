@@ -1,0 +1,13 @@
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.card {
+  position: absolute;
+  width: var(--card-size);
+  height: var(--card-size);
+  translate: -50% -50%; /* left/top are the card's center */
+}

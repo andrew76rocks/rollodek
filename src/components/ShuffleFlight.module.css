@@ -1,0 +1,25 @@
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+}
+
+/* A Hero Deck card-back (gold, with the silhouette art), centered on left/top */
+.ghost {
+  position: absolute;
+  width: var(--card-size);
+  height: var(--card-size);
+  translate: -50% -50%;
+  overflow: hidden;
+  border-radius: var(--card-radius);
+  background: var(--hero-tone);
+  border: 2px solid color-mix(in srgb, var(--ivory-mist) 45%, transparent);
+  box-shadow: 0 8px 18px rgb(0 0 0 / 0.35);
+}
+
+.ghost img {
+  position: absolute;
+  left: -46px;
+  top: 17.58px;
+}

@@ -1,7 +1,7 @@
 import { getHeroCard } from '../data/heroCard.ts'
 import { getTableauCard } from '../data/tableauCards.ts'
 import { logEvent } from './eventLogStore.ts'
-import { useHeroDeckStore } from './heroDeckStore.ts'
+import { shuffle, useHeroDeckStore } from './heroDeckStore.ts'
 import { usePlayAreaStore } from './playAreaStore.ts'
 import { useTableauStore } from './tableauStore.ts'
 import type { CardZone } from './uiStore.ts'
@@ -67,6 +67,41 @@ export function playStagedCards() {
 
   const names = staged.map((c) => (c.from === 'hand' ? getHeroCard(c.cardId) : getTableauCard(c.cardId)).name)
   logEvent('card.play', `Played ${names.join(', ')}`, { cards: staged })
+}
+
+/**
+ * Draw the top card of the Hero Deck into the hand. If the draw pile is empty
+ * the discard reshuffles into a new one first (deck cycling). Returns the drawn
+ * card id, or null if there was nothing to draw.
+ */
+export function drawCard(): string | null {
+  if (useHeroDeckStore.getState().deck.length === 0) shuffleDiscardIntoDeck()
+  const [cardId, ...rest] = useHeroDeckStore.getState().deck
+  if (!cardId) return null
+  useHeroDeckStore.setState((s) => ({ deck: rest, hand: [...s.hand, cardId] }))
+  logEvent('card.draw', `Drew ${getHeroCard(cardId).name}`, { cardId })
+  return cardId
+}
+
+/**
+ * Shuffle button on the Hero Discard: every discarded card goes back into the
+ * Hero Deck, shuffled in with whatever is still there (or forming a fresh deck
+ * if the draw pile was empty). Returns how many cards moved.
+ */
+export function shuffleDiscardIntoDeck(): number {
+  const { deck, discard } = useHeroDeckStore.getState()
+  if (discard.length === 0) return 0
+  useHeroDeckStore.setState({ deck: shuffle([...deck, ...discard]), discard: [] })
+
+  const cards = `${discard.length} card${discard.length === 1 ? '' : 's'}`
+  logEvent(
+    'deck.shuffle',
+    deck.length === 0
+      ? `Reshuffled ${cards} from the discard into a new Hero Deck`
+      : `Shuffled ${cards} from the discard into the Hero Deck`,
+    { moved: discard.length, deckSize: deck.length + discard.length },
+  )
+  return discard.length
 }
 
 /**

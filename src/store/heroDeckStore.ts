@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware'
 import { getGameConfig } from '../config/gameConfig.ts'
 import { starterDeck } from '../data/heroCard.ts'
 
-function shuffle<T>(items: T[]): T[] {
+export function shuffle<T>(items: T[]): T[] {
   const shuffled = [...items]
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))

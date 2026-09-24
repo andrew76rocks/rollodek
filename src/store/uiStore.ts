@@ -6,6 +6,8 @@ export type LayoutMode = 'default' | 'maximized'
 
 /** Which view the card area under the play area shows (the tab bar) */
 export type CardZone = 'hand' | 'party' | 'items' | 'spells'
+/** Tab order in the bottom bar (the ←/→ shortcuts step through this) */
+export const CARD_ZONES: CardZone[] = ['hand', 'party', 'items', 'spells']
 
 /** Side drawers; only one can be open at a time */
 export type DrawerId = 'eventLog' | 'help' | 'settings' | 'heroBackstory' | 'heroClass'

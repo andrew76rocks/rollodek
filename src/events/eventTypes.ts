@@ -3,10 +3,12 @@ import {
   DiceFiveIcon,
   FastForwardIcon,
   GearSixIcon,
+  HandDepositIcon,
   HourglassHighIcon,
   HourglassLowIcon,
   LightningIcon,
   MapTrifoldIcon,
+  ShuffleIcon,
   SignInIcon,
   type Icon,
 } from '@phosphor-icons/react'
@@ -18,8 +20,10 @@ import {
 export type GameEventType =
   | 'session.open'
   | 'dice.roll'
+  | 'card.draw'
   | 'card.play'
   | 'card.activate'
+  | 'deck.shuffle'
   | 'scene.explore'
   | 'turn.start'
   | 'turn.end'
@@ -29,8 +33,10 @@ export type GameEventType =
 export const EVENT_TYPES: Record<GameEventType, { label: string; icon: Icon }> = {
   'session.open': { label: 'Session', icon: SignInIcon },
   'dice.roll': { label: 'Dice', icon: DiceFiveIcon },
+  'card.draw': { label: 'Card drawn', icon: HandDepositIcon },
   'card.play': { label: 'Card played', icon: CardsIcon },
   'card.activate': { label: 'Card activated', icon: LightningIcon },
+  'deck.shuffle': { label: 'Deck shuffled', icon: ShuffleIcon },
   'scene.explore': { label: 'Exploration', icon: MapTrifoldIcon },
   'turn.start': { label: 'Turn start', icon: HourglassHighIcon },
   'turn.end': { label: 'Turn end', icon: HourglassLowIcon },

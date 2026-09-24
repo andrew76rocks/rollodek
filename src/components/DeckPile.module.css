@@ -18,6 +18,52 @@
   background: var(--hero-tone);
 }
 
+/* Each deck is a stack: the top card, and on hover the next card showing
+ * beneath it as the top one lifts off. The Hero Deck's stack is a button. */
+.stack {
+  position: relative;
+  width: var(--card-size);
+  height: var(--card-size);
+  padding: 0;
+  border-radius: var(--card-radius);
+  text-align: inherit;
+}
+
+/* The stack carries the layout morph, not the cards inside it */
+.stack[data-tone='adventure'] {
+  view-transition-name: adventure-deck;
+}
+
+.stack[data-tone='hero'] {
+  view-transition-name: hero-deck;
+}
+
+.stack .pile {
+  position: absolute;
+  inset: 0;
+  view-transition-name: none;
+}
+
+.top {
+  transition: translate var(--dur-fast) var(--ease-out), filter var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.stack:not(:disabled):hover .top {
+  translate: 7px -7px;
+  filter: brightness(1.06);
+  box-shadow: -3px 6px 12px rgb(0 0 0 / 0.3);
+}
+
+button.stack:not(:disabled):active .top {
+  translate: 3px -3px;
+  filter: brightness(0.97);
+}
+
+.stack:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
 /* Silhouette artwork, offset and clipped by the card as in Figma */
 .art {
   position: absolute;

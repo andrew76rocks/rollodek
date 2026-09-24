@@ -7,3 +7,8 @@
 .draggable[data-dragging] {
   opacity: 0.3;
 }
+
+/* A freshly drawn card waits invisibly while its clone flies in from the Hero Deck */
+.draggable[data-arriving] {
+  visibility: hidden;
+}

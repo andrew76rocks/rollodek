@@ -16,6 +16,8 @@ interface SortableCardProps {
   onActivate?: () => void
   /** Toggle state for onActivate, announced to screen readers */
   pressed?: boolean
+  /** Hidden while its drawn clone flies in from the Hero Deck */
+  arriving?: boolean
   children: ReactNode
 }
 
@@ -24,7 +26,7 @@ interface SortableCardProps {
  * to the Play Area to play it. While dragging, its faded ghost slides into the
  * slot it will land in.
  */
-export function SortableCard({ cardId, zone, className, nodeRef, onActivate, pressed, children }: SortableCardProps) {
+export function SortableCard({ cardId, zone, className, nodeRef, onActivate, pressed, arriving, children }: SortableCardProps) {
   const { setNodeRef, listeners, attributes, isDragging, transform, transition } = useSortable({
     id: cardDragId(zone, cardId),
     data: { cardId, from: zone } satisfies CardDragData,
@@ -49,7 +51,9 @@ export function SortableCard({ cardId, zone, className, nodeRef, onActivate, pre
       ref={setRefs}
       className={[styles.draggable, className].filter(Boolean).join(' ')}
       style={{ transform: CSS.Translate.toString(transform), transition }}
+      data-card-id={cardId}
       data-dragging={isDragging || undefined}
+      data-arriving={arriving || undefined}
       {...attributes}
       {...listeners}
       aria-pressed={onActivate ? Boolean(pressed) : undefined}

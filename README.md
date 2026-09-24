@@ -28,7 +28,13 @@ Then open the local address Vite prints (usually http://localhost:5173). The app
 
 | Control | Action |
 |---|---|
-| **Shift + 1** / **Shift + 2** | Switch between default and maximized table layouts |
+| **1** | Toggle between the default and maximized table layouts |
+| **Space** | Draw a card from the Hero Deck into your hand |
+| **Enter** | Play the cards in the Play Area |
+| **R** | Roll both dice |
+| **Shift + R** | Reshuffle the Hero Discard into the Hero Deck |
+| **←** / **→** | Previous / next tab (Hand, Party, Items, Spells) |
+| Click the Hero Deck | Draw a card |
 | Click a die | Roll it |
 | Click the shuffle icon | Roll both dice |
 | Hover / click the event log icon | Preview recent events / open the full, searchable log |

@@ -76,6 +76,11 @@
   }
 }
 
+/* While played cards fly to the discard, the originals are hidden (their clones are in flight) */
+.staged[data-playing] .tilt {
+  visibility: hidden;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tilt {
     animation: none;

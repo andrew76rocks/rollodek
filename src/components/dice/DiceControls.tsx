@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { uiAssets } from '../../config/assets.ts'
 import { logEvent } from '../../store/eventLogStore.ts'
 import { MaskIcon } from '../MaskIcon.tsx'
+import { registerRollAllDice } from './diceCommands.ts'
 import { DicePair } from './DicePair.tsx'
 import { rollD6, ROLL_SECONDS, type DieState, type DieValue } from './diceConfig.ts'
 import styles from './DiceControls.module.css'
@@ -40,6 +41,12 @@ export function DiceControls() {
     }, ROLL_SECONDS * 1000)
     landTimers.current.push(timer)
   }
+
+  // The R shortcut rolls both, same as the shuffle button (latest roll() each render)
+  useEffect(() => {
+    registerRollAllDice(() => roll([0, 1]))
+    return () => registerRollAllDice(null)
+  })
 
   return (
     <>

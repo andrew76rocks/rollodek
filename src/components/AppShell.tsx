@@ -1,4 +1,4 @@
-import { useLayoutShortcuts } from '../hooks/useLayoutShortcuts.ts'
+import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts.ts'
 import { useHeroDeckStore } from '../store/heroDeckStore.ts'
 import { useUiStore } from '../store/uiStore.ts'
 import { BottomBar } from './BottomBar.tsx'
@@ -10,6 +10,8 @@ import { HelpDrawer } from './help/HelpDrawer.tsx'
 import { HeroDocDrawers } from './hero/HeroDocDrawers.tsx'
 import { SettingsDrawer } from './settings/SettingsDrawer.tsx'
 import { DiscardPile } from './DiscardPile.tsx'
+import { DrawFlightLayer } from './DrawFlight.tsx'
+import { ShuffleFlightLayer } from './ShuffleFlight.tsx'
 import { HeroRail } from './HeroRail.tsx'
 import { PlayArea } from './PlayArea.tsx'
 import { TopBar } from './TopBar.tsx'
@@ -22,7 +24,7 @@ import styles from './AppShell.module.css'
 export function AppShell() {
   const layoutMode = useUiStore((s) => s.layoutMode)
   const heroDiscardCount = useHeroDeckStore((s) => s.discard.length)
-  useLayoutShortcuts()
+  useKeyboardShortcuts()
 
   return (
     <div className={styles.shell} data-layout={layoutMode}>
@@ -44,6 +46,8 @@ export function AppShell() {
           <BottomBar />
         </main>
       </BoardDnd>
+      <DrawFlightLayer />
+      <ShuffleFlightLayer />
       <EventLogDrawer />
       <HelpDrawer />
       <HeroDocDrawers />

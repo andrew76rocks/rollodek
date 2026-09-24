@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from 'framer-motion'
 import { heroAssets, uiAssets } from '../config/assets.ts'
 import hero from '../data/hero.json'
 import { useHeroDeckStore } from '../store/heroDeckStore.ts'
@@ -24,6 +25,7 @@ const TABS: { id: CardZone; label: string; icon: string }[] = [
 export function BottomBar() {
   const active = useUiStore((s) => s.cardZone)
   const setActive = useUiStore((s) => s.setCardZone)
+  const reduceMotion = useReducedMotion()
   // Badge counts: cards in hand, and cards in play in each tableau zone
   const counts: Record<CardZone, number> = {
     hand: useHeroDeckStore((s) => s.hand.length),
@@ -69,6 +71,16 @@ export function BottomBar() {
               aria-controls="card-zone-panel"
               onClick={() => setActive(id)}
             >
+              {/* One shared pill that slides and resizes to whichever tab is selected */}
+              {active === id && (
+                <motion.span
+                  layoutId="card-zone-tab-pill"
+                  layoutDependency={active} // animate only on tab changes, not when the whole bar moves (layout toggle)
+                  className={styles.pill}
+                  style={{ borderRadius: 16 }} // set here so Framer keeps the corners round while it resizes
+                  transition={reduceMotion ? { duration: 0 } : { type: 'spring', stiffness: 700, damping: 45, mass: 0.7 }}
+                />
+              )}
               <MaskIcon src={icon} size={20} />
               {label}
               {/* Badge only when the zone has something in it (styling TBD) */}

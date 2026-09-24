@@ -45,7 +45,7 @@ button {
   border-radius: var(--radius-sm);
 }
 
-/* Layout-mode switch: fast View Transition morph (see useLayoutShortcuts) */
+/* Layout-mode switch: fast View Transition morph (see useKeyboardShortcuts) */
 ::view-transition-group(*),
 ::view-transition-old(*),
 ::view-transition-new(*) {

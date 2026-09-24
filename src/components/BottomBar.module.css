@@ -123,6 +123,8 @@
 }
 
 .tab {
+  position: relative;
+  isolation: isolate; /* keeps the pill (z-index -1) behind this tab's content only */
   line-height: 18px;
   display: inline-flex;
   align-items: center;
@@ -132,7 +134,15 @@
   font-weight: 600;
   font-size: 14px;
   color: var(--mist-lavender);
-  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+/* Selected-tab highlight: a single element shared across tabs (Framer layoutId) */
+.pill {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--dusk-violet);
 }
 
 .tab:hover {
@@ -140,7 +150,6 @@
 }
 
 .tab[aria-selected='true'] {
-  background: var(--dusk-violet);
   color: var(--ivory-mist);
 }
 
