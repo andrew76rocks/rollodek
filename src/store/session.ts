@@ -52,17 +52,21 @@ function cardAfterOptional(sceneNumber: number): string | undefined {
   return order.slice(order.indexOf(current) + 1).find((id) => !skipped.includes(id) && !cardComplete(id))
 }
 
-/** Explore, in order: the current card can be flipped, or the next one if the current card is optional */
+/**
+ * Explore, in order: the current card can be flipped, or the next one if the
+ * current card is optional. A skipped optional card can be revisited any time
+ * during its Scene's Explore.
+ */
 export function canFlip(cardId: string): boolean {
-  const { phase, scene, revealed, ended } = useGameStore.getState()
-  if (ended || phase !== 'explore' || revealed.includes(cardId)) return false
-  return currentCardId(scene) === cardId || cardAfterOptional(scene) === cardId
+  const { phase, scene, revealed, skipped, ended } = useGameStore.getState()
+  if (ended || phase !== 'explore' || revealed.includes(cardId) || getAdventureCard(cardId).scene !== scene) return false
+  return skipped.includes(cardId) || currentCardId(scene) === cardId || cardAfterOptional(scene) === cardId
 }
 
 /**
- * Moving on past an optional card: it turns back face down and stays that way
- * for the Scene. Covers skipping it unread and moving on after reading it
- * (a story-only optional card, or one whose Challenge wasn't attempted).
+ * Moving on past an optional card: it turns back face down (until revisited).
+ * Covers skipping it unread and moving on after reading it (a story-only
+ * optional card, or one whose Challenge wasn't attempted).
  */
 function passOptionalCards(sceneNumber: number, before: string) {
   const { revealed, resolved, skipped } = useGameStore.getState()
@@ -80,13 +84,23 @@ function passOptionalCards(sceneNumber: number, before: string) {
   passed.forEach((id) => logEvent('scene.explore', `Moved past ${printedId(getAdventureCard(id))}`, { cardId: id }))
 }
 
-/** Flip an Adventure card to its back (Explore, in play order). Moving past an optional card turns it back face down. */
+/**
+ * Flip an Adventure card to its back (Explore, in play order). Moving past an
+ * optional card turns it back face down; flipping a skipped one revisits it.
+ */
 export function revealCard(cardId: string) {
-  const { revealed, scene } = useGameStore.getState()
+  const { revealed, scene, skipped } = useGameStore.getState()
   if (revealed.includes(cardId) || !canFlip(cardId)) return
+  const revisiting = skipped.includes(cardId)
   passOptionalCards(scene, cardId)
-  useGameStore.setState((s) => ({ revealed: [...s.revealed, cardId] }))
-  logEvent('scene.explore', `Explored ${printedId(getAdventureCard(cardId))}: ${getAdventureCard(cardId).title}`, { cardId })
+  useGameStore.setState((s) => ({ revealed: [...s.revealed, cardId], skipped: s.skipped.filter((id) => id !== cardId) }))
+  const card = getAdventureCard(cardId)
+  logEvent('scene.explore', `${revisiting ? 'Revisited' : 'Explored'} ${printedId(card)}: ${card.title}`, { cardId })
+}
+
+/** Going back to an already-flipped card also moves on past any optional card before it */
+export function returnToCard(cardId: string) {
+  passOptionalCards(useGameStore.getState().scene, cardId)
 }
 
 /** Wounds attach to the hero card; reaching the HP threshold is Hero Death */

@@ -2,6 +2,7 @@
 
 A dated log of rule and design decisions, newest first, one line each. Any change to [rules.md](rules.md) adds a line here in the same change.
 
+- 2026-09-24: Skipped optional cards can be revisited any time during that Scene's Explore.
 - 2026-09-24: Location cards resolve in card-ID order within a Scene; each must be complete before the next flips. Optional cards are skipped by moving on to the next card; a skipped card turns back face down.
 - 2026-09-24: Drawing a card at will (clicking the Hero Deck, Space) is a sandbox tool, available only in debugMode. Normal play draws at Setup.
 - 2026-09-24: One Scene = one turn [locked]. The game tracks a single Scene/turn counter. Combat rounds are separate and nest inside a Scene.

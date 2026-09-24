@@ -2,7 +2,8 @@ import { motion, useReducedMotion } from 'framer-motion'
 import type { CSSProperties } from 'react'
 import { getAdventureCard, getScene, printedId } from '../../data/adventureDeck.ts'
 import { useGameStore } from '../../store/gameStore.ts'
-import { canFlip, cardComplete, currentCardId, revealCard } from '../../store/session.ts'
+import { useCheckStore } from '../../store/checkStore.ts'
+import { canFlip, cardComplete, currentCardId, returnToCard, revealCard } from '../../store/session.ts'
 import { useUiStore } from '../../store/uiStore.ts'
 import { panoramaUrl } from './panorama.ts'
 import styles from './SceneCards.module.css'
@@ -13,7 +14,8 @@ import styles from './SceneCards.module.css'
  * slice of a shared panorama. In Explore, cards are resolved in card-ID order:
  * only the current card flips (opening its back in the card drawer). When an
  * optional card comes up, flipping the next card instead skips it, and it
- * turns back face down if it had been flipped.
+ * turns back face down if it had been flipped. A skipped optional card can be
+ * revisited any time during that Scene's Explore.
  *
  * TODO(drew): placeholder panorama (generated SVG) until Scene art exists.
  */
@@ -25,6 +27,7 @@ export function SceneCards() {
   useGameStore((s) => s.resolved) // completion depends on it
   const missionId = useGameStore((s) => s.missionId)
   const reduceMotion = useReducedMotion()
+  const checkActive = useCheckStore((s) => Boolean(s.check))
   const scene = getScene(sceneNumber)
   if (!scene || !missionId) return <div className={styles.scene} />
 
@@ -32,8 +35,11 @@ export function SceneCards() {
   const current = currentCardId(sceneNumber)
   const open = (cardId: string) => {
     if (!revealed.includes(cardId)) {
-      if (!canFlip(cardId)) return
+      // No flipping mid-check: finish the check in progress first
+      if (checkActive || !canFlip(cardId)) return
       revealCard(cardId)
+    } else if (!checkActive) {
+      returnToCard(cardId)
     }
     useUiStore.getState().viewCard(cardId)
     useUiStore.getState().setOpenDrawer('adventureCard')
@@ -54,7 +60,9 @@ export function SceneCards() {
         const hasChallenge = card.back.some((b) => b.type === 'challenge')
         // Why a face-down card won't flip yet (shown on hover)
         const lockedNote = isSkipped
-          ? 'Skipped'
+          ? phase === 'explore'
+            ? 'Skipped · click to revisit'
+            : 'Skipped'
           : phase !== 'explore'
             ? 'Flip in the Explore phase'
             : current
@@ -82,7 +90,7 @@ export function SceneCards() {
               >
                 <span className={styles.front} style={slice} data-current={flippable || undefined}>
                   <span className={styles.id}>{printedId(card)}</span>
-                  {!isRevealed && !flippable && lockedNote && <span className={styles.lockedNote}>{lockedNote}</span>}
+                  {!isRevealed && (!flippable || isSkipped) && lockedNote && <span className={styles.lockedNote}>{lockedNote}</span>}
                 </span>
                 <span className={styles.back}>
                   <span className={styles.backId}>{printedId(card)}</span>

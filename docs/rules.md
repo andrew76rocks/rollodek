@@ -138,7 +138,7 @@ Never printed on any card: the DC number.
 
 **Not every location has a Challenge.** Some are story only.
 
-**Play order [locked]:** in Explore, a Scene's location cards are resolved in card-ID order (A, then B, then C), whatever their place in the panorama. A card is complete once its back has been read and every Challenge on it resolved (pass or fail); only then can the next card be flipped. When an **optional** card comes up, the player may flip it, or skip it by moving on to the next card. Skipping works even after flipping it, as long as its Challenge isn't resolved; the skipped card turns back face down and stays that way for the rest of the Scene.
+**Play order [locked]:** in Explore, a Scene's location cards are resolved in card-ID order (A, then B, then C), whatever their place in the panorama. A card is complete once its back has been read and every Challenge on it resolved (pass or fail); only then can the next card be flipped. When an **optional** card comes up, the player may flip it, or skip it by moving on to the next card. Skipping works even after flipping it, as long as its Challenge isn't resolved; the skipped card turns back face down. A skipped optional card can be revisited any time during that Scene's Explore phase.
 
 ---
 
