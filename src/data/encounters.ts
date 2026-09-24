@@ -1,4 +1,5 @@
 import type { DcTier, HeroStat } from '../config/gameConfig.ts'
+import { warnCardAuthoring } from './heroCard.ts'
 import rawEncounters from './encounter-pool.json'
 
 /**
@@ -28,6 +29,8 @@ export interface EncounterData {
 }
 
 export const encounters = rawEncounters as EncounterData[]
+
+for (const e of encounters) warnCardAuthoring(e.name, e.text, e.id)
 
 const byId = new Map(encounters.map((e) => [e.id, e]))
 

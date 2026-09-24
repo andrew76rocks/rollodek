@@ -1,0 +1,16 @@
+{
+  "Scrap-Rat Swarm": {
+    "name": "Scrap-Rat Swarm",
+    "hp": 6,
+    "tier": "Easy",
+    "attackStat": "DEX",
+    "text": "Dozens of scavenged-metal rats, fused together by rot. Attacks with DEX. On defeat: swarm scatters, leaves a working component behind."
+  },
+  "The Static Warden": {
+    "name": "The Static Warden",
+    "hp": 10,
+    "tier": "Dangerous",
+    "attackStat": "INT",
+    "text": "What's left of the mall's old security system, grown into something else. Attacks with INT. On defeat: the signal core is yours."
+  }
+}

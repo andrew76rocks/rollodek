@@ -4,20 +4,20 @@
     "name": "Scrap Multitool",
     "tier": "Common",
     "slot": "hands",
-    "text": "Gear, ongoing. Once per turn, treat an off-stat DEX or INT check as on-stat."
+    "text": "Once per turn, treat an off-stat DEX or INT check as on-stat."
   },
   {
     "type": "gear",
     "name": "Signal Dampener",
     "tier": "Functional",
     "slot": "head",
-    "text": "Gear, ongoing. Once per turn, when resolving a Combat encounter, add +1 to an INT check total."
+    "text": "Once per turn, in combat, add +1 to an INT check total."
   },
   {
     "type": "gear",
     "name": "Rot-Warded Cloak",
     "tier": "Rare",
     "slot": "torso",
-    "text": "Gear, ongoing. Once per Scene, when you would take a wound from a failed Dangerous check, you may discard this card instead of taking the wound."
+    "text": "Once per Scene, when you would take a wound from a failed Dangerous check, you may discard this card instead."
   }
 ]

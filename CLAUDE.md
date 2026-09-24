@@ -91,6 +91,9 @@ public/
 src/
   content/
     how-to-play.md
+    hero-class.md
+    hero-backstory.md
+    _archive/            (replaced content, not loaded)
   data/
     app-config.json
     game-config.json

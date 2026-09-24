@@ -34,7 +34,7 @@ const HERO_STAT_FIELDS: SettingField[] = HERO_STATS.map((stat) => ({
   path: `heroStats.${stat}`,
   label: `${STAT_NAMES[stat]} (${stat})`,
   min: 0,
-  max: 10,
+  max: 3, // rules.md §2: each base stat is 0 to 3
 }))
 
 // Top → bottom: the big picture first, then fine tuning. Hero-specific
