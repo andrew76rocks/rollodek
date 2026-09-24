@@ -10,7 +10,7 @@ export type CardZone = 'hand' | 'party' | 'items' | 'spells'
 export const CARD_ZONES: CardZone[] = ['hand', 'party', 'items', 'spells']
 
 /** Side drawers; only one can be open at a time */
-export type DrawerId = 'eventLog' | 'help' | 'settings' | 'heroBackstory' | 'heroClass'
+export type DrawerId = 'eventLog' | 'help' | 'settings' | 'heroBackstory' | 'heroClass' | 'rules'
 
 interface UiState {
   layoutMode: LayoutMode

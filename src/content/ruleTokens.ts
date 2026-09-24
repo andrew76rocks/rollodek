@@ -2,8 +2,9 @@ import { DC_TIERS, type GameConfig } from '../config/gameConfig.ts'
 import { TIER_LABELS } from '../components/settings/settingsSchema.ts'
 
 /**
- * Values the help doc can reference as {{token}}, computed from the live game
- * config — so the rules text always matches the numbers the game is using.
+ * Values the rules docs (docs/rules.md, how-to-play.md, hero docs) can reference
+ * as {{token}}, computed from the live game config — so the rules text always
+ * matches the numbers the game is using.
  */
 export function ruleTokens(c: GameConfig): Record<string, string> {
   const paid = DC_TIERS.filter((t) => c.dc.paidCostTiers.includes(t)).map((t) => TIER_LABELS[t])
@@ -18,11 +19,24 @@ export function ruleTokens(c: GameConfig): Record<string, string> {
     objectivesToWin: String(c.objectivesToWin),
     objectivesTotal: String(c.objectivesTotal),
     tableauActivationsPerCard: String(c.tableauActivationsPerCard),
+    deckActionCount: String(c.startingDeckComposition.action),
+    deckMemoryCount: String(c.startingDeckComposition.memory),
+    deckCrossoverCount: String(c.startingDeckComposition.crossover),
+    deckWildCount: String(c.startingDeckComposition.wild),
+    /** Signed, to follow "2d6": "− 5" · "+ 0" · "+ 5" */
+    dcEasyOffset: signed(c.dc.easyOffset),
+    dcMediumOffset: signed(c.dc.mediumOffset),
+    dcDangerousOffset: signed(c.dc.dangerousOffset),
+    dcFloor: String(c.dc.floor),
     /** "Easy" · "Easy or Medium" · "Easy, Medium, or Dangerous" */
     paidCostTiers: joinList(paid, 'or') || 'no',
     /** The tiers with no buy-out: "Medium and Dangerous" */
     unpaidCostTiers: joinList(unpaid, 'and') || 'No',
   }
+}
+
+function signed(n: number) {
+  return n < 0 ? `− ${Math.abs(n)}` : `+ ${n}`
 }
 
 function joinList(items: string[], word: 'and' | 'or') {
@@ -31,11 +45,21 @@ function joinList(items: string[], word: 'and' | 'or') {
   return `${items.slice(0, -1).join(', ')}, ${word} ${items.at(-1)}`
 }
 
-/** Replace {{token}}s; unknown ones stay visible (and warn) so typos get noticed. */
+/**
+ * Replace {{token}}s; unknown ones stay visible (and warn) so typos get noticed.
+ * Inline `code` is left alone, so docs can talk about the token syntax itself.
+ */
 export function fillTokens(text: string, tokens: Record<string, string>) {
-  return text.replace(/\{\{\s*(\w+)\s*\}\}/g, (match, name: string) => {
-    if (name in tokens) return tokens[name]
-    console.warn(`[help] Unknown rule token {{${name}}}`)
-    return match
-  })
+  return text
+    .split(/(`[^`\n]*`)/)
+    .map((part, i) =>
+      i % 2 === 1
+        ? part
+        : part.replace(/\{\{\s*(\w+)\s*\}\}/g, (match, name: string) => {
+            if (name in tokens) return tokens[name]
+            console.warn(`[rules] Unknown rule token {{${name}}}`)
+            return match
+          }),
+    )
+    .join('')
 }

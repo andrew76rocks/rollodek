@@ -7,6 +7,7 @@ import { BoardDnd } from './dnd/BoardDnd.tsx'
 import { EventLogDrawer } from './eventLog/EventLogDrawer.tsx'
 import { CardZoneView } from './hand/CardZoneView.tsx'
 import { HelpDrawer } from './help/HelpDrawer.tsx'
+import { RulesDrawer } from './help/RulesDrawer.tsx'
 import { HeroDocDrawers } from './hero/HeroDocDrawers.tsx'
 import { SettingsDrawer } from './settings/SettingsDrawer.tsx'
 import { DiscardPile } from './DiscardPile.tsx'
@@ -50,6 +51,7 @@ export function AppShell() {
       <ShuffleFlightLayer />
       <EventLogDrawer />
       <HelpDrawer />
+      <RulesDrawer />
       <HeroDocDrawers />
       <SettingsDrawer />
     </div>

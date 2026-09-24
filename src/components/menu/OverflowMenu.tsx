@@ -1,6 +1,8 @@
-import { DotsThreeVerticalIcon, PlusIcon } from '@phosphor-icons/react'
+import { BookOpenTextIcon, DotsThreeVerticalIcon, PlusIcon } from '@phosphor-icons/react'
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react'
+import { useGameConfig } from '../../config/gameConfig.ts'
 import { startNewGame } from '../../store/newGame.ts'
+import { useUiStore } from '../../store/uiStore.ts'
 import { ConfirmDialog } from '../dialog/ConfirmDialog.tsx'
 import styles from './OverflowMenu.module.css'
 
@@ -8,6 +10,7 @@ import styles from './OverflowMenu.module.css'
 export function OverflowMenu({ buttonClassName }: { buttonClassName: string }) {
   const [open, setOpen] = useState(false)
   const [confirming, setConfirming] = useState(false)
+  const debugMode = useGameConfig((c) => c.debugMode)
   const menuId = useId()
   const root = useRef<HTMLDivElement>(null)
   const trigger = useRef<HTMLButtonElement>(null)
@@ -70,6 +73,21 @@ export function OverflowMenu({ buttonClassName }: { buttonClassName: string }) {
             <PlusIcon size={18} weight="bold" aria-hidden />
             New Game
           </button>
+          {/* Playtest only: docs/rules.md with live numbers filled in */}
+          {debugMode && (
+            <button
+              type="button"
+              role="menuitem"
+              className={styles.item}
+              onClick={() => {
+                setOpen(false)
+                useUiStore.getState().setOpenDrawer('rules')
+              }}
+            >
+              <BookOpenTextIcon size={18} weight="bold" aria-hidden />
+              Designer Rules
+            </button>
+          )}
         </div>
       )}
 
