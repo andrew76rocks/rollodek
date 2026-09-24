@@ -26,7 +26,9 @@ export function TopBar() {
     <header className={styles.bar}>
       {/* Story context: where you are in the mission */}
       <div className={styles.brand}>
-        <h1 className={styles.logo}>RolloDek</h1>
+        <h1 className={styles.logo}>
+          <img src={uiAssets.logo} alt="RolloDek" width={151} height={27} />
+        </h1>
         <span className={styles.brandDivider} aria-hidden />
         <span className={styles.scene}>Scene {scene}</span>
       </div>

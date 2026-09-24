@@ -45,7 +45,7 @@ function DeckStack({ face, tone, cardBeneath }: { face: ReactNode; tone: DeckPil
   return (
     <>
       {cardBeneath && (
-        <span className={`${styles.pile} ${styles.beneath}`} data-tone={tone} aria-hidden>
+        <span className={styles.pile} data-tone={tone} aria-hidden>
           {face}
         </span>
       )}

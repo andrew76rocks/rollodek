@@ -46,6 +46,8 @@ export function Hand() {
 
   return (
     <div className={styles.hand} ref={containerRef} style={{ '--card-overlap': `${overlap}px` } as CSSProperties}>
+      {/* Same wording style as the tableau tabs' empty notes */}
+      {hand.length === 0 && <p className={styles.empty}>No cards in hand.</p>}
       <SortableContext id={zoneListId('hand')} items={hand.map((id) => cardDragId('hand', id))} strategy={horizontalListSortingStrategy}>
         {hand.map((id, i) => (
           <SortableCard

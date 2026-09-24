@@ -4,6 +4,7 @@ const HEROES = '/assets/heroes'
 const CARDS = '/assets/cards'
 
 export const uiAssets = {
+  logo: '/assets/brand/rollodek-logo.svg',
   woodGrain: '/assets/textures/wood-grain.png',
   hexagon: `${UI}/hexagon-bg.svg`,
   deckDivider: `${UI}/deck-divider.svg`,
