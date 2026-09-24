@@ -9,6 +9,8 @@ interface PlayCardsButtonProps {
   ready?: boolean
   /** Screen-reader hint while not ready */
   disabledReason?: string
+  /** Short visible note under the button (why it can't be pressed right now) */
+  hint?: string
   onPlay: () => void
 }
 
@@ -20,7 +22,7 @@ const RIPPLE_SECONDS = 3
  * behind it breathes gently and a faint ring ripples outward, signalling the
  * Play Area is armed. Disabled (nothing staged) the halo is hidden entirely.
  */
-export function PlayCardsButton({ count, onPlay, label = 'Play Cards', ready: readyProp, disabledReason }: PlayCardsButtonProps) {
+export function PlayCardsButton({ count, onPlay, label = 'Play Cards', ready: readyProp, disabledReason, hint }: PlayCardsButtonProps) {
   const reduceMotion = useReducedMotion()
   const ready = readyProp ?? count > 0
   const animate = ready && !reduceMotion
@@ -79,6 +81,7 @@ export function PlayCardsButton({ count, onPlay, label = 'Play Cards', ready: re
           )}
         </AnimatePresence>
       </button>
+      {hint && <span className={styles.hint}>{hint}</span>}
     </div>
   )
 }

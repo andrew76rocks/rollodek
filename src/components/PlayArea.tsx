@@ -132,6 +132,8 @@ export function PlayArea() {
         label={check ? 'Commit' : 'Play Cards'}
         ready={buttonReady}
         disabledReason={check ? 'rolling' : debugMode ? 'no cards in the Play Area' : 'cards are played into a check'}
+        // Cards are only played into a check (rules.md §4): say so when cards are waiting with no check
+        hint={!check && !debugMode && staged.length > 0 ? 'Start a check first: flip a location in Explore, then Attempt check' : undefined}
       />
       {flights && <PlayFlight flights={flights} onDone={land} />}
     </section>
