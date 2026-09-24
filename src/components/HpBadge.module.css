@@ -1,0 +1,33 @@
+.badge {
+  view-transition-name: hp-badge; /* only one badge is mounted per layout */
+  flex: none;
+  height: 40.38px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 12px;
+  border: 2px solid var(--ember-gold);
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--ember-gold);
+}
+
+.values {
+  display: inline-flex;
+  gap: 3px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: 1.2px;
+  color: var(--ivory-mist);
+}
+
+.max {
+  color: var(--hp-max-fg);
+}

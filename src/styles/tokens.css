@@ -1,0 +1,97 @@
+/*
+ * RolloDek design tokens.
+ * Palette tokens are the 9 locked brand tones from CLAUDE.md.
+ * Semantic tokens below map those tones to UI roles — components should
+ * reach for semantic tokens first, palette tokens only for one-off accents.
+ */
+:root {
+  /* ── Palette (locked) ─────────────────────────────── */
+  --dungeon-ink: #1e1a2e;
+  --dusk-violet: #6b5b8d;
+  --mist-lavender: #a89abf;
+  --faded-parchment: #e8e0d4;
+  --storm-slate: #5a6878;
+  --potion-blue: #7ba3c4;
+  --driftwood: #9b7e6b;
+  --ember-gold: #b8944e;
+  --ivory-mist: #fafaf7;
+
+  /* ── Typography ───────────────────────────────────── */
+  --font-title: 'Cinzel Decorative', 'Cinzel', Georgia, serif; /* logo, title screen, Mission/Scene cards */
+  --font-heading: 'Cinzel', Georgia, serif; /* panel titles, card names, section labels */
+  --font-body: 'Source Serif 4', Georgia, serif; /* body copy, card text */
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.625rem;
+  --text-2xl: 2.25rem;
+
+  /* ── Spacing / radii / motion ─────────────────────── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 120ms;
+  --dur-med: 240ms;
+  --dur-layout: 180ms; /* layout-mode switch (Shift+1 / Shift+2) */
+  --dur-stat-in: 220ms; /* each stat hex's fade/rise */
+  --stagger-stat: 50ms; /* delay between hexes, CHA → STR */
+  --stat-rise: 18px; /* how far each hex rises into place */
+  --dur-rail-line: 550ms; /* rail's bottom line drawing down to the name */
+  --dur-info-bar: var(--dur-rail-line); /* hero name bar sliding in, in step with the line */
+
+  /* ── Footer dice (Figma Dice Controls) ── */
+  --die-size: 60px;
+  --die-gap: 13px;
+  --die-overscan: 28px; /* canvas bleed around the dice so tumbles and the hover glow don't clip */
+
+  /* ── Card geometry (visual only; game tunables live in config/gameConfig.ts) ── */
+  --card-size: 250px;
+  --card-radius: 24px;
+
+  /* ── Figma-sourced surface values (not in the 9-tone palette) ──
+   * Pulled from the Adventure-Deck-RPG Figma file, frame 56:3277. */
+  --wood-base: #3d2b22;
+  --wood-shade: rgb(39 27 22 / 0.4);
+  --wood-grain-opacity: 0.245; /* layer 35% × image 70% */
+  --play-area-fill: rgb(173 163 153 / 0.1);
+  --discard-dash: rgb(155 126 107 / 0.5);
+  --deck-dash: rgb(250 250 247 / 0.5);
+  --count-badge-fill: rgb(30 26 46 / 0.4);
+  --hp-max-fg: rgb(250 250 247 / 0.3);
+  --button-halo: rgb(155 126 107 / 0.2);
+
+  /* Figma effect style "Dropshadow/shadow-medium" */
+  --shadow-medium: 0 4px 4px rgb(0 0 0 / 0.12), 0 8px 14px rgb(0 0 0 / 0.14);
+
+  /* ── Semantic roles ───────────────────────────────── */
+  --chrome-bg: var(--dungeon-ink);
+  --chrome-fg: var(--mist-lavender);
+  --chrome-border: var(--driftwood);
+
+  --table-label: var(--driftwood);
+
+  --card-surface: var(--ivory-mist);
+  --card-border: var(--driftwood);
+  --card-text: var(--dungeon-ink);
+  --card-subtext: var(--storm-slate);
+
+  --adventure-tone: var(--dusk-violet);
+  --hero-tone: var(--ember-gold);
+  --reward-tone: var(--ember-gold);
+  --link-tone: var(--potion-blue);
+
+  --focus-ring: 0 0 0 2px var(--dungeon-ink), 0 0 0 4px var(--mist-lavender);
+}

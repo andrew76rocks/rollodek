@@ -1,0 +1,10 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="60" height="2" viewBox="0 0 60 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Deck Divider" clip-path="url(#clip0_0_26)">
+<path id="Divider Line" d="M22.5 1.25L37.5 0.75M12.5 0.25H47.5C50.2614 0.25 52.5 0.324619 52.5 0.416667V1.58333C52.5 1.67538 50.2614 1.75 47.5 1.75H12.5C9.73858 1.75 7.5 1.67538 7.5 1.58333V0.416667C7.5 0.324619 9.73858 0.25 12.5 0.25Z" stroke="#FAFAF7" stroke-width="2" stroke-linecap="round"/>
+</g>
+<defs>
+<clipPath id="clip0_0_26">
+<rect width="60" height="2" fill="white"/>
+</clipPath>
+</defs>
+</svg>

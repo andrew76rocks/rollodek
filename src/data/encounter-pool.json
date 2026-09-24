@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Wastewalker Scavenger",
+    "disposition": "Neutral",
+    "text": "Another scavenger, sizing you up the same way you're sizing them up. Trade, share info, or walk away. Turns hostile only if provoked."
+  },
+  {
+    "name": "Corroded Sentinel-Bot",
+    "disposition": "Hostile",
+    "hp": 8,
+    "tier": "Medium",
+    "attackStat": "STR",
+    "text": "An old security unit, still running on a decade-old threat list. Attacks with STR."
+  },
+  {
+    "name": "Lost Courier",
+    "disposition": "Friendly",
+    "text": "Separated from their caravan, low on supplies. Help them and they'll point you to a cache: draw 1 Item card. No check required."
+  }
+]

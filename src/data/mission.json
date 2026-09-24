@@ -1,0 +1,11 @@
+{
+  "name": "Signal in the Rot",
+  "premise": "A dead-tech signal is pulsing out of the collapsed Meridian Mall, three days after it should have gone silent forever. Find the source. Find out why.",
+  "objectives": [
+    "Reach the mall interior",
+    "Recover a working component from Vending Row",
+    "Clear the Escalator collapse",
+    "Bypass the wards in the Humming Vault",
+    "Retrieve the signal core from the Static Warden"
+  ]
+}

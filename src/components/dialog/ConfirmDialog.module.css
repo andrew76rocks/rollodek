@@ -1,0 +1,78 @@
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgb(30 26 46 / 0.6);
+}
+
+.dialog {
+  width: min(440px, 100%);
+  padding: 24px 24px 20px;
+  background: var(--dungeon-ink);
+  border: 2px solid var(--driftwood);
+  border-radius: 20px;
+  box-shadow: var(--shadow-medium), 0 24px 64px rgb(0 0 0 / 0.5);
+  color: var(--faded-parchment);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--ivory-mist);
+}
+
+.body {
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--faded-parchment);
+}
+
+.body p {
+  margin: 0 0 8px;
+}
+
+.body ul {
+  margin: 0 0 8px;
+  padding-left: 20px;
+  color: var(--mist-lavender);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.cancel,
+.confirm {
+  padding: 9px 18px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.cancel {
+  border: 1px solid var(--storm-slate);
+  color: var(--faded-parchment);
+}
+
+.cancel:hover {
+  border-color: var(--mist-lavender);
+}
+
+/* Destructive, so it reads as a deliberate choice rather than the default */
+.confirm {
+  background: var(--ember-gold);
+  color: var(--dungeon-ink);
+}
+
+.confirm:hover {
+  filter: brightness(1.08);
+}

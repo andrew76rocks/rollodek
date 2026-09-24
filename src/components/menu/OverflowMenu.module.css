@@ -1,0 +1,46 @@
+.anchor {
+  position: relative;
+  display: inline-flex;
+}
+
+/* Drops below the ⋮, right-aligned to the top bar's edge */
+.menu {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: -10px;
+  z-index: 30;
+  min-width: 200px;
+  padding: 6px;
+  background: var(--dungeon-ink);
+  border: 2px solid var(--driftwood);
+  border-radius: 14px;
+  box-shadow: var(--shadow-medium), 0 16px 40px rgb(0 0 0 / 0.4);
+  animation: menu-in var(--dur-fast) var(--ease-out);
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    translate: 0 -4px;
+  }
+}
+
+.item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--faded-parchment);
+  text-align: left;
+}
+
+.item:hover,
+.item:focus-visible {
+  background: color-mix(in srgb, var(--dusk-violet) 45%, transparent);
+  color: var(--ivory-mist);
+  box-shadow: none;
+}

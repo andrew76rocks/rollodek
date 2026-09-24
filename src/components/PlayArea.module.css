@@ -1,0 +1,36 @@
+.area {
+  view-transition-name: play-area;
+  grid-area: play;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 49px 0 40px;
+  margin: 0 var(--play-inset-right) 0 var(--play-inset-left);
+  background: var(--play-area-fill);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.label {
+  font-weight: 700;
+  font-size: 26px;
+  text-transform: uppercase;
+  color: var(--driftwood);
+}
+
+.playButton {
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: var(--faded-parchment);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--dungeon-ink);
+  /* 11px translucent halo + shadow-medium, from the button's two Figma layers */
+  box-shadow: 0 0 0 11px var(--button-halo), var(--shadow-medium);
+}
+
+.playButton:disabled {
+  cursor: default;
+}

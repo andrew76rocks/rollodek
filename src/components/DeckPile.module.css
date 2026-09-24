@@ -1,0 +1,57 @@
+.pile {
+  position: relative;
+  width: var(--card-size);
+  height: var(--card-size);
+  padding: 12px;
+  display: flex;
+  border-radius: var(--card-radius);
+  overflow: hidden;
+}
+
+.pile[data-tone='adventure'] {
+  view-transition-name: adventure-deck;
+  background: var(--adventure-tone);
+}
+
+.pile[data-tone='hero'] {
+  view-transition-name: hero-deck;
+  background: var(--hero-tone);
+}
+
+/* Silhouette artwork, offset and clipped by the card as in Figma */
+.art {
+  position: absolute;
+  pointer-events: none;
+}
+
+.pile[data-tone='adventure'] .art {
+  left: -76px;
+  top: 26px;
+}
+
+.pile[data-tone='hero'] .art {
+  left: -46px;
+  top: 17.58px;
+}
+
+.inner {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px;
+  border: 1px dashed var(--deck-dash);
+  border-radius: 16px;
+}
+
+.label {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1.1;
+  text-align: center;
+  color: var(--ivory-mist);
+}

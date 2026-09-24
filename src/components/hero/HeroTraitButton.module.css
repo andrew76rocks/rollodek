@@ -1,0 +1,15 @@
+.trait {
+  display: inline-flex;
+  border-radius: 50%;
+  transition: transform var(--dur-fast) var(--ease-out), filter var(--dur-fast) var(--ease-out);
+}
+
+.trait:hover,
+.trait[aria-expanded='true'] {
+  transform: translateY(-2px);
+  filter: brightness(1.12);
+}
+
+.trait img {
+  display: block;
+}

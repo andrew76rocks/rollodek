@@ -1,0 +1,13 @@
+.scroller {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--storm-slate) transparent;
+  outline: none;
+}
+
+/* Focused programmatically so keys scroll it; it isn't a control, so no ring */
+.scroller:focus-visible {
+  box-shadow: none;
+}

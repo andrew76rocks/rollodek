@@ -1,0 +1,8 @@
+node_modules
+dist
+*.tsbuildinfo
+.DS_Store
+
+# Full Phosphor asset package (155 MB, ~27k files). Staged locally for reference
+# only; the app uses @phosphor-icons/react. Re-download from phosphoricons.com.
+public/icons/phosphor-icons/

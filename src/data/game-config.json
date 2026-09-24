@@ -1,0 +1,38 @@
+{
+  "handSize": 5,
+  "handCap": 7,
+  "tableauSlots": {
+    "equipment": {
+      "head": 1,
+      "torso": 1,
+      "hands": 1,
+      "feet": 1
+    },
+    "spells": 1,
+    "heroParty": 1
+  },
+  "tableauActivationsPerCard": 1,
+  "dc": {
+    "easyOffset": -5,
+    "mediumOffset": 0,
+    "dangerousOffset": 5,
+    "floor": 1,
+    "snakeEyesRoll": 2,
+    "boxcarsRoll": 12,
+    "paidCostTiers": [
+      "easy"
+    ]
+  },
+  "heroHpThreshold": 5,
+  "heroStats": { "STR": 1, "DEX": 3, "CON": 2, "INT": 1, "WIS": 2, "CHA": 0 },
+  "startingDeckSize": 20,
+  "startingDeckComposition": {
+    "action": 12,
+    "memory": 3,
+    "crossover": 3,
+    "wild": 2
+  },
+  "objectivesToWin": 3,
+  "objectivesTotal": 5,
+  "debugMode": false
+}

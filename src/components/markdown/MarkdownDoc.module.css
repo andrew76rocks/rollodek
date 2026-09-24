@@ -1,0 +1,116 @@
+/* Rendered markdown: palette + three-tier type (Cinzel headings, Source Serif body) */
+.prose {
+  padding: 8px 28px 40px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--faded-parchment);
+}
+
+.prose h3 {
+  margin: 28px 0 10px;
+  padding-bottom: 6px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.02em;
+  color: var(--ember-gold);
+  border-bottom: 1px solid color-mix(in srgb, var(--driftwood) 45%, transparent);
+}
+
+.prose h4 {
+  margin: 20px 0 8px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--mist-lavender);
+}
+
+.prose p {
+  margin: 0 0 12px;
+}
+
+.prose ul,
+.prose ol {
+  margin: 0 0 12px;
+  padding-left: 22px;
+}
+
+.prose li {
+  margin: 4px 0;
+  padding-left: 4px;
+}
+
+.prose li::marker {
+  color: var(--driftwood);
+}
+
+.prose ol > li::marker {
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+
+/* Nested lists (e.g. On-stat / Off-stat) */
+.prose li > ul {
+  margin: 4px 0 4px;
+}
+
+.prose strong {
+  font-weight: 700;
+  color: var(--ivory-mist);
+}
+
+.prose em {
+  color: var(--mist-lavender);
+}
+
+.prose a {
+  color: var(--potion-blue);
+}
+
+.prose code {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--ivory-mist) 8%, transparent);
+  font-size: 0.9em;
+}
+
+.prose blockquote {
+  margin: 0 0 14px;
+  padding: 8px 16px;
+  border-left: 3px solid var(--ember-gold);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: color-mix(in srgb, var(--ember-gold) 10%, transparent);
+  font-style: italic;
+  color: var(--ivory-mist);
+}
+
+.prose blockquote p {
+  margin: 0;
+}
+
+/* GFM tables (stat blocks, deck lists, milestones) */
+.prose table {
+  width: 100%;
+  margin: 4px 0 16px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.prose th,
+.prose td {
+  padding: 6px 10px;
+  text-align: left;
+  border-bottom: 1px solid color-mix(in srgb, var(--storm-slate) 45%, transparent);
+}
+
+.prose th {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--mist-lavender);
+  border-bottom-color: var(--driftwood);
+}
+
+.prose tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--ivory-mist) 3%, transparent);
+}

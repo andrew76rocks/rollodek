@@ -1,0 +1,18 @@
+[
+  {
+    "type": "spell",
+    "name": "Static Ping",
+    "kind": "Cantrip",
+    "stat": "INT",
+    "value": 2,
+    "text": "Always playable from hand. A short pulse of old-world code, enough to make dead tech twitch."
+  },
+  {
+    "type": "spell",
+    "name": "Commune with the Machine-Spirit",
+    "kind": "Rite",
+    "stat": "INT/WIS",
+    "value": 0,
+    "text": "Spell, ongoing (tableau). Once per turn, look at the top card of your draw pile. You may put it on the bottom instead."
+  }
+]

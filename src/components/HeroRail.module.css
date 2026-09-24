@@ -1,0 +1,103 @@
+.rail {
+  grid-area: rail;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 18px;
+  position: relative;
+  /* HP badge ends 23px above the rail's grid bottom (Figma y 899 vs 922) */
+  padding: 0 10px 23px 20px;
+}
+
+.stats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4.35px;
+}
+
+.stat {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  text-align: center;
+  animation: stat-build-in var(--dur-stat-in) var(--ease-out) both;
+  animation-delay: calc(var(--build-step) * var(--stagger-stat));
+}
+
+/* Hexes stack up from the bottom: fade in while rising into place */
+@keyframes stat-build-in {
+  from {
+    opacity: 0;
+    translate: 0 var(--stat-rise);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stat,
+  .lineConnectors {
+    animation: none;
+  }
+}
+
+.hex {
+  position: absolute;
+  inset: 2.42% 6.7%;
+  width: 86.6%;
+  height: 95.16%;
+}
+
+.statValue {
+  position: relative;
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 23px;
+  line-height: 0.8;
+  color: var(--ivory-mist);
+}
+
+.statLabel {
+  position: relative;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 0.8;
+  color: var(--ember-gold);
+}
+
+.portrait {
+  view-transition-name: hero-portrait;
+  width: 152px;
+  height: 152px;
+  margin: -2px;
+}
+
+/* One exported SVG holding all three connector segments. Figma: x 98 in the
+ * slot, running from under the hexes to beside the hero name (41px into the footer). */
+.lineConnectors {
+  view-transition-name: hero-rail-line;
+  position: absolute;
+  left: 98px;
+  bottom: -42px;
+  pointer-events: none;
+  /* Bottom segment draws downward toward the name, alongside the stat build */
+  animation: rail-line-draw var(--dur-rail-line) var(--ease-out) both;
+}
+
+/* The SVG's bottom segment spans y 226–291 (incl. round cap); clipping those
+ * 65px hides only that segment, leaving the upper two in place. */
+@keyframes rail-line-draw {
+  from {
+    clip-path: inset(0 0 65px 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}

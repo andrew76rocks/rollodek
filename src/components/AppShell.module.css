@@ -1,0 +1,85 @@
+/*
+ * Geometry mirrors the 1700×1010 Figma frames. Spacer rows flex down on
+ * shorter viewports. In maximized mode the deck and discard columns
+ * deliberately bleed past the viewport edges, as designed.
+ */
+.shell {
+  --bleed-left: 0px;
+  --bleed-right: 0px;
+  --edge-right: 48px; /* discards end flush with the play area, 48px from the edge */
+  --rail-w: 188px;
+  --rail-gap-l: 10px;
+  --rail-gap-r: 12px;
+  --play-inset-left: 0px;
+  --play-inset-right: 0px;
+  --hero-cluster-x: 111px;
+  --tabs-offset: -2px; /* Figma places the tab bar slightly off the columns' center */
+
+  position: relative;
+  isolation: isolate;
+  height: 100dvh;
+  width: 100dvw;
+  overflow: clip; /* not hidden: hidden still lets focus scroll the bleed into view */
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(var(--wood-shade), var(--wood-shade)), var(--wood-base);
+}
+
+/* Wood grain texture layer (plus-lighter blend) */
+.shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url('/assets/textures/wood-grain.png') center / cover;
+  mix-blend-mode: plus-lighter;
+  opacity: var(--wood-grain-opacity);
+  pointer-events: none;
+}
+
+/* Maximized layout: no rail, decks and discards half off-screen */
+.shell[data-layout='maximized'] {
+  --bleed-left: 74px;
+  --bleed-right: 74px;
+  --edge-right: 0px;
+  --rail-w: 0px;
+  --rail-gap-l: 0px;
+  --rail-gap-r: 0px;
+  --play-inset-left: 121px;
+  --play-inset-right: 122px;
+  --hero-cluster-x: 103px;
+  --tabs-offset: 55px;
+}
+
+.table {
+  flex: 1;
+  min-height: 0;
+  width: calc(100% + var(--bleed-left) + var(--bleed-right));
+  margin-left: calc(var(--bleed-left) * -1);
+  display: grid;
+  grid-template-columns:
+    var(--rail-gap-l) var(--rail-w) var(--rail-gap-r) var(--card-size)
+    32px minmax(0, 1fr) 32px var(--card-size) var(--edge-right);
+  grid-template-rows:
+    minmax(16px, 100px) var(--card-size) minmax(12px, 49px) 135px
+    minmax(12px, 49px) var(--card-size) minmax(8px, 29px) 60px minmax(8px, 28px);
+  grid-template-areas:
+    '.      .      .      .      .      .      .      .  .'
+    '.      rail   .      adeck  .      scene  .      adiscard  .'
+    '.      rail   .      .      .      .      .      .  .'
+    '.      rail   .      play   play   play   play   play  .'
+    '.      rail   .      .      .      .      .      .  .'
+    '.      rail   .      hdeck  .      hand   .      hdiscard  .'
+    '.      rail   .      .      .      .      .      .  .'
+    'footer footer footer footer footer footer footer footer  footer'
+    '.      .      .      .      .      .      .      .  .';
+  align-content: center;
+}
+
+.scene {
+  grid-area: scene;
+}
+
+.hand {
+  grid-area: hand;
+}

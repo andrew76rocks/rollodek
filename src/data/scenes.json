@@ -1,0 +1,84 @@
+[
+  {
+    "scene": 1,
+    "title": "Approach the Ruins",
+    "locations": [
+      {
+        "name": "The Broken Overpass",
+        "required": false,
+        "locationType": "flavor",
+        "text": "The overpass has half-collapsed into the road below. Cars sit rusted where they stalled the day everything stopped."
+      },
+      {
+        "name": "Rusted Checkpoint",
+        "required": true,
+        "locationType": "check",
+        "tier": "Easy",
+        "stat": "DEX or INT",
+        "objective": 0,
+        "text": "An old checkpoint gate, jammed. Slip through (DEX) or talk the ancient automated system into opening (INT)."
+      }
+    ]
+  },
+  {
+    "scene": 2,
+    "title": "Into the Dead Mall",
+    "locations": [
+      {
+        "name": "Flooded Atrium",
+        "required": true,
+        "locationType": "check",
+        "tier": "Medium",
+        "stat": "DEX or CON",
+        "text": "Waist-deep standing water, current stronger than it should be. Cross it, or find what's making it move."
+      },
+      {
+        "name": "Vending Row",
+        "required": true,
+        "locationType": "combat",
+        "tier": "Easy",
+        "stat": "Combat",
+        "threat": "Scrap-Rat Swarm",
+        "objective": 1,
+        "rewardItem": true,
+        "text": "ENCOUNTER: Scrap-Rat Swarm. Defeat, stun, or escape it."
+      },
+      {
+        "name": "Collapsed Escalator",
+        "required": true,
+        "locationType": "milestone",
+        "tier": "Medium",
+        "stat": "MILESTONE",
+        "objective": 2,
+        "rewardSpell": true,
+        "text": "MILESTONE: The escalator hides a maintenance stairwell down. Reward: +1 to hero HP threshold (permanent), draw 1 Spell/Ability card into hand."
+      }
+    ]
+  },
+  {
+    "scene": 3,
+    "title": "The Signal Source",
+    "locations": [
+      {
+        "name": "The Humming Vault",
+        "required": true,
+        "locationType": "check",
+        "tier": "Dangerous",
+        "stat": "INT or WIS",
+        "objective": 3,
+        "text": "A warded door, still very much alive. Bypass the wards without waking whatever's sleeping behind them."
+      },
+      {
+        "name": "The Static Warden",
+        "required": true,
+        "locationType": "combat",
+        "tier": "Dangerous",
+        "stat": "Combat",
+        "threat": "The Static Warden",
+        "objective": 4,
+        "finalScene": true,
+        "text": "ENCOUNTER / FINAL: The Static Warden. Defeat or stun it to claim the signal core."
+      }
+    ]
+  }
+]

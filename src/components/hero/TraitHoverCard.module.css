@@ -1,0 +1,108 @@
+/* Anchored above the trait icon (fixed; left/bottom set inline) */
+.card {
+  position: fixed;
+  z-index: 50;
+  width: 340px;
+  translate: -50% 0;
+  padding: 14px 18px 10px;
+  background: var(--dungeon-ink);
+  border: 2px solid var(--driftwood);
+  border-radius: 16px;
+  box-shadow: var(--shadow-medium), 0 16px 40px rgb(0 0 0 / 0.4);
+  color: var(--faded-parchment);
+  pointer-events: none; /* preview only */
+  animation: card-in var(--dur-fast) var(--ease-out);
+}
+
+/* Caret pointing down at the icon */
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  background: var(--dungeon-ink);
+  border-right: 2px solid var(--driftwood);
+  border-bottom: 2px solid var(--driftwood);
+  transform: rotate(45deg);
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    translate: -50% 4px;
+  }
+}
+
+.kicker {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--driftwood);
+}
+
+.title {
+  margin: 2px 0 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 1.25;
+  color: var(--ember-gold);
+}
+
+.subtitle {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--mist-lavender);
+}
+
+.flavor {
+  margin: 10px 0 0;
+  padding: 0 0 0 10px;
+  border-left: 2px solid var(--ember-gold);
+  font-size: 14px;
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--ivory-mist);
+}
+
+.traits {
+  margin: 12px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid color-mix(in srgb, var(--storm-slate) 50%, transparent);
+}
+
+.trait + .trait {
+  margin-top: 8px;
+}
+
+.trait dt {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ivory-mist);
+}
+
+.traitLabel {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--mist-lavender);
+}
+
+.trait dd {
+  margin: 2px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--faded-parchment);
+}
+
+.hint {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: color-mix(in srgb, var(--mist-lavender) 80%, transparent);
+}

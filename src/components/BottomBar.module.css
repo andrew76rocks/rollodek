@@ -1,0 +1,162 @@
+/* Sits on the table grid's own columns (subgrid) so it lines up with the rows above */
+.bar {
+  grid-area: footer;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: center;
+}
+
+/* Items share columns, so pin them all to one row */
+.bar > * {
+  grid-row: 1;
+}
+
+.heroInfo,
+.heroMini {
+  grid-column: 2 / span 4;
+  justify-self: start;
+  margin-left: var(--hero-cluster-x);
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* The bar is its own mask: the track slides in from its left edge and
+ * nothing shows outside the bar's box while it does. */
+.heroInfo {
+  view-transition-name: hero-info;
+  overflow: clip;
+}
+
+.heroInfoTrack {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: info-bar-slide-in var(--dur-info-bar) var(--ease-out) both;
+}
+
+@keyframes info-bar-slide-in {
+  from {
+    translate: -100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroInfoTrack {
+    animation: none;
+  }
+}
+
+.heroInfoTrack button + button {
+  margin-left: -3px; /* 7px between trait icons */
+}
+
+.heroName {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1;
+  letter-spacing: 1.56px;
+  color: var(--ivory-mist);
+}
+
+.avatar {
+  view-transition-name: hero-portrait;
+  position: relative;
+  width: 60px;
+  height: 60px;
+  flex: none;
+}
+
+.avatar img {
+  position: absolute;
+}
+
+.innerRing {
+  left: 4.29px;
+  top: 4.29px;
+}
+
+.outerRing {
+  inset: -2px;
+  transform: rotate(90deg);
+}
+
+.profile {
+  left: 1.65px;
+  top: 1.65px;
+}
+
+.heroMini {
+  position: relative;
+  gap: 18px; /* HP badge at x 78 = 60px avatar + 18 */
+}
+
+/* Figma: x 60, y 30–32 within the avatar cluster, overlapping the badge by 1px */
+.miniConnector {
+  position: absolute;
+  left: 60px;
+  top: 30px;
+}
+
+.tabs {
+  /* Top layer: stays above the hero name, rail line and dice when they overlap */
+  position: relative;
+  z-index: 10;
+  view-transition-name: action-bar;
+  grid-column: 4 / -1;
+  justify-self: center;
+  translate: var(--tabs-offset) 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 6px; /* + 2px border = Figma's 8px inside-stroke inset */
+  background: var(--chrome-bg);
+  border: 2px solid var(--chrome-border);
+  border-radius: 24px;
+}
+
+.tab {
+  line-height: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--mist-lavender);
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.tab[aria-pressed='true'] {
+  background: var(--dusk-violet);
+  color: var(--ivory-mist);
+}
+
+.count {
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--count-badge-fill);
+  font-weight: 900;
+  color: var(--faded-parchment);
+}
+
+.tab[aria-pressed='true'] .count {
+  background: none;
+  color: var(--ivory-mist);
+}
+
+.dice {
+  view-transition-name: dice-controls;
+  line-height: 18px;
+  grid-column: -3 / -1;
+  justify-self: end;
+  margin-right: calc(54px + var(--bleed-right)); /* 2× the Figma 27px inset */
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  color: var(--driftwood);
+}
+

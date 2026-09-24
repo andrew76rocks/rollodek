@@ -1,0 +1,38 @@
+.pile {
+  width: var(--card-size);
+  height: var(--card-size);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  border: 2px dashed var(--discard-dash);
+  border-radius: var(--card-radius);
+  color: var(--driftwood);
+}
+
+.pile[data-tone='adventure'] {
+  view-transition-name: adventure-discard;
+}
+
+.pile[data-tone='hero'] {
+  view-transition-name: hero-discard;
+}
+
+.labelGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.label {
+  font-size: 16px;
+}
+
+.count {
+  padding: 2px 8px;
+  font-weight: 900;
+  font-size: 14px;
+  color: var(--ivory-mist);
+}

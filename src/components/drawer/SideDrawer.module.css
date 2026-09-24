@@ -1,0 +1,49 @@
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgb(30 26 46 / 0.45);
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  background: var(--dungeon-ink);
+  border-left: 2px solid var(--driftwood);
+  box-shadow: -16px 0 48px rgb(0 0 0 / 0.45);
+  color: var(--faded-parchment);
+}
+
+.header {
+  flex: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px; /* lines up with the top bar */
+  padding: 0 16px 0 24px;
+  border-bottom: 2px solid var(--driftwood);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--ivory-mist);
+}
+
+.close {
+  display: inline-flex;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  color: var(--mist-lavender);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.close:hover {
+  color: var(--ivory-mist);
+}

@@ -1,0 +1,30 @@
+/* 44×44 hit target around the 32px icon; the negative margin keeps the
+ * Figma layout, and it sits above the dice canvas's transparent overscan */
+.shuffle {
+  position: relative;
+  z-index: 2;
+  padding: 6px;
+  margin: -6px;
+  display: inline-flex;
+  color: var(--driftwood);
+  border-radius: var(--radius-sm);
+  transition: color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.shuffle:hover {
+  color: var(--faded-parchment);
+}
+
+.shuffle:active {
+  transform: scale(0.92);
+}
+
+/* Faces of both dice, e.g. "3 / 5" (Figma: Source Serif Black 14, ivory) */
+.readout {
+  min-width: 28px;
+  font-weight: 900;
+  font-size: 14px;
+  color: var(--ivory-mist);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
