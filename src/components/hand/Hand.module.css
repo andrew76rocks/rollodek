@@ -1,0 +1,23 @@
+.hand {
+  grid-area: hand;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.slot {
+  flex-shrink: 0;
+  box-shadow: var(--shadow-medium);
+  border-radius: var(--card-radius);
+  transition: translate var(--dur-fast) var(--ease-out);
+}
+
+.slot:not(:last-child) {
+  margin-right: calc(-1 * var(--card-overlap, 42px));
+}
+
+.slot:hover {
+  translate: 0 -12px;
+  z-index: 1;
+}

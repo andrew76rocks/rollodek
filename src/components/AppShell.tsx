@@ -1,8 +1,10 @@
 import { useLayoutShortcuts } from '../hooks/useLayoutShortcuts.ts'
+import { useHeroDeckStore } from '../store/heroDeckStore.ts'
 import { useUiStore } from '../store/uiStore.ts'
 import { BottomBar } from './BottomBar.tsx'
 import { DeckPile } from './DeckPile.tsx'
 import { EventLogDrawer } from './eventLog/EventLogDrawer.tsx'
+import { Hand } from './hand/Hand.tsx'
 import { HelpDrawer } from './help/HelpDrawer.tsx'
 import { HeroDocDrawers } from './hero/HeroDocDrawers.tsx'
 import { SettingsDrawer } from './settings/SettingsDrawer.tsx'
@@ -18,6 +20,7 @@ import styles from './AppShell.module.css'
  */
 export function AppShell() {
   const layoutMode = useUiStore((s) => s.layoutMode)
+  const heroDiscardCount = useHeroDeckStore((s) => s.discard.length)
   useLayoutShortcuts()
 
   return (
@@ -33,8 +36,8 @@ export function AppShell() {
         <PlayArea />
 
         <DeckPile tone="hero" label={['Hero', 'Deck']} />
-        <div className={styles.hand} />
-        <DiscardPile tone="hero" count={0} />
+        <Hand />
+        <DiscardPile tone="hero" count={heroDiscardCount} />
 
         <BottomBar />
       </main>

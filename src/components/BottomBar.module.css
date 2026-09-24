@@ -25,7 +25,12 @@
  * nothing shows outside the bar's box while it does. */
 .heroInfo {
   view-transition-name: hero-info;
-  overflow: clip;
+  overflow: clip visible;
+  /* Padding pushes the clip boundary out past the focus-ring box-shadow (4px);
+   * the matching negative margin cancels the shift so content position is unchanged. */
+  padding: 0 6px;
+  margin-left: calc(var(--hero-cluster-x) - 6px);
+  margin-right: -6px;
 }
 
 .heroInfoTrack {
@@ -128,6 +133,10 @@
   font-size: 14px;
   color: var(--mist-lavender);
   transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.tab:hover {
+  color: var(--ivory-mist);
 }
 
 .tab[aria-pressed='true'] {

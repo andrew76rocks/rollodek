@@ -1,6 +1,7 @@
 /** Public URLs for Figma-exported artwork (see public/assets/). */
 const UI = '/assets/ui'
 const HEROES = '/assets/heroes'
+const CARDS = '/assets/cards'
 
 export const uiAssets = {
   woodGrain: '/assets/textures/wood-grain.png',
@@ -26,6 +27,11 @@ export const uiAssets = {
     items: `${UI}/icon-items.svg`,
     spells: `${UI}/icon-spells.svg`,
   },
+} as const
+
+export const cardAssets = {
+  valueHex: `${CARDS}/value-hex.svg`,
+  statDot: `${CARDS}/stat-dot.svg`,
 } as const
 
 // Portrait art is per-hero; only Kessa exists so far.
