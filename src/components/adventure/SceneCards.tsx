@@ -1,8 +1,8 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import type { CSSProperties } from 'react'
 import { getAdventureCard, getScene, printedId } from '../../data/adventureDeck.ts'
-import { challengeKey, useGameStore } from '../../store/gameStore.ts'
-import { revealCard } from '../../store/session.ts'
+import { useGameStore } from '../../store/gameStore.ts'
+import { canFlip, cardComplete, currentCardId, revealCard } from '../../store/session.ts'
 import { useUiStore } from '../../store/uiStore.ts'
 import { panoramaUrl } from './panorama.ts'
 import styles from './SceneCards.module.css'
@@ -10,8 +10,10 @@ import styles from './SceneCards.module.css'
 /**
  * The current Scene's location cards (one Scene = one turn), laid out at
  * Advance art side up. Fronts show only the art and the ID; each card is one
- * slice of a shared panorama. In Explore, clicking a card flips it and opens
- * its back in the card drawer.
+ * slice of a shared panorama. In Explore, cards are resolved in card-ID order:
+ * only the current card flips (opening its back in the card drawer). When an
+ * optional card comes up, flipping the next card instead skips it, and it
+ * turns back face down if it had been flipped.
  *
  * TODO(drew): placeholder panorama (generated SVG) until Scene art exists.
  */
@@ -19,16 +21,18 @@ export function SceneCards() {
   const sceneNumber = useGameStore((s) => s.scene)
   const phase = useGameStore((s) => s.phase)
   const revealed = useGameStore((s) => s.revealed)
-  const resolved = useGameStore((s) => s.resolved)
+  const skipped = useGameStore((s) => s.skipped)
+  useGameStore((s) => s.resolved) // completion depends on it
   const missionId = useGameStore((s) => s.missionId)
   const reduceMotion = useReducedMotion()
   const scene = getScene(sceneNumber)
   if (!scene || !missionId) return <div className={styles.scene} />
 
   const count = scene.cards.length
-  const open = (cardId: string, isRevealed: boolean) => {
-    if (!isRevealed) {
-      if (phase !== 'explore') return
+  const current = currentCardId(sceneNumber)
+  const open = (cardId: string) => {
+    if (!revealed.includes(cardId)) {
+      if (!canFlip(cardId)) return
       revealCard(cardId)
     }
     useUiStore.getState().viewCard(cardId)
@@ -44,38 +48,50 @@ export function SceneCards() {
       {scene.cards.map((id, i) => {
         const card = getAdventureCard(id)
         const isRevealed = revealed.includes(id)
-        const challenges = card.back.flatMap((b, bi) => (b.type === 'challenge' ? [bi] : []))
-        const done = challenges.length > 0 && challenges.every((bi) => resolved.includes(challengeKey(id, bi)))
-        const canFlip = isRevealed || phase === 'explore'
+        const isSkipped = skipped.includes(id)
+        const done = cardComplete(id)
+        const flippable = canFlip(id)
+        const hasChallenge = card.back.some((b) => b.type === 'challenge')
+        // Why a face-down card won't flip yet (shown on hover)
+        const lockedNote = isSkipped
+          ? 'Skipped'
+          : phase !== 'explore'
+            ? 'Flip in the Explore phase'
+            : current
+              ? `Finish ${printedId(getAdventureCard(current))} first`
+              : undefined
         const slice = { '--slice-count': count, '--slice-index': i } as CSSProperties
         return (
-          <button
-            key={id}
-            type="button"
-            className={styles.card}
-            onClick={() => open(id, isRevealed)}
-            aria-disabled={!canFlip || undefined}
-            aria-label={isRevealed ? `${printedId(card)} ${card.title}: read card` : `${printedId(card)}: face down${canFlip ? ', flip' : ' (flip in Explore)'}`}
-            title={canFlip ? undefined : 'Flip location cards in the Explore phase'}
-          >
-            <motion.span
-              className={styles.flipper}
-              initial={false}
-              animate={{ rotateY: isRevealed ? 180 : 0 }}
-              transition={reduceMotion ? { duration: 0 } : { duration: 0.45, ease: [0.3, 0, 0.2, 1] }}
+          <div key={id} className={styles.slot} data-skipped={isSkipped || undefined}>
+            <button
+              type="button"
+              className={styles.card}
+              onClick={() => open(id)}
+              aria-disabled={(!isRevealed && !flippable) || undefined}
+              aria-label={
+                isRevealed
+                  ? `${printedId(card)} ${card.title}: read card`
+                  : `${printedId(card)}: face down${flippable ? ', flip' : lockedNote ? ` (${lockedNote})` : ''}`
+              }
             >
-              <span className={styles.front} style={slice}>
-                <span className={styles.id}>{printedId(card)}</span>
-                {/* Outside Explore, say why clicking does nothing (shown on hover) */}
-                {!canFlip && <span className={styles.lockedNote}>Flip in the Explore phase</span>}
-              </span>
-              <span className={styles.back}>
-                <span className={styles.backId}>{printedId(card)}</span>
-                <span className={styles.backTitle}>{card.title}</span>
-                <span className={styles.backHint}>{done ? 'Resolved' : challenges.length ? 'Read card' : 'Story'}</span>
-              </span>
-            </motion.span>
-          </button>
+              <motion.span
+                className={styles.flipper}
+                initial={false}
+                animate={{ rotateY: isRevealed ? 180 : 0 }}
+                transition={reduceMotion ? { duration: 0 } : { duration: 0.45, ease: [0.3, 0, 0.2, 1] }}
+              >
+                <span className={styles.front} style={slice} data-current={flippable || undefined}>
+                  <span className={styles.id}>{printedId(card)}</span>
+                  {!isRevealed && !flippable && lockedNote && <span className={styles.lockedNote}>{lockedNote}</span>}
+                </span>
+                <span className={styles.back}>
+                  <span className={styles.backId}>{printedId(card)}</span>
+                  <span className={styles.backTitle}>{card.title}</span>
+                  <span className={styles.backHint}>{done ? (hasChallenge ? 'Resolved' : 'Read') : 'Read card'}</span>
+                </span>
+              </motion.span>
+            </button>
+          </div>
         )
       })}
     </div>

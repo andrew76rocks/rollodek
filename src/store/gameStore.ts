@@ -33,6 +33,8 @@ export const INITIAL_GAME_STATE = {
   objectives: {} as Record<number, ObjectiveState>,
   /** Adventure cards flipped to their back this session */
   revealed: [] as string[],
+  /** Optional cards the player chose to skip; they stay face down for the Scene */
+  skipped: [] as string[],
   /** Challenges already resolved, as "AD-1B#1" (card id # block index) */
   resolved: [] as string[],
   ended: null as SessionEnd | null,

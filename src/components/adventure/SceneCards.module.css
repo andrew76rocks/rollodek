@@ -8,9 +8,16 @@
   min-width: 0;
 }
 
-.card {
+.slot {
   position: relative;
   flex: 0 1 var(--card-size);
+  min-width: 0;
+  display: flex;
+}
+
+.card {
+  position: relative;
+  flex: 1;
   min-width: 0;
   aspect-ratio: 1;
   max-height: var(--card-size);
@@ -119,7 +126,18 @@
 }
 
 .card:hover .lockedNote,
-.card:focus-visible .lockedNote {
+.card:focus-visible .lockedNote,
+.slot[data-skipped] .lockedNote {
   opacity: 1;
   translate: 0 0;
+}
+
+/* The card you're on in Explore */
+.front[data-current] {
+  border-color: var(--ember-gold);
+  box-shadow: var(--shadow-medium), 0 0 18px rgb(184 148 78 / 0.45);
+}
+
+.slot[data-skipped] .front {
+  filter: grayscale(0.7) brightness(0.7);
 }

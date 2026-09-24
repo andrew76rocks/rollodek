@@ -6,7 +6,7 @@ import { rollAllDice } from '../components/dice/diceCommands.ts'
 import { canPayCost, checkTotal, resolveCheck, type CheckResult } from '../rules/check.ts'
 import { logEvent } from './eventLogStore.ts'
 import { challengeKey, useGameStore } from './gameStore.ts'
-import { applyOutcome, addWounds } from './session.ts'
+import { applyOutcome, addWounds, currentCardId } from './session.ts'
 
 /**
  * The one check in progress (docs/rules.md §4). Order is fixed:
@@ -48,6 +48,7 @@ export function canAttempt(cardId: string, blockIndex: number): boolean {
     phase === 'explore' &&
     getAdventureCard(cardId).scene === scene &&
     revealed.includes(cardId) &&
+    currentCardId(scene) === cardId && // in play order: the card you're on
     !resolved.includes(challengeKey(cardId, blockIndex)) &&
     !useCheckStore.getState().check
   )

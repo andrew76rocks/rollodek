@@ -22,7 +22,7 @@
 One Scene is one turn. Each Scene runs through four phases, in order:
 1. **Advance**: the new Scene's location cards are laid out, art side up.
 2. **Setup**: your hand redraws to {{handSize}}, your tableau untaps, and this is when you swap gear or spells.
-3. **Explore**: flip location cards one at a time and resolve what's on the back. Combat happens here too.
+3. **Explore**: flip location cards one at a time, in ID order (A, then B, then C), and resolve what's on the back before moving to the next. An optional card, shown with its ID in parentheses, can be skipped by moving on to the next card; it turns back face down. Combat happens here too.
 4. **Conclude**: objectives are tallied. If your hand is over {{handCap}} cards, discard down to {{handCap}} (your choice) before the next Scene.
 
 Cards you play don't come back until the next Setup.

@@ -1,5 +1,5 @@
 import { getGameConfig } from '../config/gameConfig.ts'
-import { getAdventureCard, missions, printedId, type ChallengeOutcome } from '../data/adventureDeck.ts'
+import { getAdventureCard, getScene, missions, printedId, type ChallengeOutcome } from '../data/adventureDeck.ts'
 import { logEvent } from './eventLogStore.ts'
 import { challengeKey, useGameStore, type SessionEnd } from './gameStore.ts'
 
@@ -19,11 +19,73 @@ export function chooseMission(id: string) {
   logEvent('mission', `Mission chosen: ${mission.name}. ${mission.goal}`, { missionId: id })
 }
 
-/** Flip an Adventure card to its back (Explore) */
+/**
+ * A card is complete once its back has been read (revealed) and every
+ * Challenge on it resolved, pass or fail. Story-only cards complete on reveal.
+ */
+export function cardComplete(cardId: string): boolean {
+  const { revealed, resolved } = useGameStore.getState()
+  if (!revealed.includes(cardId)) return false
+  return getAdventureCard(cardId).back.every((b, i) => b.type !== 'challenge' || resolved.includes(challengeKey(cardId, i)))
+}
+
+/** The Scene's cards in play order: card-ID order (A, B, C), not panorama order (rules.md §7) */
+export function playOrder(sceneNumber: number): string[] {
+  return [...(getScene(sceneNumber)?.cards ?? [])].sort()
+}
+
+/** The card the player is on: the first in play order that's neither complete nor skipped */
+export function currentCardId(sceneNumber: number): string | undefined {
+  const { skipped } = useGameStore.getState()
+  return playOrder(sceneNumber).find((id) => !skipped.includes(id) && !cardComplete(id))
+}
+
+/**
+ * When the current card is optional, the card after it can be flipped too:
+ * moving on is how an optional card gets skipped.
+ */
+function cardAfterOptional(sceneNumber: number): string | undefined {
+  const current = currentCardId(sceneNumber)
+  if (!current || !getAdventureCard(current).optional) return undefined
+  const { skipped } = useGameStore.getState()
+  const order = playOrder(sceneNumber)
+  return order.slice(order.indexOf(current) + 1).find((id) => !skipped.includes(id) && !cardComplete(id))
+}
+
+/** Explore, in order: the current card can be flipped, or the next one if the current card is optional */
+export function canFlip(cardId: string): boolean {
+  const { phase, scene, revealed, ended } = useGameStore.getState()
+  if (ended || phase !== 'explore' || revealed.includes(cardId)) return false
+  return currentCardId(scene) === cardId || cardAfterOptional(scene) === cardId
+}
+
+/**
+ * Moving on past an optional card: it turns back face down and stays that way
+ * for the Scene. Covers skipping it unread and moving on after reading it
+ * (a story-only optional card, or one whose Challenge wasn't attempted).
+ */
+function passOptionalCards(sceneNumber: number, before: string) {
+  const { revealed, resolved, skipped } = useGameStore.getState()
+  const order = playOrder(sceneNumber)
+  const passed = order.slice(0, order.indexOf(before)).filter((id) => {
+    const card = getAdventureCard(id)
+    const attempted = card.back.some((b, i) => b.type === 'challenge' && resolved.includes(challengeKey(id, i)))
+    return card.optional && !attempted && !skipped.includes(id)
+  })
+  if (!passed.length) return
+  useGameStore.setState({
+    skipped: [...skipped, ...passed],
+    revealed: revealed.filter((id) => !passed.includes(id)),
+  })
+  passed.forEach((id) => logEvent('scene.explore', `Moved past ${printedId(getAdventureCard(id))}`, { cardId: id }))
+}
+
+/** Flip an Adventure card to its back (Explore, in play order). Moving past an optional card turns it back face down. */
 export function revealCard(cardId: string) {
-  const { revealed } = useGameStore.getState()
-  if (revealed.includes(cardId)) return
-  useGameStore.setState({ revealed: [...revealed, cardId] })
+  const { revealed, scene } = useGameStore.getState()
+  if (revealed.includes(cardId) || !canFlip(cardId)) return
+  passOptionalCards(scene, cardId)
+  useGameStore.setState((s) => ({ revealed: [...s.revealed, cardId] }))
   logEvent('scene.explore', `Explored ${printedId(getAdventureCard(cardId))}: ${getAdventureCard(cardId).title}`, { cardId })
 }
 
