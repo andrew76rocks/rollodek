@@ -78,6 +78,8 @@ export async function commitAndRoll(handCardIds: string[]) {
   const check = useCheckStore.getState().check
   if (!check || check.step !== 'committing') return
   const config = getGameConfig()
+  // TODO(drew): hero, class, backstory, companion and item abilities aren't applied yet
+  // (e.g. Scrap-Drone Pigeon's +1 on on-stat DEX/INT checks, Forest-Marked's boxcars wound on Dangerous)
   const total = checkTotal(handCardIds.map(getHeroCard), check.stat, config.heroStats[check.stat])
   patch({ step: 'rolling', committed: handCardIds, total })
 

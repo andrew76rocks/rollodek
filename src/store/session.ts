@@ -36,7 +36,11 @@ export function addWounds(count: number, reason: string) {
   if (wounds >= getGameConfig().heroHpThreshold) endSession('death')
 }
 
-/** Apply a resolved Challenge outcome: objectives, closed objectives, wounds */
+/**
+ * Apply a resolved Challenge outcome: objectives, closed objectives, wounds.
+ * TODO(drew): card rewards are text only for now: "draw 1 Item" (new gear goes to the
+ * discard first) and milestone rewards (+1 HP threshold, draw 1 Spell/Ability) aren't automated.
+ */
 export function applyOutcome(cardId: string, blockIndex: number, outcome: ChallengeOutcome, label: string) {
   const { objectives, resolved } = useGameStore.getState()
   const next = { ...objectives }
