@@ -48,7 +48,7 @@
   transition: translate var(--dur-fast) var(--ease-out), filter var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
 }
 
-.stack:not(:disabled):hover .top {
+.stack:not(:disabled):not([data-inert]):hover .top {
   translate: 7px -7px;
   filter: brightness(1.06);
   box-shadow: -3px 6px 12px rgb(0 0 0 / 0.3);

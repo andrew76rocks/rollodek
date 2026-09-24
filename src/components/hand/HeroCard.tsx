@@ -23,12 +23,11 @@ function statTypeLabel(card: HeroCardData): string {
 
 /**
  * Figma node 95:68 "Hero Card": title, art, card type, rules, and a
- * bottom-right cluster of stat type · off-stat number · on-stat hexagon.
+ * bottom-right cluster of stat type · value hexagon. One value per card
+ * (docs/rules.md §3). TODO(drew): Figma 95:68 still shows a separate
+ * off-stat number; update the frame to the single value.
  */
 export function HeroCard({ card }: HeroCardProps) {
-  // Wild cards are on-stat for any challenge, so an off-stat number never applies
-  const showOffStat = card.type !== 'wild'
-
   // The numbers cluster overlays the rules area; measure it so the rules text
   // can wrap around a same-sized gap instead of running underneath it
   const cardRef = useRef<HTMLDivElement>(null)
@@ -54,14 +53,9 @@ export function HeroCard({ card }: HeroCardProps) {
       </div>
       <div ref={numbersRef} className={styles.numbers}>
         <span className={styles.statType}>{statTypeLabel(card)}</span>
-        {showOffStat && (
-          <span className={styles.offStat} aria-label={`Off-stat ${card.offStat}`}>
-            {card.offStat}
-          </span>
-        )}
-        <span className={styles.onStat} aria-label={`On-stat +${card.onStat}`}>
+        <span className={styles.value} aria-label={`Value ${card.value}`}>
           <img src={cardAssets.valueHex} alt="" />
-          <span>+{card.onStat}</span>
+          <span>{card.value}</span>
         </span>
       </div>
     </div>

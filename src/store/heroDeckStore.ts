@@ -1,6 +1,5 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { getGameConfig } from '../config/gameConfig.ts'
 import { starterDeck } from '../data/heroCard.ts'
 
 export function shuffle<T>(items: T[]): T[] {
@@ -21,11 +20,12 @@ interface HeroDeckState {
   discard: string[]
 }
 
-/** Shuffles the starting deck and draws the opening hand — this session's Turn 1, Scene 1 deal. */
+/**
+ * Shuffles the starting deck. The hand starts empty: it's drawn at Scene 1's
+ * Setup, like every Setup (docs/rules.md §5).
+ */
 function initialDeal(): HeroDeckState {
-  const shuffled = shuffle(starterDeck.map((card) => card.id))
-  const { handSize } = getGameConfig()
-  return { hand: shuffled.slice(0, handSize), deck: shuffled.slice(handSize), discard: [] }
+  return { hand: [], deck: shuffle(starterDeck.map((card) => card.id)), discard: [] }
 }
 
 export const useHeroDeckStore = create<HeroDeckState>()(

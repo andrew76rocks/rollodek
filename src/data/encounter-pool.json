@@ -1,20 +1,55 @@
 [
   {
-    "name": "Wastewalker Scavenger",
-    "disposition": "Neutral",
+    "id": "scrap-rat-swarm",
+    "name": "Scrap-Rat Swarm",
+    "disposition": "hostile",
+    "inRandomPool": false,
+    "hp": 6,
+    "tier": "easy",
+    "attackStat": "DEX",
+    "text": "Dozens of scavenged-metal rats, fused together by rot.",
+    "onDefeat": "The swarm scatters and leaves a working component behind.",
+    "onEscape": "TODO(drew): escape cost is an open question (rules.md §11).",
+    "onStun": "The swarm reels. It goes back into the Adventure Deck and may show up again."
+  },
+  {
+    "id": "static-warden",
+    "name": "The Static Warden",
+    "disposition": "hostile",
+    "inRandomPool": false,
+    "hp": 10,
+    "tier": "dangerous",
+    "attackStat": "INT",
+    "text": "What's left of the mall's old security system, grown into something else.",
+    "onDefeat": "The signal core is yours.",
+    "onEscape": "The signal keeps pulsing, unresolved.",
+    "onStun": "The Warden stutters offline long enough to reach the core."
+  },
+  {
+    "id": "corroded-sentinel",
+    "name": "Corroded Sentinel",
+    "disposition": "hostile",
+    "inRandomPool": true,
+    "hp": 8,
+    "tier": "medium",
+    "attackStat": "STR",
+    "text": "An old security unit, still running on a decade-old threat list.",
+    "onDefeat": "TODO(drew): no defeat result authored yet.",
+    "onEscape": "TODO(drew): escape cost is an open question (rules.md §11).",
+    "onStun": "It goes back into the Adventure Deck and may show up again."
+  },
+  {
+    "id": "wastewalker",
+    "name": "Wastewalker",
+    "disposition": "neutral",
+    "inRandomPool": true,
     "text": "Another scavenger, sizing you up the same way you're sizing them up. Trade, share info, or walk away. Turns hostile only if provoked."
   },
   {
-    "name": "Corroded Sentinel-Bot",
-    "disposition": "Hostile",
-    "hp": 8,
-    "tier": "Medium",
-    "attackStat": "STR",
-    "text": "An old security unit, still running on a decade-old threat list. Attacks with STR."
-  },
-  {
+    "id": "lost-courier",
     "name": "Lost Courier",
-    "disposition": "Friendly",
-    "text": "Separated from their caravan, low on supplies. Help them and they'll point you to a cache: draw 1 Item card. No check required."
+    "disposition": "friendly",
+    "inRandomPool": true,
+    "text": "Separated from their caravan, low on supplies. Help them and they point you to a cache: draw 1 Item. No check."
   }
 ]

@@ -1,0 +1,102 @@
+/* The Scene's cards, side by side, shrinking only if they'd run out of room */
+.scene {
+  grid-area: scene;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.card {
+  position: relative;
+  flex: 0 1 var(--card-size);
+  min-width: 0;
+  aspect-ratio: 1;
+  max-height: var(--card-size);
+  padding: 0;
+  perspective: 1000px;
+  border-radius: var(--card-radius);
+}
+
+.card[aria-disabled] {
+  cursor: default;
+}
+
+.flipper {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform-style: preserve-3d;
+}
+
+.front,
+.back {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--card-radius);
+  backface-visibility: hidden;
+  box-shadow: var(--shadow-medium);
+  overflow: hidden;
+}
+
+/* Art only: this card's slice of the Scene's shared panorama */
+.front {
+  background-image: var(--panorama);
+  background-size: calc(var(--slice-count) * 100%) 100%;
+  background-position: calc(var(--slice-index) / max(var(--slice-count) - 1, 1) * 100%) 0;
+  border: 2px solid rgb(250 250 247 / 0.25);
+}
+
+.id {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  background: rgb(30 26 46 / 0.75);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--ivory-mist);
+}
+
+.back {
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 16px;
+  background: var(--faded-parchment);
+  color: var(--dungeon-ink);
+  text-align: center;
+}
+
+.backId {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--storm-slate);
+}
+
+.backTitle {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.15;
+}
+
+.backHint {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--storm-slate);
+}
+
+.card:not([aria-disabled]):hover .front,
+.card:hover .back {
+  filter: brightness(1.05);
+}

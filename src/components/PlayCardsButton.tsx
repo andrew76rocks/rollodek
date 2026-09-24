@@ -3,6 +3,12 @@ import styles from './PlayCardsButton.module.css'
 
 interface PlayCardsButtonProps {
   count: number
+  /** Button text; "Play Cards" by default, "Commit" during a check */
+  label?: string
+  /** Whether it can be pressed; defaults to "cards are staged" */
+  ready?: boolean
+  /** Screen-reader hint while not ready */
+  disabledReason?: string
   onPlay: () => void
 }
 
@@ -14,9 +20,9 @@ const RIPPLE_SECONDS = 3
  * behind it breathes gently and a faint ring ripples outward, signalling the
  * Play Area is armed. Disabled (nothing staged) the halo is hidden entirely.
  */
-export function PlayCardsButton({ count, onPlay }: PlayCardsButtonProps) {
+export function PlayCardsButton({ count, onPlay, label = 'Play Cards', ready: readyProp, disabledReason }: PlayCardsButtonProps) {
   const reduceMotion = useReducedMotion()
-  const ready = count > 0
+  const ready = readyProp ?? count > 0
   const animate = ready && !reduceMotion
 
   return (
@@ -46,11 +52,11 @@ export function PlayCardsButton({ count, onPlay }: PlayCardsButtonProps) {
         className={styles.button}
         disabled={!ready}
         onClick={onPlay}
-        aria-label={ready ? `Play ${count} card${count === 1 ? '' : 's'}` : 'Play Cards (no cards in the Play Area)'}
+        aria-label={ready ? `${label} (${count} card${count === 1 ? '' : 's'})` : `${label} (${disabledReason ?? 'no cards in the Play Area'})`}
       >
-        Play Cards
+        {label}
         <AnimatePresence initial={false}>
-          {ready && (
+          {ready && count > 0 && (
             // One badge while cards are staged (fades in/out as a whole)…
             <motion.span
               key="badge"

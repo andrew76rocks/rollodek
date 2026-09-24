@@ -69,6 +69,14 @@ export function playStagedCards() {
   logEvent('card.play', `Played ${names.join(', ')}`, { cards: staged })
 }
 
+/** Conclude: discard a card from an over-cap hand (player's choice) */
+export function discardFromHand(cardId: string) {
+  const { hand } = useHeroDeckStore.getState()
+  if (!hand.includes(cardId)) return
+  useHeroDeckStore.setState((s) => ({ hand: s.hand.filter((id) => id !== cardId), discard: [...s.discard, cardId] }))
+  logEvent('card.play', `Discarded ${getHeroCard(cardId).name} (over the hand cap)`, { cardId })
+}
+
 /**
  * Draw the top card of the Hero Deck into the hand. If the draw pile is empty
  * the discard reshuffles into a new one first (deck cycling). Returns the drawn

@@ -13,10 +13,11 @@ export interface HeroCardData {
   /** Two-stat cards (crossover) */
   stats?: HeroStat[]
   tier?: HeroCardTier
-  /** Printed on-stat number (the hexagon): added to the hero's Base Stat on an on-stat check */
-  onStat: number
-  /** Printed off-stat number: used alone on an off-stat check */
-  offStat: number
+  /**
+   * The card's one printed value (the hexagon). On-stat it adds to the hero's
+   * Base Stat (once per check); off-stat it counts alone (docs/rules.md §3–4).
+   */
+  value: number
   text: string
 }
 
@@ -31,7 +32,7 @@ export const CARD_TITLE_MAX_CHARS = 18
 
 /**
  * Authoring rule: rules text never restates what the card already shows
- * (stat type, on/off-stat numbers, card type). E.g. a crossover's "INT/WIS"
+ * (stat type, card value, card type). E.g. a crossover's "INT/WIS"
  * label already says it's on-stat for INT or WIS; the text shouldn't repeat it.
  */
 const RESTATES_CARD_FACE = /\b(on-stat|off-stat|any challenge)\b/i

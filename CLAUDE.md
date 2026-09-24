@@ -98,6 +98,7 @@ src/
     starter-deck.json
     mission.json
     scenes.json
+    adventure-deck.json   (location cards: ID, optional, back blocks)
     encounter-pool.json
     item-pool.json
     spell-pool.json
