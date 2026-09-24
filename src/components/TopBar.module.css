@@ -19,29 +19,22 @@
   color: var(--ivory-mist);
 }
 
-.search,
-.turn {
+.search {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-weight: 600;
-  font-size: 14px;
-}
-
-.search {
   padding: 10px;
   border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
 }
 
 .actions {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 20px;
-}
-
-.sep {
-  margin: 0 12px;
+  gap: 18px;
 }
 
 .iconBtn {
@@ -58,4 +51,104 @@
 .logAnchor {
   position: relative;
   display: inline-flex;
+}
+
+/* ── Left: logo + story context ── */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.brandDivider {
+  width: 1px;
+  height: 22px;
+  background: var(--storm-slate);
+}
+
+.scene {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: var(--mist-lavender);
+  white-space: nowrap;
+}
+
+/* ── Right: the turn clock ── */
+.turnPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 36px;
+  padding: 0 3px 0 12px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
+.turnText {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.dot {
+  margin: 0 6px;
+  opacity: 0.6;
+}
+
+/* Same lavender as "Turn": the gold pip is the only highlight in the pill */
+.phase {
+  color: inherit;
+}
+
+/* Four phases: done · current · upcoming */
+.pips {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.pip {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1px solid var(--storm-slate);
+}
+
+.pip[data-state='done'] {
+  background: var(--mist-lavender);
+  border-color: var(--mist-lavender);
+}
+
+.pip[data-state='current'] {
+  background: var(--ember-gold);
+  border-color: var(--ember-gold);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--ember-gold) 60%, transparent);
+}
+
+/* Matches the Help (?) icon: a 24px box whose drawn circle is ~19.7px (the
+ * icon's own padding). The padding + content-box clip paints the disc at that
+ * size while keeping the 24px click target; arrow knocked out in bar color. */
+.nextPhase {
+  width: 24px;
+  height: 24px;
+  padding: 2.15px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--chrome-fg);
+  background-clip: content-box;
+  color: var(--chrome-bg);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.nextPhase:hover {
+  background: var(--ivory-mist);
+}
+
+/* Separates game state (left of it) from app tools (right of it) */
+.toolsDivider {
+  width: 1px;
+  height: 22px;
+  background: var(--storm-slate);
 }

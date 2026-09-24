@@ -1,6 +1,9 @@
 import { useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
 import { getHeroCard } from '../../data/heroCard.ts'
 import { useHeroDeckStore } from '../../store/heroDeckStore.ts'
+import { horizontalListSortingStrategy, SortableContext } from '@dnd-kit/sortable'
+import { cardDragId, zoneListId } from '../dnd/dragTypes.ts'
+import { SortableCard } from '../dnd/SortableCard.tsx'
 import { HeroCard } from './HeroCard.tsx'
 import styles from './Hand.module.css'
 
@@ -36,11 +39,13 @@ export function Hand() {
 
   return (
     <div className={styles.hand} ref={containerRef} style={{ '--card-overlap': `${overlap}px` } as CSSProperties}>
-      {hand.map((id, i) => (
-        <div key={id} className={styles.slot} ref={i === 0 ? firstCardRef : undefined}>
-          <HeroCard card={getHeroCard(id)} />
-        </div>
-      ))}
+      <SortableContext id={zoneListId('hand')} items={hand.map((id) => cardDragId('hand', id))} strategy={horizontalListSortingStrategy}>
+        {hand.map((id, i) => (
+          <SortableCard key={id} cardId={id} zone="hand" className={styles.slot} nodeRef={i === 0 ? firstCardRef : undefined}>
+            <HeroCard card={getHeroCard(id)} />
+          </SortableCard>
+        ))}
+      </SortableContext>
     </div>
   )
 }

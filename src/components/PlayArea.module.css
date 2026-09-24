@@ -10,27 +10,92 @@
   background: var(--play-area-fill);
   border-radius: 16px;
   overflow: hidden;
+  transition: background var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+
+/* Dragging a card: this is a valid place to drop it */
+.area[data-drop-ready] {
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--ember-gold) 55%, transparent);
+}
+
+/* …and the card is over it right now */
+.area[data-drop-over] {
+  background: color-mix(in srgb, var(--faded-parchment) 16%, transparent);
+  box-shadow: inset 0 0 0 3px var(--ember-gold), 0 0 28px color-mix(in srgb, var(--ember-gold) 35%, transparent);
 }
 
 .label {
+  position: relative;
+  z-index: 1;
   font-weight: 700;
   font-size: 26px;
   text-transform: uppercase;
   color: var(--driftwood);
 }
 
-.playButton {
-  padding: 10px 14px;
-  border-radius: 16px;
-  background: var(--faded-parchment);
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 16px;
-  color: var(--dungeon-ink);
-  /* 11px translucent halo + shadow-medium, from the button's two Figma layers */
-  box-shadow: 0 0 0 11px var(--button-halo), var(--shadow-medium);
+/* Played cards: a clipped strip between the label and the button, so only
+ * the tops of the tilted cards show (Figma "Staged Cards Container") */
+.staged {
+  position: absolute;
+  inset: 0 230px 0 240px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
 }
 
-.playButton:disabled {
-  cursor: default;
+.stagedSlot {
+  flex: none;
+  width: 293.73px;
+  height: 293.73px;
+  margin-top: 14px;
+  pointer-events: auto;
+  filter: drop-shadow(0 -2px 2px rgb(0 0 0 / 0.35));
+}
+
+.stagedSlot + .stagedSlot {
+  margin-left: calc(-1 * var(--staged-overlap, 112.73px));
+}
+
+.tilt {
+  position: relative;
+  width: var(--card-size);
+  height: var(--card-size);
+  margin: 21.86px; /* centers the 250px card in its 293.73px box */
+  rotate: -11.18deg;
+  animation: drop-in 320ms var(--ease-out);
+}
+
+/* Lands from slightly above, then settles into the tilt */
+@keyframes drop-in {
+  from {
+    translate: 0 -36px;
+    rotate: -2deg;
+    scale: 1.06;
+    opacity: 0.6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt {
+    animation: none;
+  }
+}
+
+/* Counter-rotated so the bar reads level across the strip (Figma geometry) */
+.highlightBar {
+  position: absolute;
+  left: -1.99px;
+  top: 64.74px;
+  width: 254.06px;
+  height: 59.65px;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.highlightBar img {
+  width: 257px;
+  height: 10px;
+  rotate: 11.18deg;
 }

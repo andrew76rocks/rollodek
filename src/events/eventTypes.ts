@@ -1,6 +1,7 @@
 import {
   CardsIcon,
   DiceFiveIcon,
+  FastForwardIcon,
   GearSixIcon,
   HourglassHighIcon,
   HourglassLowIcon,
@@ -23,6 +24,7 @@ export type GameEventType =
   | 'turn.start'
   | 'turn.end'
   | 'settings.change'
+  | 'phase.change'
 
 export const EVENT_TYPES: Record<GameEventType, { label: string; icon: Icon }> = {
   'session.open': { label: 'Session', icon: SignInIcon },
@@ -33,6 +35,7 @@ export const EVENT_TYPES: Record<GameEventType, { label: string; icon: Icon }> =
   'turn.start': { label: 'Turn start', icon: HourglassHighIcon },
   'turn.end': { label: 'Turn end', icon: HourglassLowIcon },
   'settings.change': { label: 'Settings', icon: GearSixIcon },
+  'phase.change': { label: 'Phase', icon: FastForwardIcon },
 }
 
 export interface GameEvent {

@@ -1,7 +1,8 @@
-import { useState } from 'react'
 import { heroAssets, uiAssets } from '../config/assets.ts'
 import hero from '../data/hero.json'
-import { useUiStore } from '../store/uiStore.ts'
+import { useHeroDeckStore } from '../store/heroDeckStore.ts'
+import { useTableauStore } from '../store/tableauStore.ts'
+import { useUiStore, type CardZone } from '../store/uiStore.ts'
 import { DiceControls } from './dice/DiceControls.tsx'
 import { heroBackstory, heroClass } from '../content/heroContent.ts'
 import { HeroTraitButton } from './hero/HeroTraitButton.tsx'
@@ -9,22 +10,27 @@ import { HpBadge } from './HpBadge.tsx'
 import { MaskIcon } from './MaskIcon.tsx'
 import styles from './BottomBar.module.css'
 
-type TabId = 'hand' | 'party' | 'items' | 'spells'
 
 const { icons } = uiAssets
 
-const TABS: { id: TabId; label: string; icon: string }[] = [
+const TABS: { id: CardZone; label: string; icon: string }[] = [
   { id: 'hand', label: "Player's Hand", icon: icons.hand },
   { id: 'party', label: 'Party', icon: icons.party },
   { id: 'items', label: 'Items', icon: icons.items },
   { id: 'spells', label: 'Spells', icon: icons.spells },
 ]
 
-// Placeholder until game state exists: every zone is empty, so no badges show.
-const TAB_COUNTS: Record<TabId, number> = { hand: 0, party: 0, items: 0, spells: 0 }
 
 export function BottomBar() {
-  const [active, setActive] = useState<TabId>('hand')
+  const active = useUiStore((s) => s.cardZone)
+  const setActive = useUiStore((s) => s.setCardZone)
+  // Badge counts: cards in hand, and cards in play in each tableau zone
+  const counts: Record<CardZone, number> = {
+    hand: useHeroDeckStore((s) => s.hand.length),
+    party: useTableauStore((s) => s.party.length),
+    items: useTableauStore((s) => s.items.length),
+    spells: useTableauStore((s) => s.spells.length),
+  }
   const layoutMode = useUiStore((s) => s.layoutMode)
 
   return (
@@ -49,15 +55,18 @@ export function BottomBar() {
         </div>
       )}
 
-      <nav className={styles.tabs} aria-label="Hero zones">
+      <nav className={styles.tabs} aria-label="Hero zones" role="tablist">
         {TABS.map(({ id, label, icon }) => {
-          const count = TAB_COUNTS[id]
+          const count = counts[id]
           return (
             <button
               key={id}
+              id={`card-zone-tab-${id}`}
               type="button"
+              role="tab"
               className={styles.tab}
-              aria-pressed={active === id}
+              aria-selected={active === id}
+              aria-controls="card-zone-panel"
               onClick={() => setActive(id)}
             >
               <MaskIcon src={icon} size={20} />

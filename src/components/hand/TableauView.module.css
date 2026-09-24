@@ -1,0 +1,64 @@
+/* In-play cards sit side by side (not fanned like the hand) */
+/* In-play cards sit side by side; the gap goes negative (overlap) only when
+ * the row would otherwise be wider than its column */
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-width: 0;
+}
+
+.row > * + * {
+  margin-left: var(--card-gap, 16px);
+}
+
+.slot {
+  position: relative; /* own layer per card, so overlapping cards stack in order */
+  z-index: 0;
+  flex-shrink: 0;
+  border-radius: var(--card-radius);
+  cursor: pointer;
+}
+
+/* Tap to activate: the card turns 90° clockwise (and back when untapped) */
+.tap {
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-medium);
+  transition:
+    rotate 280ms var(--ease-out),
+    filter 280ms var(--ease-out),
+    opacity 280ms var(--ease-out),
+    box-shadow 280ms var(--ease-out);
+}
+
+/* Tapped = used this turn: turned, drained of color, dimmed, and sitting
+ * lower (flatter shadow). Still readable, and still clickable to untap. */
+.tap[data-tapped] {
+  rotate: 90deg;
+  filter: saturate(0.25) brightness(0.9);
+  opacity: 0.7;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.18);
+}
+
+/* Hovering a tapped card lifts it back a little: "click to untap" */
+.slot:hover .tap[data-tapped] {
+  filter: saturate(0.5) brightness(0.95);
+  opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tap {
+    transition: none;
+  }
+}
+
+.empty {
+  align-self: center;
+  justify-self: center;
+  margin: 0;
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--table-label);
+}

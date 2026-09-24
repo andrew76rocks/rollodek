@@ -1,3 +1,4 @@
+/* Figma node 95:68 "Hero Card" */
 .card {
   position: relative;
   width: var(--card-size);
@@ -13,28 +14,27 @@
 .inset {
   position: absolute;
   inset: 5px;
-  border: 3px solid var(--card-border);
+  border: 3px solid var(--hero-card-border);
   border-radius: var(--radius-lg);
   pointer-events: none;
 }
 
-.titleRow {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding-right: 44px; /* clears the value badge */
-}
-
+/* One line, hard-capped (Figma: 24px row, 2px bottom padding). Titles are
+ * authored to fit (CARD_TITLE_MAX_CHARS in data/heroCard.ts); the ellipsis
+ * is only a safety net if one ever doesn't. */
 .title {
-  flex: 1 0 0;
-  min-width: 0;
+  flex-shrink: 0;
+  height: 24px;
+  max-height: 24px;
   margin: 0;
-  overflow: hidden;
+  padding-bottom: 2px;
   font-family: var(--font-heading);
   font-weight: 700;
   font-size: 18px;
+  line-height: 22px;
   color: var(--card-text);
   white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
 }
 
@@ -59,6 +59,7 @@
 }
 
 .typeLine {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -74,7 +75,7 @@
   background-repeat: no-repeat;
 }
 
-.type {
+.cardType {
   flex: 1 0 0;
   min-width: 0;
   font-family: var(--font-body);
@@ -83,17 +84,14 @@
   color: var(--card-subtext);
 }
 
-.offstat {
-  flex-shrink: 0;
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 12px;
-  color: var(--card-subtext);
-  text-align: right;
-  white-space: nowrap;
-}
-
 .rules {
+  /* Lines 1–2 always run the full width; the cutout for the numbers cluster
+   * starts on line 3. (2 lines × 12px × 1.3 leading; line 2 ends just above
+   * the hexagon's top on a 250px card, so the full-width lines clear it.) */
+  --rules-full-width-lines: 2;
+  --rules-line-height: calc(12px * 1.3);
+  /* The cluster hangs 6px past the rules box's right edge */
+  --numbers-overhang: 6px;
   flex: 1 0 0;
   min-height: 0;
   width: 100%;
@@ -101,31 +99,87 @@
   overflow: hidden;
 }
 
+/* Two floats carve out the corner the numbers cluster covers: a zero-width
+ * strut exactly two lines tall, then a cluster-wide box from line 3 down
+ * (taller than the box; the overflow is clipped). Text wraps around it. */
+.rules::before {
+  content: '';
+  float: right;
+  width: 0;
+  /* +1px: at exactly two lines, sub-pixel rounding lets the cutout touch line 2 and narrow it */
+  height: calc(var(--rules-full-width-lines) * var(--rules-line-height) + 1px);
+}
+
+.rules p::before {
+  content: '';
+  float: right;
+  clear: right;
+  width: calc(var(--numbers-width) - var(--numbers-overhang));
+  height: 200px;
+}
+
 .rules p {
   margin: 0;
   font-family: var(--font-body);
   font-size: 12px;
-  line-height: 1.3;
+  line-height: var(--rules-line-height);
   color: var(--card-text);
 }
 
-.valueBadge {
+/* Bottom-right: stat type · off-stat · on-stat hexagon */
+.numbers {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 50px;
-  height: 50px;
+  right: 11.75px;
+  bottom: 12.75px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+  gap: 8px;
 }
 
-.valueBadge span {
+.statType {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--card-subtext);
+  white-space: nowrap;
+}
+
+.offStat {
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: var(--text-lg);
-  color: var(--card-surface);
+  font-size: 16.9px;
+  line-height: 1;
+  color: var(--card-subtext);
+}
+
+.onStat {
+  position: relative;
+  width: 42.25px;
+  height: 42.25px;
+  display: grid;
+  place-items: center;
+}
+
+/* Hex art sits at its exported size, inset as in Figma (2.06% / 6.7%) */
+.onStat img {
+  position: absolute;
+  top: 2.06%;
+  left: 6.7%;
+  width: 86.6%;
+  height: 95.88%;
+}
+
+.onStat span {
+  position: relative;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 16.9px;
+  line-height: 1;
+  color: var(--ivory-mist);
+}
+
+/* Tableau cards have no numbers cluster: rules text runs full width */
+.card[data-numbers='none'] .rules::before,
+.card[data-numbers='none'] .rules p::before {
+  content: none;
 }

@@ -12,6 +12,6 @@
   "backstoryStrength": "When you play a Dexterity card on a check to track, scout, find a path, or move through the wild, add +1 to the Card Value.",
   "backstoryFlawName": "The Unpaid Oath",
   "backstoryFlaw": "When the Adventure Deck reveals a card tagged Debt, Caravan, or Home, Kessa must choose one: take on the side quest (add it to your tableau), or take 1 Wound card.",
-  "companionName": "Scrap-Drone \"Pigeon\"",
-  "companionText": "Companion, Hero's Party slot (ongoing). Once per turn, when you make an on-stat DEX or INT check, add +1 to your total."
+  "companionName": "Scrap-Drone Pigeon",
+  "companionText": "Once per turn, when you make an on-stat DEX or INT check, add +1 to your total."
 }

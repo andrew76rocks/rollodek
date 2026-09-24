@@ -1,0 +1,9 @@
+.draggable {
+  cursor: grab;
+  touch-action: none;
+}
+
+/* The card being dragged leaves a faint ghost where it came from */
+.draggable[data-dragging] {
+  opacity: 0.3;
+}

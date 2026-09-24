@@ -1,0 +1,71 @@
+/* Positioning context: halo and ripples sit behind the button, same shape */
+.wrap {
+  position: relative;
+  z-index: 1;
+  display: inline-grid;
+}
+
+/* The halo is the button's shape grown by 11px (Figma "Play Cards Button Shadow") */
+.halo,
+.ripple {
+  position: absolute;
+  inset: -11px;
+  border-radius: 27px;
+  pointer-events: none;
+}
+
+.halo {
+  background: color-mix(in srgb, var(--ember-gold) 16%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--ember-gold) 18%, transparent);
+}
+
+.ripple {
+  border: 1.5px solid color-mix(in srgb, var(--ember-gold) 60%, transparent);
+}
+
+.button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: var(--faded-parchment);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--dungeon-ink);
+  box-shadow: var(--shadow-medium);
+  transition: background var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out), scale var(--dur-fast) var(--ease-out);
+}
+
+.button:not(:disabled):hover {
+  background: var(--ivory-mist);
+}
+
+.button:not(:disabled):active {
+  scale: 0.97;
+}
+
+/* Nothing staged: clearly inactive */
+.button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+/* Count of cards in the Play Area */
+.badge {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  background: var(--dungeon-ink);
+  font-family: var(--font-body);
+  font-weight: 900;
+  font-size: 13px;
+  line-height: 1;
+  color: var(--ivory-mist);
+  font-variant-numeric: tabular-nums;
+}

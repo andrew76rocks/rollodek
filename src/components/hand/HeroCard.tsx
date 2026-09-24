@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef, type CSSProperties } from 'react'
 import { cardAssets } from '../../config/assets.ts'
 import type { HeroCardData } from '../../data/heroCard.ts'
 import styles from './HeroCard.module.css'
@@ -6,44 +7,62 @@ interface HeroCardProps {
   card: HeroCardData
 }
 
-/** "STR · Action", "DEX/INT · Crossover", "Wild" — wild cards carry no stat. */
-function typeLabel(card: HeroCardData): string {
-  switch (card.type) {
-    case 'action':
-      return `${card.stat} · Action`
-    case 'memory':
-      return `${card.stat} · Memory`
-    case 'crossover':
-      return `${(card.stats ?? []).join('/')} · Crossover`
-    case 'wild':
-      return 'Wild'
-  }
+const CARD_TYPE_LABELS: Record<HeroCardData['type'], string> = {
+  action: 'Action',
+  memory: 'Memory',
+  crossover: 'Crossover',
+  wild: 'Wild',
 }
 
-/** Figma node 95:68 "Hero Card" — a single face-up card from the hero deck. */
+/** Which stat the card is on-stat for: "WIS", "INT/WIS" (crossover), or "Any" (wild). */
+function statTypeLabel(card: HeroCardData): string {
+  if (card.type === 'wild') return 'Any'
+  if (card.type === 'crossover') return (card.stats ?? []).join('/')
+  return card.stat ?? ''
+}
+
+/**
+ * Figma node 95:68 "Hero Card": title, art, card type, rules, and a
+ * bottom-right cluster of stat type · off-stat number · on-stat hexagon.
+ */
 export function HeroCard({ card }: HeroCardProps) {
-  const hasStat = card.type !== 'wild'
+  // Wild cards are on-stat for any challenge, so an off-stat number never applies
+  const showOffStat = card.type !== 'wild'
+
+  // The numbers cluster overlays the rules area; measure it so the rules text
+  // can wrap around a same-sized gap instead of running underneath it
+  const cardRef = useRef<HTMLDivElement>(null)
+  const numbersRef = useRef<HTMLDivElement>(null)
+  useLayoutEffect(() => {
+    const numbers = numbersRef.current
+    if (numbers) cardRef.current?.style.setProperty('--numbers-width', `${numbers.offsetWidth}px`)
+  }, [card])
 
   return (
-    <div className={styles.card}>
+    <div ref={cardRef} className={styles.card} style={{ '--numbers-width': '112px' } as CSSProperties}>
       <div className={styles.inset} />
-      <div className={styles.titleRow}>
-        <p className={styles.title}>{card.name}</p>
-      </div>
+      <p className={styles.title}>{card.name}</p>
       <div className={styles.art}>
         <span>Hero art</span>
       </div>
       <div className={styles.typeLine}>
-        {hasStat && <span className={styles.statDot} style={{ backgroundImage: `url(${cardAssets.statDot})` }} />}
-        <span className={styles.type}>{typeLabel(card)}</span>
-        {/* Off-stat = card value alone (no Base Stat bonus); wild cards are always on-stat, so it doesn't apply */}
-        {hasStat && <span className={styles.offstat}>Off-stat {card.value}</span>}
+        <span className={styles.statDot} style={{ backgroundImage: `url(${cardAssets.statDot})` }} />
+        <span className={styles.cardType}>{CARD_TYPE_LABELS[card.type]}</span>
       </div>
       <div className={styles.rules}>
         <p>{card.text}</p>
       </div>
-      <div className={styles.valueBadge} style={{ backgroundImage: `url(${cardAssets.valueHex})` }}>
-        <span>+{card.value}</span>
+      <div ref={numbersRef} className={styles.numbers}>
+        <span className={styles.statType}>{statTypeLabel(card)}</span>
+        {showOffStat && (
+          <span className={styles.offStat} aria-label={`Off-stat ${card.offStat}`}>
+            {card.offStat}
+          </span>
+        )}
+        <span className={styles.onStat} aria-label={`On-stat +${card.onStat}`}>
+          <img src={cardAssets.valueHex} alt="" />
+          <span>+{card.onStat}</span>
+        </span>
       </div>
     </div>
   )

@@ -1,0 +1,21 @@
+/* The drag frame takes the size of whatever was picked up: 250px for a hand
+ * card, but the 293.73px tilt box for a played card. Center the card in it
+ * so the lifted card doesn't jump when picked up from the Play Area. */
+.frame {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+/* The card under the cursor: upright, lifted, slightly tipped. Sized to the
+ * card itself so the shadow hugs the card rather than the (larger) frame. */
+.overlay {
+  width: var(--card-size);
+  height: var(--card-size);
+  cursor: grabbing;
+  border-radius: var(--card-radius);
+  rotate: -3deg;
+  scale: 1.04;
+  box-shadow: 0 10px 18px rgb(0 0 0 / 0.28), 0 24px 48px rgb(0 0 0 / 0.3);
+}

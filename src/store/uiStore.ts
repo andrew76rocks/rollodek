@@ -4,12 +4,18 @@ import { persist } from 'zustand/middleware'
 /** Presentation-only preferences. Game state gets its own store later. */
 export type LayoutMode = 'default' | 'maximized'
 
+/** Which view the card area under the play area shows (the tab bar) */
+export type CardZone = 'hand' | 'party' | 'items' | 'spells'
+
 /** Side drawers; only one can be open at a time */
 export type DrawerId = 'eventLog' | 'help' | 'settings' | 'heroBackstory' | 'heroClass'
 
 interface UiState {
   layoutMode: LayoutMode
   setLayoutMode: (mode: LayoutMode) => void
+  /** Card area view; not persisted, always starts on the Player's Hand */
+  cardZone: CardZone
+  setCardZone: (zone: CardZone) => void
   /** Open side drawer, if any; not persisted, always starts closed */
   openDrawer: DrawerId | null
   setOpenDrawer: (drawer: DrawerId | null) => void
@@ -23,6 +29,8 @@ export const useUiStore = create<UiState>()(
     (set) => ({
       layoutMode: 'default',
       setLayoutMode: (layoutMode) => set({ layoutMode }),
+      cardZone: 'hand',
+      setCardZone: (cardZone) => set({ cardZone }),
       openDrawer: null,
       setOpenDrawer: (openDrawer) =>
         set((s) => {

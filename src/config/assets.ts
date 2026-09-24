@@ -9,6 +9,7 @@ export const uiAssets = {
   deckDivider: `${UI}/deck-divider.svg`,
   adventureDeckArt: `${UI}/adventure-deck-art.svg`,
   heroDeckArt: `${UI}/hero-deck-art.svg`,
+  cardHighlightBar: `${UI}/card-highlight-bar.svg`,
   railLineConnectors: `${UI}/rail-line-connectors.svg`,
   levelConnectorMini: `${UI}/level-connector-mini.svg`,
   avatarInnerRing: `${UI}/avatar-inner-ring.svg`,

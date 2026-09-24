@@ -3,8 +3,9 @@ import { useHeroDeckStore } from '../store/heroDeckStore.ts'
 import { useUiStore } from '../store/uiStore.ts'
 import { BottomBar } from './BottomBar.tsx'
 import { DeckPile } from './DeckPile.tsx'
+import { BoardDnd } from './dnd/BoardDnd.tsx'
 import { EventLogDrawer } from './eventLog/EventLogDrawer.tsx'
-import { Hand } from './hand/Hand.tsx'
+import { CardZoneView } from './hand/CardZoneView.tsx'
 import { HelpDrawer } from './help/HelpDrawer.tsx'
 import { HeroDocDrawers } from './hero/HeroDocDrawers.tsx'
 import { SettingsDrawer } from './settings/SettingsDrawer.tsx'
@@ -26,21 +27,23 @@ export function AppShell() {
   return (
     <div className={styles.shell} data-layout={layoutMode}>
       <TopBar />
-      <main className={styles.table}>
-        {layoutMode === 'default' && <HeroRail />}
+      <BoardDnd>
+        <main className={styles.table}>
+          {layoutMode === 'default' && <HeroRail />}
 
-        <DeckPile tone="adventure" label={['Adventure', 'Deck']} />
-        <div className={styles.scene} />
-        <DiscardPile tone="adventure" count={0} />
+          <DeckPile tone="adventure" label={['Adventure', 'Deck']} />
+          <div className={styles.scene} />
+          <DiscardPile tone="adventure" count={0} />
 
-        <PlayArea />
+          <PlayArea />
 
-        <DeckPile tone="hero" label={['Hero', 'Deck']} />
-        <Hand />
-        <DiscardPile tone="hero" count={heroDiscardCount} />
+          <DeckPile tone="hero" label={['Hero', 'Deck']} />
+          <CardZoneView />
+          <DiscardPile tone="hero" count={heroDiscardCount} />
 
-        <BottomBar />
-      </main>
+          <BottomBar />
+        </main>
+      </BoardDnd>
       <EventLogDrawer />
       <HelpDrawer />
       <HeroDocDrawers />

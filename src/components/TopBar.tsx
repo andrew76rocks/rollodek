@@ -1,6 +1,8 @@
 import { useId, useState } from 'react'
 import { uiAssets } from '../config/assets.ts'
-import { useGameStore } from '../store/gameStore.ts'
+import { PHASE_LABELS, PHASES, useGameStore } from '../store/gameStore.ts'
+import { nextPhase } from '../store/turnFlow.ts'
+import { CaretRightIcon } from '@phosphor-icons/react'
 import { useUiStore } from '../store/uiStore.ts'
 import { EventLogPreview } from './eventLog/EventLogPreview.tsx'
 import { OverflowMenu } from './menu/OverflowMenu.tsx'
@@ -12,6 +14,7 @@ const { icons } = uiAssets
 export function TopBar() {
   const turn = useGameStore((s) => s.turn)
   const scene = useGameStore((s) => s.scene)
+  const phase = useGameStore((s) => s.phase)
   const openDrawer = useUiStore((s) => s.openDrawer)
   const setOpenDrawer = useUiStore((s) => s.setOpenDrawer)
   const logOpen = openDrawer === 'eventLog'
@@ -21,7 +24,12 @@ export function TopBar() {
 
   return (
     <header className={styles.bar}>
-      <h1 className={styles.logo}>RolloDek</h1>
+      {/* Story context: where you are in the mission */}
+      <div className={styles.brand}>
+        <h1 className={styles.logo}>RolloDek</h1>
+        <span className={styles.brandDivider} aria-hidden />
+        <span className={styles.scene}>Scene {scene}</span>
+      </div>
 
       <button className={styles.search} type="button">
         <MaskIcon src={icons.search} size={20} />
@@ -29,12 +37,32 @@ export function TopBar() {
       </button>
 
       <div className={styles.actions}>
-        <span className={styles.turn}>
-          <MaskIcon src={icons.hourglass} size={20} />
-          Turn {turn}
-          <span className={styles.sep}>|</span>
-          Scene {scene}
-        </span>
+        {/* The turn clock: turn, phase, progress through the four phases, and the one control that moves it */}
+        <div className={styles.turnPill} role="group" aria-label={`Turn ${turn}, ${PHASE_LABELS[phase]} phase`}>
+          <MaskIcon src={icons.hourglass} size={18} />
+          <span className={styles.turnText}>
+            Turn {turn}
+            <span className={styles.dot} aria-hidden>
+              ·
+            </span>
+            <span className={styles.phase}>{PHASE_LABELS[phase]}</span>
+          </span>
+          <span className={styles.pips} aria-hidden>
+            {PHASES.map((p, i) => (
+              <span
+                key={p}
+                className={styles.pip}
+                data-state={i < PHASES.indexOf(phase) ? 'done' : p === phase ? 'current' : undefined}
+                title={PHASE_LABELS[p]}
+              />
+            ))}
+          </span>
+          {/* Icon-only; the label is for screen readers and the hover tooltip */}
+          <button type="button" className={styles.nextPhase} onClick={nextPhase} aria-label="Next phase" title="Next phase">
+            <CaretRightIcon size={12} weight="bold" aria-hidden />
+          </button>
+        </div>
+        <span className={styles.toolsDivider} aria-hidden />
         {/* Event log: hover previews the last 10 events, click opens the full drawer */}
         <span
           className={styles.logAnchor}

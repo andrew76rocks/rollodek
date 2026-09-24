@@ -75,6 +75,8 @@
 
   /* Figma effect style "Dropshadow/shadow-medium" */
   --shadow-medium: 0 4px 4px rgb(0 0 0 / 0.12), 0 8px 14px rgb(0 0 0 / 0.14);
+  /* Hand cards: faint shadow cast left onto the card each one overlaps */
+  --shadow-card-overlap: -6px 0 10px rgb(0 0 0 / 0.15), -1px 0 2px rgb(0 0 0 / 0.2);
 
   /* ── Semantic roles ───────────────────────────────── */
   --chrome-bg: var(--dungeon-ink);
@@ -85,6 +87,7 @@
 
   --card-surface: var(--ivory-mist);
   --card-border: var(--driftwood);
+  --hero-card-border: var(--dusk-violet); /* Figma 95:68 Hero Card inset */
   --card-text: var(--dungeon-ink);
   --card-subtext: var(--storm-slate);
 

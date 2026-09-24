@@ -22,8 +22,8 @@ Each Scene runs through four phases, in order:
 ## Resolving a Check
 - The Adventure Deck tells you the stat being tested and the difficulty tier: Easy, Medium, or Dangerous. The actual target number stays hidden.
 - Commit one or more cards from your hand or untapped tableau to the check.
-  - **On-stat**: your hero's Base Stat + the card value(s).
-  - **Off-stat**: just the card value(s).
+  - **On-stat**: your hero's Base Stat + the card's on-stat number (in the hexagon).
+  - **Off-stat**: just the card's off-stat number.
 - Once your cards are committed, roll 2d6 to generate the hidden target for that tier. You commit knowing only the tier, never the number.
   - Rolling snake eyes ({{snakeEyesRoll}}) is always a remarkable success, no matter your total.
   - Rolling boxcars ({{boxcarsRoll}}) is always a harsh complication, no matter your total.

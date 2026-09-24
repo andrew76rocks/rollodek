@@ -8,7 +8,7 @@ A GM-less card-driven RPG for solo or two-player play. An "Adventure Deck" stand
 
 ## Locked mechanics (do not redesign these — implement as specified)
 
-**Resolution**: On-stat = Base Stat + card value. Off-stat = card value alone. Multiple cards can be committed to one check (summed, no cap). Tableau cards activate once per turn each (tap), can stack with hand cards.
+**Resolution**: Each hero card prints two numbers: an on-stat number (in the hexagon) and an off-stat number. On-stat = Base Stat + the card's on-stat number. Off-stat = the card's off-stat number alone. Multiple cards can be committed to one check (summed, no cap). Tableau cards activate once per turn each (tap), can stack with hand cards.
 
 **DC formula**: Easy = 2d6 − 5, Medium = 2d6 + 0, Dangerous = 2d6 + 5, floored at 1. Snake eyes (roll of 2) = automatic remarkable success. Boxcars (roll of 12) = automatic harsh complication. The DC itself is always hidden from the player; only the tier (Easy/Medium/Dangerous) is shown. Order matters: the player commits cards first (knowing only the tier), *then* the 2d6 is rolled to generate the DC — the roll never happens before the commitment.
 
@@ -134,6 +134,8 @@ src/
 - This is a prototype. Prioritize getting mechanics playable and feel right over production hardening.
 - Every game-balance number (hand size, tier offsets, slot caps, deck composition) should be a named config value, not a magic number in a component — Andrew will be tuning these by playtesting.
 - Read game config only through `useGameConfig(...)` (React) or `getGameConfig()` (logic) from `src/config/gameConfig.ts`. These return the *effective* config: `game-config.json` defaults plus any Settings-drawer overrides. Never import `game-config.json` directly and never retype a config value, or Settings changes silently won't apply (this already happened once with hero HP).
+- **Card titles: 18 characters max, including spaces** (`CARD_TITLE_MAX_CHARS` in `src/data/heroCard.ts`). A title must fit on one line of the card; the card hard-caps it to one line, and dev builds warn in the console about any card over the limit. Shorten the title rather than relying on the ellipsis.
+- **Card rules text never restates the card face.** The stat type (e.g. `INT/WIS`, `Any`), the on/off-stat numbers, and the card type are already printed on the card; rules text should only add what those don't (effects, flavor). Dev builds warn about text mentioning on-stat, off-stat, or "any challenge".
 - Rule numbers in content (e.g. `src/content/how-to-play.md`) are `{{tokens}}` filled from the live config — add new ones to `src/content/ruleTokens.ts` rather than writing the number into the text.
 - When adding a new config value: add it to `game-config.json`, the `GameConfig` type, and the Settings schema (`src/components/settings/settingsSchema.ts`), and wire it to whatever displays or uses it in the same change.
 - Don't invent new subsystems or mechanics beyond what's specified above without flagging it first — stay anti-additive, the design already has open questions parked deliberately.

@@ -139,7 +139,7 @@
   color: var(--ivory-mist);
 }
 
-.tab[aria-pressed='true'] {
+.tab[aria-selected='true'] {
   background: var(--dusk-violet);
   color: var(--ivory-mist);
 }
@@ -152,7 +152,7 @@
   color: var(--faded-parchment);
 }
 
-.tab[aria-pressed='true'] .count {
+.tab[aria-selected='true'] .count {
   background: none;
   color: var(--ivory-mist);
 }
