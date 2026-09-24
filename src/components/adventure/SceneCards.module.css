@@ -100,3 +100,26 @@
 .card:hover .back {
   filter: brightness(1.05);
 }
+
+/* Hovering a card before Explore: why it won't flip yet */
+.lockedNote {
+  position: absolute;
+  inset: auto 10px 44px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: rgb(30 26 46 / 0.85);
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 13px;
+  text-align: center;
+  color: var(--ivory-mist);
+  opacity: 0;
+  translate: 0 4px;
+  transition: opacity var(--dur-fast) var(--ease-out), translate var(--dur-fast) var(--ease-out);
+}
+
+.card:hover .lockedNote,
+.card:focus-visible .lockedNote {
+  opacity: 1;
+  translate: 0 0;
+}

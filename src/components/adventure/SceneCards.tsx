@@ -66,6 +66,8 @@ export function SceneCards() {
             >
               <span className={styles.front} style={slice}>
                 <span className={styles.id}>{printedId(card)}</span>
+                {/* Outside Explore, say why clicking does nothing (shown on hover) */}
+                {!canFlip && <span className={styles.lockedNote}>Flip in the Explore phase</span>}
               </span>
               <span className={styles.back}>
                 <span className={styles.backId}>{printedId(card)}</span>
