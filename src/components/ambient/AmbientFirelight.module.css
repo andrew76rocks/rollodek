@@ -1,0 +1,18 @@
+/* Same slot as the dust: above the wood grain, under everything on the table
+ * (see AmbientDust.module.css). Mounted before the dust, so the motes drift
+ * in front of the light rather than behind it.
+ *
+ * The canvas is drawn at a fraction of this size and stretched to fill it;
+ * the browser's smooth upscaling is what turns the pixels into soft light.
+ * Strength and texture are tuned at the top of AmbientFirelight.tsx. */
+.firelight {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  /* Adds light to the wood rather than painting over it, like the dust */
+  mix-blend-mode: screen;
+}
