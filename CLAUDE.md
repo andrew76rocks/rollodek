@@ -61,9 +61,11 @@ This is a prototype, not a shipping product — font-weight/page-performance bud
 `design-reference/` at the project root holds UI mockups and reference art for you to look at while building — not runtime assets, don't import or load these from code. Currently: card-front examples and full-table mockups (light/dark mode). Treat these as the visual target for layout, spacing, and mood, not literal assets to wire in.
 
 ### Design source (Figma)
-The live source file — use the Figma MCP connection to inspect actual layers, components, spacing, and exported artwork rather than working from the flat reference images alone when precision matters:
-- Adventure Deck RPG file: https://www.figma.com/design/kBYg0xwm4O8MJakk9do1Ma/Adventure-Deck-RPG?node-id=56-3277&m=dev
-- Same file, second frame: https://www.figma.com/design/kBYg0xwm4O8MJakk9do1Ma/Adventure-Deck-RPG?node-id=62-3623&m=dev
+The live source file is **Rollodek** (formerly "Adventure Deck RPG" — renamed, same file key `kBYg0xwm4O8MJakk9do1Ma`, so old links still resolve). Everything lives on one page, `Mockups` (14:1271). Use the Figma MCP connection to inspect actual layers, components, spacing, and exported artwork rather than working from the flat reference images alone when precision matters:
+- Full table, light/default (`rollodek-full-game-UI-default`, 56:3277): https://www.figma.com/design/kBYg0xwm4O8MJakk9do1Ma/Rollodek?node-id=56-3277&m=dev
+- Full table, dark mode (62:3623): https://www.figma.com/design/kBYg0xwm4O8MJakk9do1Ma/Rollodek?node-id=62-3623&m=dev
+- Adventure Card Front (126:260): https://www.figma.com/design/kBYg0xwm4O8MJakk9do1Ma/Rollodek?node-id=126-260&m=dev
+- Adventure Card Back (126:267): https://www.figma.com/design/kBYg0xwm4O8MJakk9do1Ma/Rollodek?node-id=126-267&m=dev
 
 ### Help section content
 `src/content/how-to-play.md` is the approved player-facing setup/playthrough text — build the in-app Help section from this file's content directly, don't rewrite or re-derive it from the locked mechanics above. If it ever needs updating, that happens in this file, not by regenerating it from scratch.

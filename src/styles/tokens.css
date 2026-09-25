@@ -62,7 +62,7 @@
   --card-radius: 24px;
 
   /* ── Figma-sourced surface values (not in the 9-tone palette) ──
-   * Pulled from the Adventure-Deck-RPG Figma file, frame 56:3277. */
+   * Pulled from the Rollodek Figma file, frame 56:3277. */
   --wood-base: #3d2b22;
   --wood-shade: rgb(39 27 22 / 0.4);
   --wood-grain-opacity: 0.245; /* layer 35% × image 70% */

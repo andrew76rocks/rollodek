@@ -69,7 +69,7 @@ Game data (hero, starter deck, mission, scenes, Adventure Deck cards, item/spell
 
 ## Tech
 
-React + TypeScript + Vite · Zustand (state, persisted to localStorage) · Framer Motion · React Three Fiber / three.js (dice) · react-markdown. Design tokens (the 9-tone palette and Cinzel / Source Serif 4 type) are in [`src/styles/tokens.css`](src/styles/tokens.css); the visual source is the *Adventure Deck RPG* Figma file.
+React + TypeScript + Vite · Zustand (state, persisted to localStorage) · Framer Motion · React Three Fiber / three.js (dice) · react-markdown. Design tokens (the 9-tone palette and Cinzel / Source Serif 4 type) are in [`src/styles/tokens.css`](src/styles/tokens.css); the visual source is the *Rollodek* Figma file.
 
 For the locked game mechanics, open design questions, and working conventions, see [`CLAUDE.md`](CLAUDE.md).
 
