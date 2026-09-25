@@ -49,7 +49,8 @@
   transition: translate var(--dur-fast) var(--ease-out), filter var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
 }
 
-.stack:not(:disabled):hover .top {
+/* No lift once spent: the Adventure Deck is a div, so :disabled never covers it */
+.stack:not(:disabled):not([data-empty]):hover .top {
   translate: 7px -7px;
   filter: brightness(1.06);
   box-shadow: -3px 6px 12px rgb(0 0 0 / 0.3);
@@ -65,10 +66,11 @@ button.stack:not(:disabled):active .top {
 }
 
 /* Drawn out: the deck hollows to an empty slot, matching how the discard
- * piles read when they hold nothing (dashed outline, no fill, no art). */
+ * piles read when they hold nothing (dashed outline, no fill, no art). Same
+ * border as the discard piles, so an empty deck and an empty discard match. */
 .stack[data-empty] .pile {
   background: none;
-  border: 2px dashed var(--deck-dash);
+  border: 2px dashed var(--discard-dash);
 }
 
 .stack[data-empty] .art,

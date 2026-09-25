@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
 import { uiAssets } from '../config/assets.ts'
+import { scenes } from '../data/adventureDeck.ts'
+import { useGameStore } from '../store/gameStore.ts'
 import { useHeroDeckStore } from '../store/heroDeckStore.ts'
 import { drawToHand } from './DrawFlight.tsx'
 import styles from './DeckPile.module.css'
@@ -33,9 +35,23 @@ export function DeckPile({ tone, label }: DeckPileProps) {
   )
 
   if (tone === 'hero') return <HeroDeckButton face={face} />
+  return <AdventureDeck face={face} />
+}
+
+/**
+ * The Adventure Deck holds every Scene not yet dealt: each Scene's cards slide
+ * out onto the table as it begins, so once the last Scene is dealt the deck is
+ * spent and hollows to an empty slot, the same way the Hero Deck does.
+ */
+function AdventureDeck({ face }: { face: ReactNode }) {
+  const scene = useGameStore((s) => s.scene)
+  const missionId = useGameStore((s) => s.missionId)
+  // Before a mission starts, nothing has been dealt yet
+  const empty = Boolean(missionId) && !scenes.some((s) => s.scene > scene)
+
   return (
-    <div className={styles.stack} data-tone={tone} data-deck="adventure" style={{ gridArea: 'adeck' }}>
-      <DeckStack face={face} tone={tone} cardBeneath />
+    <div className={styles.stack} data-tone="adventure" data-deck="adventure" data-empty={empty || undefined} style={{ gridArea: 'adeck' }}>
+      <DeckStack face={face} tone="adventure" cardBeneath={!empty} />
     </div>
   )
 }
