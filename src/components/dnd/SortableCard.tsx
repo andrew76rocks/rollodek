@@ -12,7 +12,7 @@ interface SortableCardProps {
   className?: string
   /** Extra ref for callers that also measure the node (e.g. the hand's fan) */
   nodeRef?: Ref<HTMLDivElement>
-  /** Click / Enter / Space action (tableau cards: tap or untap) */
+  /** Click / Enter action (tableau cards: tap or untap) */
   onActivate?: () => void
   /** Toggle state for onActivate, announced to screen readers */
   pressed?: boolean
@@ -40,7 +40,8 @@ export function SortableCard({ cardId, zone, className, nodeRef, onActivate, pre
 
   const activate = onActivate && (() => !dragJustEnded() && onActivate())
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (activate && (e.key === 'Enter' || e.key === ' ')) {
+    // Enter only: Space is reserved for zooming the card under the pointer
+    if (activate && e.key === 'Enter') {
       e.preventDefault()
       activate()
     }

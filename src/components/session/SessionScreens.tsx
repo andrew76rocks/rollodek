@@ -3,6 +3,7 @@ import { useEffect, useId, useRef, type ReactNode } from 'react'
 import { useGameConfig } from '../../config/gameConfig.ts'
 import { missions } from '../../data/adventureDeck.ts'
 import { useGameStore } from '../../store/gameStore.ts'
+import { useIntroStore } from '../../store/introStore.ts'
 import { startNewGame } from '../../store/newGame.ts'
 import { chooseMission, currentMission } from '../../store/session.ts'
 import styles from '../dialog/ConfirmDialog.module.css'
@@ -15,9 +16,11 @@ import styles from '../dialog/ConfirmDialog.module.css'
 export function SessionScreens() {
   const missionId = useGameStore((s) => s.missionId)
   const ended = useGameStore((s) => s.ended)
+  // The mission picker waits for the opening logo to finish
+  const introDone = useIntroStore((s) => s.stage === 'done')
   return (
     <>
-      <Screen open={!missionId} title="Choose a mission">
+      <Screen open={!missionId && introDone} title="Choose a mission">
         {(focusRef) => <MissionChoice focusRef={focusRef} />}
       </Screen>
       <Screen open={Boolean(ended)} title={ended ? END_TITLES[ended] : ''}>

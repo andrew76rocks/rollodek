@@ -4,7 +4,7 @@ A card-driven, GM-less tabletop RPG for solo or duet play. An **Adventure Deck**
 
 This repo is a **desktop web prototype** for playtesting and design iteration, not a shipping product. There's no backend or accounts, and everything saves in your browser.
 
-> **Status:** early prototype. A full mission is playable: mission choice, Scenes and turn phases, Adventure Deck cards, checks with the hidden DC, wounds, and objectives. Combat rounds and card abilities are still recorded by hand.
+> **Status:** early prototype. A full mission is playable: mission choice, Scenes and turn phases, Adventure Deck cards, and hand, deck and tableau management. The table describes the rules rather than enforcing them: checks, combat, wounds and objectives are resolved by the player (wounds and objectives are tracked by hand on the HP badge and the mission menu).
 
 The game rules live in [`docs/rules.md`](docs/rules.md), the single source of truth. Rule decisions are logged in [`docs/decisions.md`](docs/decisions.md).
 
@@ -31,11 +31,14 @@ Then open the local address Vite prints (usually http://localhost:5173). The app
 | Control | Action |
 |---|---|
 | **›** next to the phase | Next phase (Advance → Setup → Explore → Conclude) |
-| Click a location card (Explore) | Flip it and read its back; attempt its challenge from there |
-| **Enter** | Commit the cards in the Play Area to the current check (none is fine) |
+| Click a location card | Turn it over (either way) to read its back |
+| Click the Hero Deck, or **D** | Draw a card into your hand |
+| **Enter** | Play the cards in the Play Area |
+| **Space** (or **Z**) | Zoom the card under the mouse pointer to 150% (Space again, Esc, or click outside to close) |
 | **F** | Find Card: look up an Adventure Deck card by ID, e.g. AD-2B |
 | **1** | Toggle between the default and maximized table layouts |
 | **R** | Roll both dice |
+| Recycle icon, or **Shift + R** | Reshuffle the Hero Discard into the Hero Deck |
 | **←** / **→** | Previous / next tab (Hand, Party, Items, Spells) |
 | Click a die | Roll it |
 | Click the shuffle icon | Roll both dice |
@@ -45,7 +48,7 @@ Then open the local address Vite prints (usually http://localhost:5173). The app
 | **⋮** → New Game | Reset everything and choose a mission again |
 | Book / shield icons by the hero name | Hero backstory and class cards |
 
-With **debugMode** on (Settings → Playtest), the hidden DC shows after each roll, and these sandbox tools unlock: click the Hero Deck or press **Space** to draw, the recycle button or **Shift + R** to reshuffle the discard, Play Cards outside a check, and **⋮ → Designer Rules** (rules.md with live numbers).
+With **debugMode** on (Settings → Playtest), **⋮ → Designer Rules** shows `docs/rules.md` with the live numbers filled in.
 
 ## Tuning the rules
 

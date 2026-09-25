@@ -8,6 +8,7 @@ import { AnyCard } from './dnd/AnyCard.tsx'
 import { PlayFlight, type Flight } from './PlayFlight.tsx'
 import { PlayCardsButton } from './PlayCardsButton.tsx'
 import { DraggableCard } from './dnd/DraggableCard.tsx'
+import { previewCard } from './CardPreview.tsx'
 import { PLAY_AREA_DROP_ID, type CardDragData } from './dnd/dragTypes.ts'
 import styles from './PlayArea.module.css'
 
@@ -94,7 +95,13 @@ export function PlayArea() {
 
       <div ref={row} className={styles.staged} data-playing={flights ? true : undefined} style={{ '--staged-overlap': `${TILTED_CARD_BOX - spacing}px` } as CSSProperties}>
         {staged.map(({ cardId, from: zone }) => (
-          <DraggableCard key={cardId} cardId={cardId} from="play" className={styles.stagedSlot}>
+          <DraggableCard
+            key={cardId}
+            cardId={cardId}
+            from="play"
+            className={styles.stagedSlot}
+            onActivate={() => previewCard({ cardId, zone })}
+          >
             <div className={styles.tilt} data-staged-card>
               <AnyCard cardId={cardId} zone={zone} />
               {/* Figma "Card Highlight Bar": shading where the card tucks into the strip */}

@@ -4,6 +4,7 @@ import { getAdventureCard, getScene, printedId } from '../../data/adventureDeck.
 import { useGameStore } from '../../store/gameStore.ts'
 import { toggleCard } from '../../store/session.ts'
 import { AdventureCardBack } from './AdventureCardBack.tsx'
+import { previewAttrs } from '../CardPreview.tsx'
 import styles from './SceneCards.module.css'
 
 /**
@@ -38,6 +39,7 @@ export function SceneCards() {
               className={styles.card}
               onClick={() => toggleCard(id)}
               aria-pressed={isRevealed}
+              {...previewAttrs(id, 'adventure', isRevealed ? 'back' : 'front')}
               aria-label={
                 isRevealed
                   ? `${printedId(card)} ${card.title}: turn face down`

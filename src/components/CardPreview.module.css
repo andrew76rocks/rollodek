@@ -1,0 +1,75 @@
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  background: rgb(30 26 46 / 0.6);
+  backdrop-filter: blur(2px);
+}
+
+/* Holds the card at its zoomed size, so the close button can sit on its corner */
+.frame {
+  position: relative;
+  width: calc(var(--card-size) * var(--preview-scale));
+  height: calc(var(--card-size) * var(--preview-scale));
+}
+
+/* Cards are laid out in fixed px, so zoom them as a whole */
+.zoom {
+  width: var(--card-size);
+  height: var(--card-size);
+  transform: scale(var(--preview-scale));
+  transform-origin: top left;
+  border-radius: var(--card-radius);
+  box-shadow: 0 16px 40px rgb(0 0 0 / 0.45);
+}
+
+/* Outside the card's top-right corner, clear of it: button size + 12px gap */
+.close {
+  position: absolute;
+  top: calc(-36px - 12px);
+  right: calc(-36px - 12px);
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  /* Sits on the dark overlay, not the card: a solid light fill keeps it visible */
+  background: var(--faded-parchment);
+  color: var(--dungeon-ink);
+  box-shadow: var(--shadow-medium);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.close:hover {
+  background: var(--ivory-mist);
+}
+
+/* Adventure card front (Figma 126:260): the illustration and the ID */
+.adventureFront {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--card-radius);
+}
+
+.adventureFront img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.adventureId {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  background: rgb(30 26 46 / 0.75);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--ivory-mist);
+}

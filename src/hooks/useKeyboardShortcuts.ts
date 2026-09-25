@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { flushSync } from 'react-dom'
 import { rollAllDice } from '../components/dice/diceCommands.ts'
 import { shuffleWithFlight } from '../components/DiscardPile.tsx'
+import { togglePreviewUnderPointer } from '../components/CardPreview.tsx'
 import { drawToHand } from '../components/DrawFlight.tsx'
 import { playStagedFromShortcut } from '../components/PlayArea.tsx'
 import { CARD_ZONES, useUiStore, type LayoutMode } from '../store/uiStore.ts'
@@ -9,7 +10,9 @@ import { CARD_ZONES, useUiStore, type LayoutMode } from '../store/uiStore.ts'
 /**
  * Table-wide keyboard shortcuts:
  *   1        toggle the default / maximized layout
- *   Space    draw a card from the Hero Deck into the hand
+ *   Space    zoom the card under the mouse pointer (Space again or Esc closes); Z does the same.
+ *            Reserved: Space never presses a focused button or card (that's Enter).
+ *   D        draw a card from the Hero Deck into the hand
  *   Enter    play the cards staged in the Play Area
  *   F        Find Card: look up an Adventure Deck card by ID
  *   R        roll both dice
@@ -41,9 +44,10 @@ export function useKeyboardShortcuts() {
         e.preventDefault()
         const mode = OTHER_LAYOUT[useUiStore.getState().layoutMode]
         animateLayoutChange(() => useUiStore.getState().setLayoutMode(mode))
-      } else if (e.code === 'Space') {
-        // A keyboard-focused button keeps Space (to press it); otherwise Space draws
-        if (isKeyboardFocusedControl(e.target)) return
+      } else if (e.code === 'KeyZ') {
+        e.preventDefault()
+        togglePreviewUnderPointer()
+      } else if (e.code === 'KeyD') {
         e.preventDefault()
         drawToHand()
       } else if (e.key === 'Enter') {
@@ -65,8 +69,27 @@ export function useKeyboardShortcuts() {
         setCardZone(next)
       }
     }
+    /**
+     * Space is reserved for zoom, so it's caught first (capture phase), before
+     * any focused button or card sees it. Otherwise a card the player had
+     * clicked would treat Space as "press me" and flip or tap.
+     */
+    const onSpace = (e: KeyboardEvent) => {
+      if (e.code !== 'Space' || e.ctrlKey || e.metaKey || e.altKey) return
+      if (isTypingTarget(e.target) || somethingModalIsOpen()) return
+      e.preventDefault()
+      e.stopPropagation()
+      if (e.type === 'keydown' && !e.repeat) togglePreviewUnderPointer()
+    }
+
+    window.addEventListener('keydown', onSpace, { capture: true })
+    window.addEventListener('keyup', onSpace, { capture: true }) // a button fires its click on Space's keyup
     window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
+    return () => {
+      window.removeEventListener('keydown', onSpace, { capture: true })
+      window.removeEventListener('keyup', onSpace, { capture: true })
+      window.removeEventListener('keydown', onKeyDown)
+    }
   }, [])
 }
 

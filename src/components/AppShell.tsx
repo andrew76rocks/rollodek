@@ -15,6 +15,9 @@ import { HeroDocDrawers } from './hero/HeroDocDrawers.tsx'
 import { SettingsDrawer } from './settings/SettingsDrawer.tsx'
 import { DiscardPile } from './DiscardPile.tsx'
 import { DrawFlightLayer } from './DrawFlight.tsx'
+import { Intro } from './intro/Intro.tsx'
+import { useIntroStore } from '../store/introStore.ts'
+import { CardPreview } from './CardPreview.tsx'
 import { ShuffleFlightLayer } from './ShuffleFlight.tsx'
 import { HeroRail } from './HeroRail.tsx'
 import { PlayArea } from './PlayArea.tsx'
@@ -30,8 +33,10 @@ export function AppShell() {
   const heroDiscardCount = useHeroDeckStore((s) => s.discard.length)
   useKeyboardShortcuts()
 
+  const introStage = useIntroStore((s) => s.stage)
+
   return (
-    <div className={styles.shell} data-layout={layoutMode}>
+    <div className={styles.shell} data-layout={layoutMode} data-intro={introStage}>
       <TopBar />
       <BoardDnd>
         <main className={styles.table}>
@@ -50,7 +55,9 @@ export function AppShell() {
           <BottomBar />
         </main>
       </BoardDnd>
+      <Intro />
       <DrawFlightLayer />
+      <CardPreview />
       <ShuffleFlightLayer />
       <EventLogDrawer />
       <HelpDrawer />

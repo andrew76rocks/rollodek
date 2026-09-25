@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, type CSSProperties } from 'react'
 import { cardAssets, heroCardAssets } from '../../config/assets.ts'
 import type { HeroCardData } from '../../data/heroCard.ts'
+import { previewAttrs } from '../CardPreview.tsx'
 import styles from './HeroCard.module.css'
 
 interface HeroCardProps {
@@ -38,7 +39,7 @@ export function HeroCard({ card }: HeroCardProps) {
   }, [card])
 
   return (
-    <div ref={cardRef} className={styles.card} style={{ '--numbers-width': '112px' } as CSSProperties}>
+    <div ref={cardRef} className={styles.card} style={{ '--numbers-width': '112px' } as CSSProperties} {...previewAttrs(card.id, 'hand')}>
       <div className={styles.inset} />
       <p className={styles.title}>{card.name}</p>
       <div className={styles.art}>

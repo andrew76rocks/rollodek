@@ -1,5 +1,6 @@
 import { cardAssets, heroCardAssets } from '../../config/assets.ts'
 import type { TableauCardData } from '../../data/tableauCards.ts'
+import { previewAttrs } from '../CardPreview.tsx'
 import styles from './HeroCard.module.css'
 
 /**
@@ -8,7 +9,7 @@ import styles from './HeroCard.module.css'
  */
 export function TableauCard({ card }: { card: TableauCardData }) {
   return (
-    <div className={styles.card} data-numbers="none">
+    <div className={styles.card} data-numbers="none" {...previewAttrs(card.id, card.zone)}>
       <div className={styles.inset} />
       <p className={styles.title}>{card.name}</p>
       <div className={styles.art}>
