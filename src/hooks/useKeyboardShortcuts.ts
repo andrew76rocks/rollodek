@@ -4,15 +4,17 @@ import { rollAllDice } from '../components/dice/diceCommands.ts'
 import { shuffleWithFlight } from '../components/DiscardPile.tsx'
 import { drawToHand } from '../components/DrawFlight.tsx'
 import { playStagedFromShortcut } from '../components/PlayArea.tsx'
+import { getGameConfig } from '../config/gameConfig.ts'
 import { CARD_ZONES, useUiStore, type LayoutMode } from '../store/uiStore.ts'
 
 /**
  * Table-wide keyboard shortcuts:
  *   1        toggle the default / maximized layout
- *   Space    draw a card from the Hero Deck into the hand
- *   Enter    play the cards staged in the Play Area
+ *   Space    (debugMode) draw a card from the Hero Deck into the hand
+ *   Enter    commit to the active check ((debugMode) play staged cards outside a check)
+ *   F        Find Card: look up an Adventure Deck card by ID
  *   R        roll both dice
- *   Shift+R  reshuffle the Hero Discard back into the Hero Deck
+ *   Shift+R  (debugMode) reshuffle the Hero Discard back into the Hero Deck
  *   ← / →    previous / next tab in the bottom bar (wraps around)
  *
  * They stay out of the way while typing in a field, while a drawer, dialog or
@@ -28,7 +30,7 @@ export function useKeyboardShortcuts() {
       if (isTypingTarget(e.target) || somethingModalIsOpen()) return
 
       if (e.shiftKey) {
-        if (e.code === 'KeyR') {
+        if (e.code === 'KeyR' && getGameConfig().debugMode) {
           e.preventDefault()
           shuffleWithFlight()
         }
@@ -42,7 +44,8 @@ export function useKeyboardShortcuts() {
         animateLayoutChange(() => useUiStore.getState().setLayoutMode(mode))
       } else if (e.code === 'Space') {
         // A keyboard-focused button keeps Space (to press it); otherwise Space draws
-        if (isKeyboardFocusedControl(e.target)) return
+        // Drawing at will is a debugMode sandbox tool; normal play draws at Setup
+        if (isKeyboardFocusedControl(e.target) || !getGameConfig().debugMode) return
         e.preventDefault()
         drawToHand()
       } else if (e.key === 'Enter') {
@@ -50,6 +53,9 @@ export function useKeyboardShortcuts() {
         if (isKeyboardFocusedControl(e.target)) return
         e.preventDefault()
         playStagedFromShortcut()
+      } else if (e.code === 'KeyF') {
+        e.preventDefault()
+        useUiStore.getState().setOpenDrawer('adventureCard')
       } else if (e.code === 'KeyR') {
         e.preventDefault()
         rollAllDice()

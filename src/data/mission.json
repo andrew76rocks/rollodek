@@ -1,11 +1,14 @@
 {
+  "id": "signal-in-the-rot",
   "name": "Signal in the Rot",
+  "goal": "Retrieve the signal core from the dead mall.",
   "premise": "A dead-tech signal is pulsing out of the collapsed Meridian Mall, three days after it should have gone silent forever. Find the source. Find out why.",
+  "finalScene": 3,
   "objectives": [
-    "Reach the mall interior",
-    "Recover a working component from Vending Row",
-    "Clear the Escalator collapse",
-    "Bypass the wards in the Humming Vault",
-    "Retrieve the signal core from the Static Warden"
+    { "id": 1, "text": "Reach the mall interior", "card": "AD-1B" },
+    { "id": 2, "text": "Recover a working component from Vending Row", "card": "AD-2B" },
+    { "id": 3, "text": "Clear the Escalator collapse", "card": "AD-2C" },
+    { "id": 4, "text": "Bypass the wards in the Humming Vault", "card": "AD-3A" },
+    { "id": 5, "text": "Retrieve the signal core from the Static Warden", "card": "AD-3B" }
   ]
 }

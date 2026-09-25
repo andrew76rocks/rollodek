@@ -6,39 +6,11 @@ A digital, high-polish playtest prototype of a card-driven tabletop RPG. Desktop
 
 A GM-less card-driven RPG for solo or two-player play. An "Adventure Deck" stands in for the GM, revealing Scenes and prompts as the player commits cards to choices. Story and imagination come first — dice are reserved strictly for things the player has no agency over (DC generation, encounter-branch rolls), never for anything the player actually chooses.
 
-## Locked mechanics (do not redesign these — implement as specified)
+## Game rules
 
-**Resolution**: Each hero card prints two numbers: an on-stat number (in the hexagon) and an off-stat number. On-stat = Base Stat + the card's on-stat number. Off-stat = the card's off-stat number alone. Multiple cards can be committed to one check (summed, no cap). Tableau cards activate once per turn each (tap), can stack with hand cards.
+Game rules live in [`docs/rules.md`](docs/rules.md). Read it before any gameplay change. It wins over everything else in the repo, including this file, `how-to-play.md`, the hero docs, and the JSON data. Numbers live only in `src/data/game-config.json`. To change a rule: stop and ask Drew, then update `rules.md` and add a line to [`docs/decisions.md`](docs/decisions.md) in the same change as the code. Never restate rules in this file. Anything under "Open questions" in `rules.md` is undecided: leave a `TODO(drew):` instead of guessing.
 
-**DC formula**: Easy = 2d6 − 5, Medium = 2d6 + 0, Dangerous = 2d6 + 5, floored at 1. Snake eyes (roll of 2) = automatic remarkable success. Boxcars (roll of 12) = automatic harsh complication. The DC itself is always hidden from the player; only the tier (Easy/Medium/Dangerous) is shown. Order matters: the player commits cards first (knowing only the tier), *then* the 2d6 is rolled to generate the DC — the roll never happens before the commitment.
-
-**Outcomes**: Success / Fail / Fail-with-paid-cost (pay a wound to flip a fail into "success, but—"). The paid-cost flip only works on Easy checks. Medium and Dangerous carry real, unbuyable risk.
-
-**Turn structure** (four phases, strict order):
-1. Advance — new Scene's locations revealed
-2. Setup — hand redraws to 5, tableau untaps, gear/spell swaps happen here
-3. Explore — flip locations, resolve Encounters, combat nests here
-4. Conclude — objectives tallied, hand discarded down to 7 (if over), before the next Advance
-
-**Hand**: 5-card hand, refills at Setup (not immediately after playing). Hand cap 7 — discard down to 7 at Conclude if over.
-
-**Starting hero deck**: 20 cards — 12 single-stat action, 3 single-stat memory, 3 crossover, 2 wild. No starting gear/spells; those are earned during play. Each hero also has one starting item/vehicle/companion tied to backstory, occupying the Hero's Party tableau slot from turn one.
-
-**Deck cycling**: standard deckbuilder — discard pile reshuffles into a new draw pile when the draw pile empties. Newly found gear/spells always enter the discard pile first (never straight to hand/tableau) — this is deliberate, it prevents same-turn find-and-equip power spikes.
-
-**Tableau**: three categories, each with its own capped slot pool — Equipment (body-part slots: head, torso, hands, feet), Spells (starts at 1 ongoing slot, scales with milestones), Hero's Party (companions/allies). Persistence is the point: tableau cards stay in play and can trigger synergy bonuses when on-stat.
-
-**Wounds**: attach to the hero card, not the deck. HP threshold reached = Hero Death.
-
-**Combat**: its own subsystem, strict alternating rounds (hero, enemy), nests inside a location's Encounter. Threat cards need only HP and a Danger tier (which doubles as defense). Hero attacks with any card, freely chosen. Enemy attacks are telegraphed with a specific stat; hero defends via normal on-stat/off-stat rules. Besides reducing a Threat to 0 HP, the hero can also stun it or escape the fight.
-
-**Session end**: Mission Success (final Scene reached, 3+ of 5 objectives done), Mission Failure (final Scene, fewer than 3), Hero Death (wounds hit threshold first).
-
-Full design history and the current playtest content set (hero "Kessa Vantree," the "Signal in the Rot" mission, full 20-card deck, encounter/item/spell pools) live in the linked claude.ai Project — ask Andrew ("Drew") if you need the source docs pulled in as JSON.
-
-## Open questions — do not treat as settled
-
-Healing mechanic for wounds, curse cards / a "trash" effect, two-player mode specifics, wild/crossover deck-building ratio, a dynamic "Fame" track (deferred to post-prototype), combat stun/escape specifics (the options exist, but cost, whether a check is required, and what a stunned Threat can still do are being settled through playtesting), Kessa's final 20-card starting deck (not written yet — `src/data/starter-deck.json` is a placeholder, and the Starting Deck table in `hero-class.md` is by stat while the locked composition is by type, so reconcile when the list lands). If a task touches one of these, ask rather than deciding.
+Replaced content is archived in `src/content/_archive/`, never deleted.
 
 ## Tech stack
 
@@ -99,6 +71,9 @@ The live source file — use the Figma MCP connection to inspect actual layers, 
 ### Actual project folder structure (as staged so far)
 ```
 CLAUDE.md
+docs/
+  rules.md            (source of truth for game rules)
+  decisions.md        (dated decision log, newest first)
 design-reference/
   adventure-card-front.png
   hero-card-front.png
@@ -116,6 +91,9 @@ public/
 src/
   content/
     how-to-play.md
+    hero-class.md
+    hero-backstory.md
+    _archive/            (replaced content, not loaded)
   data/
     app-config.json
     game-config.json
@@ -123,7 +101,7 @@ src/
     starter-deck.json
     mission.json
     scenes.json
-    threats.json
+    adventure-deck.json   (location cards: ID, optional, back blocks)
     encounter-pool.json
     item-pool.json
     spell-pool.json
@@ -135,7 +113,7 @@ src/
 - Every game-balance number (hand size, tier offsets, slot caps, deck composition) should be a named config value, not a magic number in a component — Andrew will be tuning these by playtesting.
 - Read game config only through `useGameConfig(...)` (React) or `getGameConfig()` (logic) from `src/config/gameConfig.ts`. These return the *effective* config: `game-config.json` defaults plus any Settings-drawer overrides. Never import `game-config.json` directly and never retype a config value, or Settings changes silently won't apply (this already happened once with hero HP).
 - **Card titles: 18 characters max, including spaces** (`CARD_TITLE_MAX_CHARS` in `src/data/heroCard.ts`). A title must fit on one line of the card; the card hard-caps it to one line, and dev builds warn in the console about any card over the limit. Shorten the title rather than relying on the ellipsis.
-- **Card rules text never restates the card face.** The stat type (e.g. `INT/WIS`, `Any`), the on/off-stat numbers, and the card type are already printed on the card; rules text should only add what those don't (effects, flavor). Dev builds warn about text mentioning on-stat, off-stat, or "any challenge".
+- **Card rules text never restates the card face.** The stat type (e.g. `INT/WIS`, `Any`), the card value, and the card type are already printed on the card; rules text should only add what those don't (effects, flavor). Dev builds warn about text mentioning on-stat, off-stat, or "any challenge".
 - Rule numbers in content (e.g. `src/content/how-to-play.md`) are `{{tokens}}` filled from the live config — add new ones to `src/content/ruleTokens.ts` rather than writing the number into the text.
 - When adding a new config value: add it to `game-config.json`, the `GameConfig` type, and the Settings schema (`src/components/settings/settingsSchema.ts`), and wire it to whatever displays or uses it in the same change.
 - Don't invent new subsystems or mechanics beyond what's specified above without flagging it first — stay anti-additive, the design already has open questions parked deliberately.

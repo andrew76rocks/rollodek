@@ -25,21 +25,30 @@ export function DiceControls() {
   const landTimers = useRef<number[]>([])
   useEffect(() => () => landTimers.current.forEach(clearTimeout), [])
 
-  /** Roll the given dice; any die already mid-roll is left alone. */
-  const roll = (indices: number[]) => {
+  /**
+   * Roll the given dice; any die already mid-roll is left alone. Resolves with
+   * every die's face once the roll lands (null if nothing could roll).
+   */
+  const roll = (indices: number[]): Promise<number[]> | null => {
     const now = performance.now()
     const idle = indices.filter((i) => now >= rollingUntil.current[i])
-    if (idle.length === 0) return
+    if (idle.length === 0) return null
 
     const results = new Map(idle.map((i) => [i, rollD6()]))
     idle.forEach((i) => (rollingUntil.current[i] = now + ROLL_SECONDS * 1000))
     setDice((prev) => prev.map((d, i) => (results.has(i) ? { value: results.get(i)!, rollId: d.rollId + 1 } : d)))
 
-    const timer = window.setTimeout(() => {
-      setLanded((prev) => prev.map((v, i) => results.get(i) ?? v))
-      logRoll(results)
-    }, ROLL_SECONDS * 1000)
-    landTimers.current.push(timer)
+    return new Promise((resolve) => {
+      const timer = window.setTimeout(() => {
+        setLanded((prev) => {
+          const next = prev.map((v, i) => results.get(i) ?? v)
+          resolve(next)
+          return next
+        })
+        logRoll(results)
+      }, ROLL_SECONDS * 1000)
+      landTimers.current.push(timer)
+    })
   }
 
   // The R shortcut rolls both, same as the shuffle button (latest roll() each render)

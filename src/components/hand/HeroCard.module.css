@@ -126,7 +126,7 @@
   color: var(--card-text);
 }
 
-/* Bottom-right: stat type · off-stat · on-stat hexagon */
+/* Bottom-right: stat type · value hexagon */
 .numbers {
   position: absolute;
   right: 11.75px;
@@ -144,15 +144,7 @@
   white-space: nowrap;
 }
 
-.offStat {
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 16.9px;
-  line-height: 1;
-  color: var(--card-subtext);
-}
-
-.onStat {
+.value {
   position: relative;
   width: 42.25px;
   height: 42.25px;
@@ -161,7 +153,7 @@
 }
 
 /* Hex art sits at its exported size, inset as in Figma (2.06% / 6.7%) */
-.onStat img {
+.value img {
   position: absolute;
   top: 2.06%;
   left: 6.7%;
@@ -169,7 +161,7 @@
   height: 95.88%;
 }
 
-.onStat span {
+.value span {
   position: relative;
   font-family: var(--font-body);
   font-weight: 700;

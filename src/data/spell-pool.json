@@ -9,10 +9,9 @@
   },
   {
     "type": "spell",
-    "name": "Commune with the Machine-Spirit",
+    "name": "Machine Communion",
     "kind": "Rite",
-    "stat": "INT/WIS",
-    "value": 0,
-    "text": "Spell, ongoing (tableau). Once per turn, look at the top card of your draw pile. You may put it on the bottom instead."
+    "stats": ["INT", "WIS"],
+    "text": "Once per turn, look at the top card of your draw pile. You may put it on the bottom."
   }
 ]

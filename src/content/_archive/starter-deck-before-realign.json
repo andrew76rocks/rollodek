@@ -1,0 +1,22 @@
+[
+  { "id": "action-01", "type": "action", "name": "Decode Rot-Script", "stat": "INT", "tier": "Low", "value": 2, "text": "Make sense of corrupted signage, old warning glyphs, or a garbled broadcast." },
+  { "id": "action-02", "type": "action", "name": "Cross-Check Maps", "stat": "INT", "tier": "Low", "value": 2, "text": "Pull a pre-collapse map from memory to find a shortcut or a hazard." },
+  { "id": "action-03", "type": "action", "name": "Diagnose the Rig", "stat": "INT", "tier": "Mid", "value": 4, "text": "Read a dying piece of tech well enough to guess what it still wants to do." },
+  { "id": "action-04", "type": "action", "name": "Jury-Rig a Fix", "stat": "INT", "tier": "Mid", "value": 4, "text": "Patch something broken together with what's on hand, just long enough." },
+  { "id": "action-05", "type": "action", "name": "Overclock Salvage", "stat": "INT", "tier": "High", "value": 6, "text": "Push a scavenged system past its limits for one big result." },
+  { "id": "action-06", "type": "action", "name": "Slip the Wreckage", "stat": "DEX", "tier": "Low", "value": 2, "text": "Thread a tight, unstable gap without setting anything off." },
+  { "id": "action-07", "type": "action", "name": "Pick the Lock", "stat": "DEX", "tier": "Low", "value": 2, "text": "Work a stuck mechanism open with patience and a steady hand." },
+  { "id": "action-08", "type": "action", "name": "Dodge the Debris", "stat": "DEX", "tier": "Mid", "value": 4, "text": "React fast when the ceiling, floor, or wall stops cooperating." },
+  { "id": "action-09", "type": "action", "name": "Quickdraw Blade", "stat": "DEX", "tier": "Mid", "value": 4, "text": "Get a weapon into play before the other side reacts." },
+  { "id": "action-10", "type": "action", "name": "Vault the Rubble", "stat": "DEX", "tier": "High", "value": 6, "text": "A full-body, no-hesitation move across a gap that shouldn't be crossable." },
+  { "id": "action-11", "type": "action", "name": "Read the Wind", "stat": "WIS", "tier": "Mid", "value": 4, "text": "Trust the gut feeling that something's about to go wrong." },
+  { "id": "action-12", "type": "action", "name": "Grit Through Rads", "stat": "CON", "tier": "Low", "value": 2, "text": "Push through a hazard your body really doesn't want to be in." },
+  { "id": "memory-01", "type": "memory", "name": "Mentor's Lesson", "stat": "INT", "value": 4, "text": "\"Everything still wants to work. You just have to ask it right.\"" },
+  { "id": "memory-02", "type": "memory", "name": "Forest's Warning", "stat": "WIS", "value": 4, "text": "Every hair on her arms stood up an hour before the rot-storm hit." },
+  { "id": "memory-03", "type": "memory", "name": "Outrun the Drones", "stat": "DEX", "value": 4, "text": "She still remembers exactly which alley had no cameras." },
+  { "id": "crossover-01", "type": "crossover", "name": "Steady Hands", "stats": ["DEX", "INT"], "value": 3, "text": "Still fingers, sharp eyes, and no wasted motion." },
+  { "id": "crossover-02", "type": "crossover", "name": "Rusted Choir Rite", "stats": ["INT", "WIS"], "value": 3, "text": "A half-remembered scavenger's prayer, said over broken tech." },
+  { "id": "crossover-03", "type": "crossover", "name": "Grapple-Rig", "stats": ["DEX", "STR"], "value": 3, "text": "Scavenged rope and a bent hook, more reliable than it looks." },
+  { "id": "wild-01", "type": "wild", "name": "Stubborn Resolve", "value": 2, "text": "She's not leaving until this is done." },
+  { "id": "wild-02", "type": "wild", "name": "Whatever It Takes", "value": 2, "text": "Improvise. No plan survives contact anyway." }
+]

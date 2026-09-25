@@ -1,3 +1,4 @@
+import { warnCardAuthoring } from './heroCard.ts'
 import hero from './hero.json'
 import itemPool from './item-pool.json'
 import spellPool from './spell-pool.json'
@@ -40,6 +41,8 @@ const allTableauCards: TableauCardData[] = [
     text: spell.text,
   })),
 ]
+
+for (const card of allTableauCards) warnCardAuthoring(card.name, card.text, card.id)
 
 const byId = new Map(allTableauCards.map((card) => [card.id, card]))
 

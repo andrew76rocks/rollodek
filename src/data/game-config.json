@@ -24,7 +24,7 @@
     ]
   },
   "heroHpThreshold": 5,
-  "heroStats": { "STR": 1, "DEX": 3, "CON": 2, "INT": 1, "WIS": 2, "CHA": 0 },
+  "heroStats": { "STR": 0, "DEX": 2, "CON": 1, "INT": 3, "WIS": 1, "CHA": 0 },
   "startingDeckSize": 20,
   "startingDeckComposition": {
     "action": 12,

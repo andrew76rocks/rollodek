@@ -21,6 +21,11 @@ export interface HeroDoc {
   summary: HeroDocSummary
 }
 
+/** A trait's hover text: its Flavor line if it has one, else its rules text */
+function traitText(sectionText: string) {
+  return field(sectionText, 'Flavor') || sectionText.replace(/<!--[\s\S]*?-->/g, '').replace(/\*\*Rules text:\*\*/, '').trim()
+}
+
 function loadBackstory(): HeroDoc {
   const { data, body: raw } = parseFrontmatter(backstoryMd)
   const { title, body } = splitTitle(raw, `${data.hero ?? 'Hero'}: Backstory`)
@@ -32,8 +37,8 @@ function loadBackstory(): HeroDoc {
       title: data.title || field(section(body, 'Card Face'), 'Title'),
       flavor: firstQuote(section(body, 'Card Face')),
       traits: [
-        { label: 'Strength', name: data.strength ?? '', text: field(section(body, 'Strength'), 'Flavor') },
-        { label: 'Weakness', name: data.weakness ?? '', text: field(section(body, 'Weakness'), 'Flavor') },
+        { label: 'Strength', name: data.strength ?? '', text: traitText(section(body, 'Strength')) },
+        { label: 'Flaw', name: data.flaw ?? '', text: traitText(section(body, 'Flaw')) },
       ].filter((t) => t.name),
     },
   }
@@ -43,6 +48,7 @@ function loadClass(): HeroDoc {
   const { data, body: raw } = parseFrontmatter(classMd)
   const { title, body } = splitTitle(raw, `${data.hero ?? 'Hero'}: Class`)
   const face = section(body, 'Card Face')
+  // A class may have no ability ("## Class Ability" with no name): no trait then
   const abilityName = body.match(/^## Class Ability:\s*(.+)$/m)?.[1].trim() ?? ''
   return {
     drawerTitle: title,
@@ -50,7 +56,7 @@ function loadClass(): HeroDoc {
     summary: {
       kicker: 'Class',
       title: data.class || field(face, 'Class'),
-      subtitle: field(face, 'Role'),
+      subtitle: field(face, 'Specialty stats') ? `Specialty: ${field(face, 'Specialty stats')}` : field(face, 'Role'),
       flavor: firstQuote(face),
       traits: abilityName
         ? [{ label: 'Class ability', name: abilityName, text: field(section(body, 'Class Ability'), 'Flavor') }]

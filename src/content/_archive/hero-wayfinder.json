@@ -1,0 +1,17 @@
+{
+  "name": "Kessa Vantree",
+  "profession": "Wasteland Scavenger",
+  "trait": "Stubbornly Curious",
+  "className": "Wayfinder",
+  "classStats": "DEX / WIS",
+  "classText": "Scout / Guide. The map is a guess. The Wayfinder is the answer. Primary stat: Dexterity. Secondary: Wisdom. Weak spot: Charisma.",
+  "classAbilityName": "Light the Way",
+  "classAbility": "Once per scene, after a check is failed (yours or an ally's), you may flip the top card of your hero deck. If it's a Dexterity card, the check succeeds instead.",
+  "backstoryName": "The Lantern Keeper's Daughter",
+  "backstoryStrengthName": "Trail Sense",
+  "backstoryStrength": "When you play a Dexterity card on a check to track, scout, find a path, or move through the wild, add +1 to the Card Value.",
+  "backstoryFlawName": "The Unpaid Oath",
+  "backstoryFlaw": "When the Adventure Deck reveals a card tagged Debt, Caravan, or Home, Kessa must choose one: take on the side quest (add it to your tableau), or take 1 Wound card.",
+  "companionName": "Scrap-Drone Pigeon",
+  "companionText": "Once per turn, when you make an on-stat DEX or INT check, add +1 to your total."
+}

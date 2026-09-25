@@ -10,7 +10,7 @@ export type CardZone = 'hand' | 'party' | 'items' | 'spells'
 export const CARD_ZONES: CardZone[] = ['hand', 'party', 'items', 'spells']
 
 /** Side drawers; only one can be open at a time */
-export type DrawerId = 'eventLog' | 'help' | 'settings' | 'heroBackstory' | 'heroClass'
+export type DrawerId = 'eventLog' | 'help' | 'settings' | 'heroBackstory' | 'heroClass' | 'rules' | 'adventureCard'
 
 interface UiState {
   layoutMode: LayoutMode
@@ -21,6 +21,9 @@ interface UiState {
   /** Open side drawer, if any; not persisted, always starts closed */
   openDrawer: DrawerId | null
   setOpenDrawer: (drawer: DrawerId | null) => void
+  /** Adventure card shown in the card drawer (Find Card, or a clicked Scene card) */
+  viewedCard: string | null
+  viewCard: (cardId: string | null) => void
 }
 
 // Not state: just where focus goes back to when the open drawer closes
@@ -34,6 +37,8 @@ export const useUiStore = create<UiState>()(
       cardZone: 'hand',
       setCardZone: (cardZone) => set({ cardZone }),
       openDrawer: null,
+      viewedCard: null,
+      viewCard: (viewedCard) => set({ viewedCard }),
       setOpenDrawer: (openDrawer) =>
         set((s) => {
           // Remember what opened the drawer (clicked / Enter'd button) and hand

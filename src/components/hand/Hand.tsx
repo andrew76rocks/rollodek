@@ -1,6 +1,9 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type RefObject } from 'react'
 import { getHeroCard } from '../../data/heroCard.ts'
+import { useGameConfig } from '../../config/gameConfig.ts'
+import { discardFromHand } from '../../store/cardMoves.ts'
 import { useDrawFlightStore } from '../../store/drawFlightStore.ts'
+import { useGameStore } from '../../store/gameStore.ts'
 import { useHeroDeckStore } from '../../store/heroDeckStore.ts'
 import { horizontalListSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { cardDragId, zoneListId } from '../dnd/dragTypes.ts'
@@ -18,6 +21,10 @@ const MAX_OVERLAP = 42
 export function Hand() {
   const hand = useHeroDeckStore((s) => s.hand)
   const flights = useDrawFlightStore((s) => s.flights)
+  // Conclude: if the hand is over the cap, the player picks what to discard (rules.md §5)
+  const handCap = useGameConfig((c) => c.handCap)
+  const phase = useGameStore((s) => s.phase)
+  const overCap = phase === 'conclude' && hand.length > handCap
   const containerRef = useRef<HTMLDivElement>(null)
   const firstCardRef = useRef<HTMLDivElement>(null)
   const [room, setRoom] = useState<{ available: number; cardWidth: number } | null>(null)
@@ -46,6 +53,11 @@ export function Hand() {
 
   return (
     <div className={styles.hand} ref={containerRef} style={{ '--card-overlap': `${overlap}px` } as CSSProperties}>
+      {overCap && (
+        <p className={styles.capNote} role="status">
+          Over the hand cap: click cards to discard down to {handCap}.
+        </p>
+      )}
       {/* Same wording style as the tableau tabs' empty notes */}
       {hand.length === 0 && <p className={styles.empty}>No cards in hand.</p>}
       <SortableContext id={zoneListId('hand')} items={hand.map((id) => cardDragId('hand', id))} strategy={horizontalListSortingStrategy}>
@@ -57,6 +69,7 @@ export function Hand() {
             className={styles.slot}
             nodeRef={i === 0 ? firstCardRef : undefined}
             arriving={flights.some((f) => f.cardId === id)}
+            onActivate={overCap ? () => discardFromHand(id) : undefined}
           >
             <HeroCard card={getHeroCard(id)} />
           </SortableCard>

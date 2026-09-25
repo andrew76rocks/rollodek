@@ -1,4 +1,5 @@
 .hand {
+  position: relative;
   min-width: 0;
   display: flex;
   align-items: center;
@@ -35,4 +36,18 @@
   font-style: italic;
   font-size: 16px;
   color: var(--table-label);
+}
+
+/* Conclude, over the hand cap */
+.capNote {
+  position: absolute;
+  top: -26px;
+  left: 0;
+  right: 0;
+  margin: 0;
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 14px;
+  text-align: center;
+  color: var(--ember-gold);
 }

@@ -1,4 +1,5 @@
 import { RecycleIcon } from '@phosphor-icons/react'
+import { useGameConfig } from '../config/gameConfig.ts'
 import { shuffleDiscardIntoDeck } from '../store/cardMoves.ts'
 import { startShuffleFlight } from './ShuffleFlight.tsx'
 import styles from './DiscardPile.module.css'
@@ -19,10 +20,18 @@ export function shuffleWithFlight() {
 }
 
 export function DiscardPile({ tone, count }: DiscardPileProps) {
+  // Reshuffling at will is a debugMode sandbox tool; in play the discard only
+  // cycles back in when the draw pile runs out (docs/rules.md §3)
+  const debugMode = useGameConfig((c) => c.debugMode)
   return (
     <div className={styles.pile} data-tone={tone} data-discard={tone} style={{ gridArea: tone === 'adventure' ? 'adiscard' : 'hdiscard' }}>
       {/* Figma shows the reshuffle icon only on the hero discard (adventure's is hidden) */}
-      {tone === 'hero' && (
+      {tone === 'hero' && !debugMode && (
+        <span className={styles.shuffle} title="Reshuffles into the Hero Deck when the draw pile runs out">
+          <RecycleIcon size={32} aria-hidden />
+        </span>
+      )}
+      {tone === 'hero' && debugMode && (
         <button
           type="button"
           className={styles.shuffle}

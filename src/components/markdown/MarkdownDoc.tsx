@@ -17,7 +17,8 @@ const components: Components = {
 export function MarkdownDoc({ children }: { children: string }) {
   return (
     <article className={styles.prose}>
-      <Markdown remarkPlugins={[remarkGfm, remarkBreaks]} components={components}>
+      {/* skipHtml: authoring notes like <!-- TODO(drew): … --> never reach the reader */}
+      <Markdown remarkPlugins={[remarkGfm, remarkBreaks]} components={components} skipHtml>
         {children}
       </Markdown>
     </article>

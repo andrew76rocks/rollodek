@@ -75,7 +75,3 @@
     '.      .      .      .      .      .      .      .  .';
   align-content: center;
 }
-
-.scene {
-  grid-area: scene;
-}

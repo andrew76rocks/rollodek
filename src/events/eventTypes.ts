@@ -2,12 +2,15 @@ import {
   CardsIcon,
   DiceFiveIcon,
   FastForwardIcon,
+  FlagBannerIcon,
   GearSixIcon,
   HandDepositIcon,
+  HeartBreakIcon,
   HourglassHighIcon,
   HourglassLowIcon,
   LightningIcon,
   MapTrifoldIcon,
+  SealCheckIcon,
   ShuffleIcon,
   SignInIcon,
   type Icon,
@@ -29,6 +32,9 @@ export type GameEventType =
   | 'turn.end'
   | 'settings.change'
   | 'phase.change'
+  | 'mission'
+  | 'check.resolve'
+  | 'wound'
 
 export const EVENT_TYPES: Record<GameEventType, { label: string; icon: Icon }> = {
   'session.open': { label: 'Session', icon: SignInIcon },
@@ -42,6 +48,9 @@ export const EVENT_TYPES: Record<GameEventType, { label: string; icon: Icon }> =
   'turn.end': { label: 'Turn end', icon: HourglassLowIcon },
   'settings.change': { label: 'Settings', icon: GearSixIcon },
   'phase.change': { label: 'Phase', icon: FastForwardIcon },
+  mission: { label: 'Mission', icon: FlagBannerIcon },
+  'check.resolve': { label: 'Check', icon: SealCheckIcon },
+  wound: { label: 'Wound', icon: HeartBreakIcon },
 }
 
 export interface GameEvent {

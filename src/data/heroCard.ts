@@ -13,10 +13,11 @@ export interface HeroCardData {
   /** Two-stat cards (crossover) */
   stats?: HeroStat[]
   tier?: HeroCardTier
-  /** Printed on-stat number (the hexagon): added to the hero's Base Stat on an on-stat check */
-  onStat: number
-  /** Printed off-stat number: used alone on an off-stat check */
-  offStat: number
+  /**
+   * The card's one printed value (the hexagon). On-stat it adds to the hero's
+   * Base Stat (once per check); off-stat it counts alone (docs/rules.md §3–4).
+   */
+  value: number
   text: string
 }
 
@@ -31,24 +32,30 @@ export const CARD_TITLE_MAX_CHARS = 18
 
 /**
  * Authoring rule: rules text never restates what the card already shows
- * (stat type, on/off-stat numbers, card type). E.g. a crossover's "INT/WIS"
+ * (stat type, card value, card type). E.g. a crossover's "INT/WIS"
  * label already says it's on-stat for INT or WIS; the text shouldn't repeat it.
  */
 const RESTATES_CARD_FACE = /\b(on-stat|off-stat|any challenge)\b/i
 
-if (import.meta.env.DEV) {
-  for (const card of starterDeck) {
-    if (RESTATES_CARD_FACE.test(card.text)) {
-      console.warn(`[cards] "${card.name}" (${card.id}) rules text restates the card face: "${card.text}"`)
-    }
-    if (card.name.length > CARD_TITLE_MAX_CHARS) {
-      console.warn(
-        `[cards] "${card.name}" (${card.id}) is ${card.name.length} characters; ` +
-          `titles must be ${CARD_TITLE_MAX_CHARS} or fewer to fit on one line.`,
-      )
-    }
+/**
+ * Dev-only authoring checks. The title limit applies to every card type; the
+ * "restates the card face" check only to hero cards, since item and companion
+ * effects legitimately talk about on-stat / off-stat checks.
+ */
+export function warnCardAuthoring(name: string, text: string, where: string, { heroCard = false } = {}) {
+  if (!import.meta.env.DEV) return
+  if (heroCard && RESTATES_CARD_FACE.test(text)) {
+    console.warn(`[cards] "${name}" (${where}) rules text restates the card face: "${text}"`)
+  }
+  if (name.length > CARD_TITLE_MAX_CHARS) {
+    console.warn(
+      `[cards] "${name}" (${where}) is ${name.length} characters; ` +
+        `titles must be ${CARD_TITLE_MAX_CHARS} or fewer to fit on one line.`,
+    )
   }
 }
+
+for (const card of starterDeck) warnCardAuthoring(card.name, card.text, card.id, { heroCard: true })
 
 const starterDeckById = new Map(starterDeck.map((card) => [card.id, card]))
 

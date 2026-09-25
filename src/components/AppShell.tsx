@@ -7,6 +7,10 @@ import { BoardDnd } from './dnd/BoardDnd.tsx'
 import { EventLogDrawer } from './eventLog/EventLogDrawer.tsx'
 import { CardZoneView } from './hand/CardZoneView.tsx'
 import { HelpDrawer } from './help/HelpDrawer.tsx'
+import { RulesDrawer } from './help/RulesDrawer.tsx'
+import { AdventureCardDrawer } from './adventure/AdventureCardDrawer.tsx'
+import { SceneCards } from './adventure/SceneCards.tsx'
+import { SessionScreens } from './session/SessionScreens.tsx'
 import { HeroDocDrawers } from './hero/HeroDocDrawers.tsx'
 import { SettingsDrawer } from './settings/SettingsDrawer.tsx'
 import { DiscardPile } from './DiscardPile.tsx'
@@ -34,7 +38,7 @@ export function AppShell() {
           {layoutMode === 'default' && <HeroRail />}
 
           <DeckPile tone="adventure" label={['Adventure', 'Deck']} />
-          <div className={styles.scene} />
+          <SceneCards />
           <DiscardPile tone="adventure" count={0} />
 
           <PlayArea />
@@ -50,6 +54,9 @@ export function AppShell() {
       <ShuffleFlightLayer />
       <EventLogDrawer />
       <HelpDrawer />
+      <RulesDrawer />
+      <AdventureCardDrawer />
+      <SessionScreens />
       <HeroDocDrawers />
       <SettingsDrawer />
     </div>

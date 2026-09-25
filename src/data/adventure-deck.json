@@ -1,0 +1,103 @@
+[
+  {
+    "id": "AD-1A",
+    "scene": 1,
+    "optional": true,
+    "title": "The Broken Overpass",
+    "back": [
+      { "type": "text", "text": "The overpass has half-collapsed into the road below. Cars sit rusted where they stalled the day everything stopped." }
+    ]
+  },
+  {
+    "id": "AD-1B",
+    "scene": 1,
+    "title": "Rusted Checkpoint",
+    "back": [
+      { "type": "text", "text": "An old checkpoint gate, jammed. Slip through, or talk the ancient automated system into opening." },
+      {
+        "type": "challenge",
+        "stats": ["DEX", "INT"],
+        "tier": "easy",
+        "success": { "text": "The gate gives. You're inside the ruins.", "objective": 1 },
+        "successBut": { "text": "You're through, with a scrape from the gate.", "objective": 1 },
+        "fail": { "text": "You force your way through, but the old alarm wails the whole time. You still get inside, but objective 1 is not complete.", "closesObjective": 1 }
+      }
+    ]
+  },
+  {
+    "id": "AD-2A",
+    "scene": 2,
+    "title": "Flooded Atrium",
+    "back": [
+      { "type": "text", "text": "Waist-deep standing water, current stronger than it should be. Cross it, or find what's making it move." },
+      {
+        "type": "challenge",
+        "stats": ["DEX", "CON"],
+        "tier": "medium",
+        "success": { "text": "You cross and find what's moving the water: a salvage pump still running. Draw 1 Item." },
+        "fail": { "text": "The current drags you into the wreckage. Take 1 wound, but you still reach the far side.", "wounds": 1 }
+      }
+    ]
+  },
+  {
+    "id": "AD-2B",
+    "scene": 2,
+    "title": "Vending Row",
+    "back": [
+      {
+        "type": "challenge",
+        "combat": { "encounterId": "scrap-rat-swarm", "successOnStun": true },
+        "tier": "easy",
+        "success": { "text": "Defeat or stun the swarm: objective 2 complete, draw 1 Item.", "objective": 2 },
+        "fail": { "text": "You escape: no reward." }
+      }
+    ]
+  },
+  {
+    "id": "AD-2C",
+    "scene": 2,
+    "milestone": true,
+    "title": "Collapsed Escalator",
+    "back": [
+      { "type": "text", "text": "The escalator hides a maintenance stairwell down. Squeeze through the gap, or find the hidden maintenance hatch." },
+      {
+        "type": "challenge",
+        "stats": ["DEX", "INT"],
+        "tier": "medium",
+        "success": { "text": "Objective 3 complete. Milestone reward: +1 HP threshold (permanent), draw 1 Spell/Ability into hand.", "objective": 3 },
+        "fail": { "text": "The collapse shifts and seals the stairwell. Objective 3 closes, and there's no milestone reward.", "closesObjective": 3 }
+      }
+    ]
+  },
+  {
+    "id": "AD-3A",
+    "scene": 3,
+    "title": "The Humming Vault",
+    "back": [
+      { "type": "text", "text": "A warded door, still very much alive. Bypass the wards without waking whatever's sleeping behind them." },
+      {
+        "type": "challenge",
+        "stats": ["INT", "WIS"],
+        "tier": "dangerous",
+        "success": { "text": "The wards fall quiet. Objective 4 complete.", "objective": 4 },
+        "fail": { "text": "TODO(drew): no fail result authored yet." }
+      }
+    ]
+  },
+  {
+    "id": "AD-3B",
+    "scene": 3,
+    "final": true,
+    "title": "The Static Warden",
+    "back": [
+      {
+        "type": "challenge",
+        "combat": { "encounterId": "static-warden", "successOnStun": true },
+        "tier": "dangerous",
+        "success": { "text": "Defeat or stun the Warden to claim the signal core. Objective 5 complete.", "objective": 5 },
+        "fail": { "text": "You escape: the signal keeps pulsing, unresolved." }
+      },
+      { "type": "text", "text": "Then tally your objectives." }
+    ]
+  }
+]

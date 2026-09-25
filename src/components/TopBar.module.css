@@ -147,7 +147,7 @@
   transition: background var(--dur-fast) var(--ease-out);
 }
 
-.nextPhase:hover {
+.nextPhase:not(:disabled):hover {
   background: var(--ivory-mist);
 }
 
@@ -156,4 +156,9 @@
   width: 1px;
   height: 22px;
   background: var(--storm-slate);
+}
+
+.nextPhase:disabled {
+  cursor: default;
+  opacity: 0.4;
 }
