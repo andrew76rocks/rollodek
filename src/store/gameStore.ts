@@ -35,6 +35,12 @@ export const INITIAL_GAME_STATE = {
   /** Adventure cards currently face up; the player flips them freely */
   revealed: [] as string[],
   /**
+   * Face-up Adventure cards the player has tapped (turned 90°) as done with,
+   * pass or fail. Always a subset of `revealed`. Older saves without it pick
+   * up this empty default through persist's merge, so no version bump.
+   */
+  tapped: [] as string[],
+  /**
    * Past Scenes' location cards, oldest first. They never go back into the
    * Adventure Deck (unlike the Hero Discard); kept so the player can look back.
    */

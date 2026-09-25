@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { adventureAssets } from '../../config/assets.ts'
 import { getAdventureCard, getScene, printedId, sceneRows } from '../../data/adventureDeck.ts'
 import { useGameStore } from '../../store/gameStore.ts'
-import { toggleCard } from '../../store/session.ts'
+import { cycleCard } from '../../store/session.ts'
 import { AdventureCardBack } from './AdventureCardBack.tsx'
 import { PositionBadge } from './PositionBadge.tsx'
 import { useDealingIds } from './SceneDeal.tsx'
@@ -15,16 +15,19 @@ import styles from './SceneCards.module.css'
  * Adventure Deck illustration plus the card's ID (Figma 126:260); backs carry
  * the card's own content (Figma 126:267).
  *
- * Clicking a card turns it over, either way, any time. Play order, the
- * optional-card rule and when a Challenge may be attempted are all printed on
- * the cards and written up in Help — the table doesn't enforce them, and
- * resolving a Challenge happens away from the screen.
+ * Clicking a card steps it through a loop, any card, any time: face down →
+ * face up → tapped (turned 90° and dimmed, like a used tableau card: done
+ * with, pass or fail) → face down again. Play order, the optional-card rule
+ * and when a Challenge may be attempted are all printed on the cards and
+ * written up in Help — the table doesn't enforce them, and resolving a
+ * Challenge happens away from the screen.
  *
  * TODO(drew): every card shares one front illustration until per-Scene art exists.
  */
 export function SceneCards() {
   const sceneNumber = useGameStore((s) => s.scene)
   const revealed = useGameStore((s) => s.revealed)
+  const tapped = useGameStore((s) => s.tapped)
   const missionId = useGameStore((s) => s.missionId)
   const reduceMotion = useReducedMotion()
   // While the finished Scene's cards fly to the Adventure Discard, only their copies show
@@ -48,18 +51,22 @@ export function SceneCards() {
           {row.map((id) => {
             const card = getAdventureCard(id)
             const isRevealed = revealed.includes(id)
+            const isTapped = isRevealed && tapped.includes(id)
             return (
               <div key={id} className={styles.slot} style={dealing.includes(id) ? { visibility: 'hidden' } : undefined}>
+                {/* Three states, not two, so the label says where the card is and where the next click takes it */}
                 <button
                   type="button"
                   className={styles.card}
-                  onClick={() => toggleCard(id)}
-                  aria-pressed={isRevealed}
+                  data-tapped={isTapped || undefined}
+                  onClick={() => cycleCard(id)}
                   {...previewAttrs(id, 'adventure', isRevealed ? 'back' : 'front')}
                   aria-label={
-                    isRevealed
-                      ? `${printedId(card)} ${card.title}: turn face down`
-                      : `${printedId(card)}: face down, turn over`
+                    isTapped
+                      ? `${printedId(card)} ${card.title}: done (tapped). Click to turn face down`
+                      : isRevealed
+                        ? `${printedId(card)} ${card.title}: face up. Click to tap as done`
+                        : `${printedId(card)}: face down. Click to turn over`
                   }
                 >
                   <motion.span

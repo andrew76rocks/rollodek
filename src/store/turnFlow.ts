@@ -95,6 +95,7 @@ export function nextPhase() {
       useGameStore.setState((s) => ({
         adventureDiscard: [...s.adventureDiscard, ...cards.filter((id) => !s.adventureDiscard.includes(id))],
         revealed: s.revealed.filter((id) => !cards.includes(id)),
+        tapped: s.tapped.filter((id) => !cards.includes(id)),
       }))
       if (cards.length) {
         logEvent('scene.explore', `Scene ${scene}'s ${cards.length} location card${cards.length === 1 ? '' : 's'} went to the Adventure Discard`, { cards })

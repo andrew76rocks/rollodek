@@ -24,17 +24,29 @@ export function chooseMission(id: string) {
 }
 
 /**
- * Turn an Adventure card over, either way. Any card, any time: play order and
- * the optional-card rule are printed on the cards, not enforced by the table.
+ * Step an Adventure card through its three states, in a loop:
+ * face down → face up → tapped (done with, pass or fail) → face down.
+ * Any card, any time: play order and the optional-card rule are printed on
+ * the cards, not enforced by the table.
  */
-export function toggleCard(cardId: string) {
-  const { revealed } = useGameStore.getState()
-  const faceUp = revealed.includes(cardId)
-  useGameStore.setState({
-    revealed: faceUp ? revealed.filter((id) => id !== cardId) : [...revealed, cardId],
-  })
+export function cycleCard(cardId: string) {
+  const { revealed, tapped } = useGameStore.getState()
   const card = getAdventureCard(cardId)
-  logEvent('scene.explore', `${faceUp ? 'Turned back' : 'Turned over'} ${printedId(card)}: ${card.title}`, { cardId })
+  const name = `${printedId(card)}: ${card.title}`
+
+  if (!revealed.includes(cardId)) {
+    useGameStore.setState({ revealed: [...revealed, cardId] })
+    logEvent('scene.explore', `Turned over ${name}`, { cardId })
+  } else if (!tapped.includes(cardId)) {
+    useGameStore.setState({ tapped: [...tapped, cardId] })
+    logEvent('scene.explore', `Tapped ${name} (done)`, { cardId })
+  } else {
+    useGameStore.setState({
+      revealed: revealed.filter((id) => id !== cardId),
+      tapped: tapped.filter((id) => id !== cardId),
+    })
+    logEvent('scene.explore', `Turned back ${name}`, { cardId })
+  }
 }
 
 /**

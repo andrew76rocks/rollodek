@@ -32,6 +32,36 @@
   padding: 0;
   perspective: 1000px;
   border-radius: var(--card-radius);
+  transition:
+    rotate 280ms var(--ease-out),
+    filter 280ms var(--ease-out),
+    opacity 280ms var(--ease-out);
+}
+
+/* Tapped = done with, pass or fail. The same treatment as a used tableau card
+ * (TableauView.module.css .tap): turned 90° clockwise, drained of colour,
+ * dimmed, sitting lower. The card is square, so turning it moves nothing. */
+.card[data-tapped] {
+  rotate: 90deg;
+  filter: saturate(0.25) brightness(0.9);
+  opacity: 0.7;
+}
+
+.card[data-tapped] .front,
+.card[data-tapped] .back {
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.18);
+}
+
+/* Hovering a tapped card lifts it back a little: "click to turn it back over" */
+.card[data-tapped]:hover {
+  filter: saturate(0.5) brightness(0.95);
+  opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
 }
 
 .flipper {
@@ -49,6 +79,7 @@
   backface-visibility: hidden;
   box-shadow: var(--shadow-medium);
   overflow: hidden;
+  transition: box-shadow 280ms var(--ease-out); /* flattens with the tap */
 }
 
 /* Figma 126:260 "Adventure Card Front": the illustration, full bleed */
