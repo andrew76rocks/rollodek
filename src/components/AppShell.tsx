@@ -22,6 +22,7 @@ import { Intro } from './intro/Intro.tsx'
 import { SceneDiscardLayer } from './adventure/SceneDiscard.tsx'
 import { SceneDealLayer } from './adventure/SceneDeal.tsx'
 import { useIntroStore } from '../store/introStore.ts'
+import { AmbientDust } from './ambient/AmbientDust.tsx'
 import { CardPreview } from './CardPreview.tsx'
 import { DiscardPreview } from './DiscardPreview.tsx'
 import { ShuffleFlightLayer } from './ShuffleFlight.tsx'
@@ -55,6 +56,7 @@ export function AppShell() {
       data-scene-rows={sceneRowCount}
       style={{ '--scene-rows': sceneRowCount } as CSSProperties}
     >
+      <AmbientDust />
       <TopBar />
       <BoardDnd>
         <main className={styles.table}>

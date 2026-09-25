@@ -1,0 +1,18 @@
+/* Between the wood grain and the table: the shell isolates its own stacking
+ * context, so -1 sits above the shell's fill, and following the wood's
+ * ::before in tree order puts it above the grain too. */
+.dust {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  /* Motes lighten the wood the way light does, rather than sitting on it as paint */
+  mix-blend-mode: screen;
+}
+
+/* tsparticles sizes its canvas to this container */
+.dust canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
