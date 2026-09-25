@@ -73,7 +73,7 @@
 .traits {
   margin: 12px 0 0;
   padding-top: 10px;
-  border-top: 1px solid color-mix(in srgb, var(--storm-slate) 50%, transparent);
+  border-top: 1px solid var(--line-soft);
 }
 
 .trait + .trait {

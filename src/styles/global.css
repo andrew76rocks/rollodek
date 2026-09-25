@@ -11,6 +11,23 @@ body,
   margin: 0;
 }
 
+/* Browser-drawn accents default to the system blue: form controls, the text
+ * cursor, selections, and any native focus outline. Blue is used only where
+ * Drew asks for it, so these all follow Mist Lavender instead. */
+:root {
+  accent-color: var(--mist-lavender);
+  caret-color: var(--mist-lavender);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--mist-lavender) 45%, transparent);
+  color: var(--ivory-mist);
+}
+
+:focus {
+  outline-color: var(--mist-lavender);
+}
+
 body {
   background: var(--wood-base);
   color: var(--ivory-mist);

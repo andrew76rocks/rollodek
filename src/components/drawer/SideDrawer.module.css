@@ -26,7 +26,6 @@
   align-items: center;
   height: 60px; /* lines up with the top bar */
   padding: 0 16px 0 24px;
-  border-bottom: 2px solid var(--driftwood);
 }
 
 .title {

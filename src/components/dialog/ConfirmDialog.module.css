@@ -59,7 +59,7 @@
 }
 
 .cancel {
-  border: 1px solid var(--storm-slate);
+  border: 1px solid var(--line-strong);
   color: var(--faded-parchment);
 }
 

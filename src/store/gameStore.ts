@@ -34,6 +34,11 @@ export const INITIAL_GAME_STATE = {
   objectives: {} as Partial<Record<number, ObjectiveState>>,
   /** Adventure cards currently face up; the player flips them freely */
   revealed: [] as string[],
+  /**
+   * Past Scenes' location cards, oldest first. They never go back into the
+   * Adventure Deck (unlike the Hero Discard); kept so the player can look back.
+   */
+  adventureDiscard: [] as string[],
   ended: null as SessionEnd | null,
 }
 

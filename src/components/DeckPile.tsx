@@ -34,7 +34,7 @@ export function DeckPile({ tone, label }: DeckPileProps) {
 
   if (tone === 'hero') return <HeroDeckButton face={face} />
   return (
-    <div className={styles.stack} data-tone={tone} style={{ gridArea: 'adeck' }}>
+    <div className={styles.stack} data-tone={tone} data-deck="adventure" style={{ gridArea: 'adeck' }}>
       <DeckStack face={face} tone={tone} cardBeneath />
     </div>
   )

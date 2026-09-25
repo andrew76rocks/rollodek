@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { uiAssets } from '../../config/assets.ts'
 import { logEvent } from '../../store/eventLogStore.ts'
 import { MaskIcon } from '../MaskIcon.tsx'
+import { DiceTotal } from './DiceTotal.tsx'
 import { registerRollAllDice } from './diceCommands.ts'
 import { DicePair } from './DicePair.tsx'
 import { rollD6, ROLL_SECONDS, type DieState, type DieValue } from './diceConfig.ts'
@@ -68,9 +69,7 @@ export function DiceControls() {
         <MaskIcon src={uiAssets.icons.shuffle} size={32} />
       </button>
       <DicePair dice={dice} landed={landed} onRoll={(i) => roll([i])} />
-      <output className={styles.readout} aria-live="polite" aria-label={`Dice showing ${landed.join(' and ')}`}>
-        {landed.join(' / ')}
-      </output>
+      <DiceTotal faces={landed} />
     </>
   )
 }

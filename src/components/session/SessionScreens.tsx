@@ -5,7 +5,8 @@ import { missions } from '../../data/adventureDeck.ts'
 import { useGameStore } from '../../store/gameStore.ts'
 import { useIntroStore } from '../../store/introStore.ts'
 import { startNewGame } from '../../store/newGame.ts'
-import { chooseMission, currentMission } from '../../store/session.ts'
+import { currentMission } from '../../store/session.ts'
+import { startMission } from '../../store/turnFlow.ts'
 import styles from '../dialog/ConfirmDialog.module.css'
 
 /**
@@ -48,7 +49,7 @@ function MissionChoice({ focusRef }: { focusRef: FocusRef }) {
             <em>Goal:</em> {mission.goal}
           </p>
           <div className={styles.actions}>
-            <button ref={i === 0 ? focusRef : undefined} type="button" className={styles.confirm} onClick={() => chooseMission(mission.id)}>
+            <button ref={i === 0 ? focusRef : undefined} type="button" className={styles.confirm} onClick={() => startMission(mission.id)}>
               Start {mission.name}
             </button>
           </div>

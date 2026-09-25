@@ -1,10 +1,18 @@
-/* The Scene's cards, side by side, shrinking only if they'd run out of room */
+/* The Scene's cards in one or two rows (Figma 132:559 / 132:190), each row
+ * centered, shrinking only if a row would run out of room */
 .scene {
   grid-area: scene;
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  gap: 12px;
+  gap: var(--scene-gap);
+  min-width: 0;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  gap: var(--scene-gap);
   min-width: 0;
 }
 
@@ -55,26 +63,6 @@
   height: 100%;
   object-fit: cover;
   border-radius: var(--card-radius);
-}
-
-/* Figma 126:261 "Card Position Badge": flush with the card's bottom edge */
-.id {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  translate: -50% 0;
-  display: flex;
-  align-items: center;
-  height: 30px;
-  padding: 6px 8px;
-  border-radius: var(--radius-md) var(--radius-md) 0 0;
-  background: var(--card-surface);
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 1;
-  white-space: nowrap;
-  color: var(--adventure-tone);
 }
 
 /* Figma 126:267 "Adventure Card Back" fills the face; see AdventureCardBack */

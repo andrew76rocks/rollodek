@@ -113,7 +113,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  border: 1px solid var(--storm-slate);
+  border: 1px solid var(--line-strong);
 }
 
 .pip[data-state='done'] {

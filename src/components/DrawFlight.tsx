@@ -7,7 +7,7 @@ import { useUiStore } from '../store/uiStore.ts'
 import { AnyCard } from './dnd/AnyCard.tsx'
 import styles from './PlayFlight.module.css'
 
-const DRAW_DURATION_S = 0.35
+export const DRAW_DURATION_S = 0.35
 
 /**
  * Draw the top Hero Deck card into the hand, flying it in from the deck

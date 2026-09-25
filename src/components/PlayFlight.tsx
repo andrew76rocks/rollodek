@@ -8,6 +8,8 @@ import styles from './PlayFlight.module.css'
 export interface Flight {
   cardId: string
   zone: CardZone
+  /** Stacking order, so cards keep their overlap while flying (defaults to flight order) */
+  layer?: number
   from: { x: number; y: number }
   to: { x: number; y: number }
 }
@@ -29,7 +31,7 @@ export function PlayFlight({ flights, onDone }: { flights: Flight[]; onDone: () 
         <motion.div
           key={f.cardId}
           className={styles.card}
-          style={{ left: f.from.x, top: f.from.y, zIndex: i }}
+          style={{ left: f.from.x, top: f.from.y, zIndex: f.layer ?? i }}
           initial={{ x: 0, y: 0, rotate: START_TILT, scale: 1, opacity: 1 }}
           animate={{
             x: f.to.x - f.from.x,

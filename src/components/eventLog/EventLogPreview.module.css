@@ -42,7 +42,7 @@
   justify-content: space-between;
   align-items: baseline;
   padding: 0 16px 8px;
-  border-bottom: 1px solid color-mix(in srgb, var(--storm-slate) 50%, transparent);
+  border-bottom: 1px solid var(--line-soft);
 }
 
 .title {

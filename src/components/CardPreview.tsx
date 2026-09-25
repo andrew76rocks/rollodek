@@ -1,11 +1,8 @@
-import { XIcon } from '@phosphor-icons/react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useEffect, useRef, type CSSProperties } from 'react'
 import { create } from 'zustand'
-import { adventureAssets } from '../config/assets.ts'
-import { getAdventureCard, printedId } from '../data/adventureDeck.ts'
 import type { CardZone } from '../store/uiStore.ts'
-import { AdventureCardBack } from './adventure/AdventureCardBack.tsx'
+import { AdventureFace } from './adventure/AdventureFace.tsx'
 import { AnyCard } from './dnd/AnyCard.tsx'
 import styles from './CardPreview.module.css'
 
@@ -58,19 +55,19 @@ export function togglePreviewUnderPointer() {
 }
 
 /**
- * A card at 150% over a dimmed table. Close with the × button, Esc, or a click
+ * A card at 150% over a dimmed table. Close with Space / Z, Esc, or a click
  * anywhere outside the card; focus goes back to whatever opened it.
  */
 export function CardPreview() {
   const card = usePreviewStore((s) => s.card)
   const reduceMotion = useReducedMotion()
-  const closeButton = useRef<HTMLButtonElement>(null)
+  const frame = useRef<HTMLDivElement>(null)
   const opener = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     if (!card) return
     opener.current = document.activeElement as HTMLElement | null
-    closeButton.current?.focus()
+    frame.current?.focus() // keeps focus inside the dialog; there's no close button
     // Esc, Space or Z closes (Space/Z toggle; the table's shortcuts are paused while this is open)
     const onKey = (e: KeyboardEvent) => {
       if (e.repeat) return
@@ -102,7 +99,9 @@ export function CardPreview() {
           <motion.div
             role="dialog"
             aria-modal="true"
-            aria-label="Card preview"
+            aria-label="Card preview. Click outside it, or press Space or Esc, to close."
+            ref={frame}
+            tabIndex={-1}
             className={styles.frame}
             style={{ '--preview-scale': PREVIEW_SCALE } as CSSProperties}
             onClick={(e) => e.stopPropagation()}
@@ -114,9 +113,6 @@ export function CardPreview() {
             <div className={styles.zoom}>
               <PreviewFace card={card} />
             </div>
-            <button ref={closeButton} type="button" className={styles.close} onClick={closePreview} aria-label="Close preview">
-              <XIcon size={18} weight="bold" aria-hidden />
-            </button>
           </motion.div>
         </motion.div>
       )}
@@ -126,12 +122,5 @@ export function CardPreview() {
 
 function PreviewFace({ card }: { card: PreviewedCard }) {
   if (card.zone !== 'adventure') return <AnyCard cardId={card.cardId} zone={card.zone} />
-  const adventure = getAdventureCard(card.cardId)
-  if (card.face === 'back') return <AdventureCardBack card={adventure} />
-  return (
-    <div className={styles.adventureFront}>
-      <img src={adventureAssets.cardFront} alt="" />
-      <span className={styles.adventureId}>{printedId(adventure)}</span>
-    </div>
-  )
+  return <AdventureFace cardId={card.cardId} face={card.face} />
 }

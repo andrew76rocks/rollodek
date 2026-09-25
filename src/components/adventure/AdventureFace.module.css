@@ -1,0 +1,14 @@
+/* Figma 126:260 "Adventure Card Front": the illustration, full bleed, plus the position badge */
+.front {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--card-radius);
+}
+
+.front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

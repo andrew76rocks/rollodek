@@ -2,6 +2,7 @@ import { useId, useState } from 'react'
 import { uiAssets } from '../config/assets.ts'
 import { PHASE_LABELS, PHASES, useGameStore } from '../store/gameStore.ts'
 import { nextPhase, phaseBlocker } from '../store/turnFlow.ts'
+import { useGameConfig } from '../config/gameConfig.ts'
 import { useHeroDeckStore } from '../store/heroDeckStore.ts'
 import { CaretRightIcon } from '@phosphor-icons/react'
 import { useUiStore } from '../store/uiStore.ts'
@@ -9,6 +10,7 @@ import { EventLogPreview } from './eventLog/EventLogPreview.tsx'
 import { ObjectivesMenu } from './mission/ObjectivesMenu.tsx'
 import { OverflowMenu } from './menu/OverflowMenu.tsx'
 import { MaskIcon } from './MaskIcon.tsx'
+import { PhaseBreadcrumb } from './PhaseBreadcrumb.tsx'
 import styles from './TopBar.module.css'
 
 const { icons } = uiAssets
@@ -16,9 +18,13 @@ const { icons } = uiAssets
 export function TopBar() {
   const scene = useGameStore((s) => s.scene)
   const phase = useGameStore((s) => s.phase)
-  // Re-evaluated on every render that could change it (phase, hand size, session state)
-  useHeroDeckStore((s) => s.hand.length)
+  // phaseBlocker() reads several stores, so subscribe to every input it uses;
+  // missing one leaves the button stuck (it once missed missionId, so Next
+  // phase stayed disabled after choosing a mission)
+  useGameStore((s) => s.missionId)
   useGameStore((s) => s.ended)
+  useHeroDeckStore((s) => s.hand.length)
+  useGameConfig((c) => c.handCap)
   const blocker = phaseBlocker()
   const openDrawer = useUiStore((s) => s.openDrawer)
   const setOpenDrawer = useUiStore((s) => s.setOpenDrawer)
@@ -58,7 +64,9 @@ export function TopBar() {
             <span className={styles.dot} aria-hidden>
               ·
             </span>
-            <span className={styles.phase}>{PHASE_LABELS[phase]}</span>
+            <span className={styles.phase}>
+              <PhaseBreadcrumb phase={phase} />
+            </span>
           </span>
           <span className={styles.pips} aria-hidden>
             {PHASES.map((p, i) => (

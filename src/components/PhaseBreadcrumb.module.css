@@ -1,0 +1,69 @@
+.anchor {
+  position: relative;
+  cursor: default;
+}
+
+/* Centered under the phase name; same panel as the event log preview */
+.popover {
+  position: absolute;
+  top: calc(100% + 18px);
+  left: 50%;
+  translate: -50% 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--dungeon-ink);
+  border: 2px solid var(--driftwood);
+  border-radius: 14px;
+  box-shadow: var(--shadow-medium), 0 16px 40px rgb(0 0 0 / 0.4);
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  pointer-events: none; /* information only; never steals the hover */
+  animation: popover-in var(--dur-fast) var(--ease-out);
+}
+
+/* Caret pointing up at the phase name */
+.popover::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: calc(50% - 6px);
+  width: 12px;
+  height: 12px;
+  background: var(--dungeon-ink);
+  border-left: 2px solid var(--driftwood);
+  border-top: 2px solid var(--driftwood);
+  transform: rotate(45deg);
+}
+
+@keyframes popover-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.step {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sep {
+  color: color-mix(in srgb, var(--mist-lavender) 50%, transparent);
+}
+
+.step [data-state='done'] {
+  color: var(--mist-lavender);
+}
+
+.step [data-state='current'] {
+  font-weight: 800;
+  color: var(--ember-gold);
+}
+
+.step [data-state='upcoming'] {
+  color: color-mix(in srgb, var(--mist-lavender) 55%, transparent);
+}

@@ -2,6 +2,8 @@
 
 A dated log of rule and design decisions, newest first, one line each. Any change to [rules.md](rules.md) adds a line here in the same change.
 
+- 2026-09-25: Attempt score = all committed card values, plus Base Stat once only if every committed card is on-stat (or none committed). Any off-stat card drops the Base Stat. This was the original intent (no mixing stats); the old sim got it wrong. Re-sim after playtesting.
+- 2026-09-25: Two-stat challenges ("DEX or INT"): the player picks one stat before committing; it sets the Base Stat and what counts as on-stat.
 - 2026-09-24: Skipped optional cards can be revisited any time during that Scene's Explore.
 - 2026-09-24: Location cards resolve in card-ID order within a Scene; each must be complete before the next flips. Optional cards are skipped by moving on to the next card; a skipped card turns back face down.
 - 2026-09-24: Drawing a card at will (clicking the Hero Deck, Space) is a sandbox tool, available only in debugMode. Normal play draws at Setup.

@@ -30,9 +30,11 @@ Cards you play don't come back until the next Setup.
 ## Resolving a Check
 - The location card tells you the stat being tested and the difficulty tier: Easy, Medium, or Dangerous. The actual target number stays hidden.
 - Commit any number of cards from your hand or untapped tableau, including none at all.
-  - **On-stat**: your hero's Base Stat + the card's value.
-  - **Off-stat**: just the card's value.
-  - Your Base Stat counts once per check, however many cards you commit. With no cards, you roll on your Base Stat alone.
+  - Add up the values of every card you commit.
+  - If **all** your cards are on-stat, add your hero's Base Stat once on top.
+  - If **any** card is off-stat, you lose the Base Stat. Only the card values count.
+  - With no cards, you roll on your Base Stat alone.
+  - If the challenge lists two stats ("DEX or INT"), pick one before you commit. That's your Base Stat, and cards matching it are on-stat.
 - Once your cards are committed, roll 2d6 to generate the hidden target for that tier. You commit knowing only the tier, never the number.
   - Rolling snake eyes ({{snakeEyesRoll}}) is always a remarkable success, no matter your total.
   - Rolling boxcars ({{boxcarsRoll}}) is always a harsh complication, no matter your total.

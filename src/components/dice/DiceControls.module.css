@@ -18,13 +18,3 @@
 .shuffle:active {
   transform: scale(0.92);
 }
-
-/* Faces of both dice, e.g. "3 / 5" (Figma: Source Serif Black 14, ivory) */
-.readout {
-  min-width: 28px;
-  font-weight: 900;
-  font-size: 14px;
-  color: var(--ivory-mist);
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}

@@ -94,7 +94,12 @@
   --adventure-tone: var(--dusk-violet);
   --hero-tone: var(--ember-gold);
   --reward-tone: var(--ember-gold);
-  --link-tone: var(--potion-blue);
+  --link-tone: var(--mist-lavender); /* blue only where Drew asks for it */
+
+  /* Lines on the dark chrome and drawers: Mist Lavender, never the blue-grey
+   * Storm Slate (keeps the dark UI to one accent family) */
+  --line-strong: color-mix(in srgb, var(--mist-lavender) 40%, transparent);
+  --line-soft: color-mix(in srgb, var(--mist-lavender) 20%, transparent);
 
   --focus-ring: 0 0 0 2px var(--dungeon-ink), 0 0 0 4px var(--mist-lavender);
 }

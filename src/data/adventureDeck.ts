@@ -71,8 +71,34 @@ export interface AdventureCard {
 export interface SceneData {
   scene: number
   title: string
-  /** Card ids, laid out left → right (table order, not play order) */
+  /** Card ids, laid out left → right, top row first (table order, not play order) */
   cards: string[]
+  /**
+   * Optional: how many cards sit in each row, top to bottom, e.g. [2, 3].
+   * Must add up to the card count. Omitted: the default for that count
+   * (SCENE_ROW_DEFAULTS). Scenes hold 1 to 6 cards.
+   */
+  rows?: number[]
+}
+
+/** Default arrangement per card count: one row up to 3, then two rows (top, bottom) */
+export const SCENE_ROW_DEFAULTS: Record<number, number[]> = {
+  1: [1],
+  2: [2],
+  3: [3],
+  4: [2, 2],
+  5: [2, 3],
+  6: [3, 3],
+}
+
+/** A Scene's cards grouped into rows, top row first */
+export function sceneRows(scene: SceneData): string[][] {
+  const counts = scene.rows ?? SCENE_ROW_DEFAULTS[scene.cards.length] ?? [scene.cards.length]
+  if (import.meta.env.DEV && counts.reduce((a, b) => a + b, 0) !== scene.cards.length) {
+    console.warn(`[scenes] Scene ${scene.scene}: rows ${JSON.stringify(counts)} don't add up to ${scene.cards.length} cards`)
+  }
+  let start = 0
+  return counts.map((n) => scene.cards.slice(start, (start += n)))
 }
 
 export interface MissionData {
@@ -109,4 +135,13 @@ export const printedId = (card: AdventureCard) => (card.optional ? `(${card.id})
 
 export function getScene(n: number): SceneData | undefined {
   return scenes.find((s) => s.scene === n)
+}
+
+/** Where a card sits in its Scene's layout: the row sizes, and its row and column */
+export function cardPosition(cardId: string): { rows: number[]; row: number; col: number } | undefined {
+  const scene = scenes.find((s) => s.cards.includes(cardId))
+  if (!scene) return undefined
+  const grouped = sceneRows(scene)
+  const row = grouped.findIndex((r) => r.includes(cardId))
+  return { rows: grouped.map((r) => r.length), row, col: grouped[row].indexOf(cardId) }
 }

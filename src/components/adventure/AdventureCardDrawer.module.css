@@ -16,12 +16,23 @@
   flex: 1;
   min-width: 0;
   padding: 8px 12px;
-  border: 1px solid var(--drawer-border, var(--storm-slate));
+  border: 1px solid var(--line-strong);
   border-radius: 10px;
   background: transparent;
   font-family: var(--font-body);
   font-size: 15px;
   color: inherit;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+/* One focus indicator: the border lights up whenever the field has focus
+ * (instead of the global ring around it) */
+.input:focus {
+  border-color: var(--mist-lavender);
+}
+
+.input:focus-visible {
+  box-shadow: none;
 }
 
 .findButton {

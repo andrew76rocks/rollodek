@@ -14,6 +14,7 @@
   --play-inset-right: 0px;
   --hero-cluster-x: 111px;
   --tabs-offset: -2px; /* Figma places the tab bar slightly off the columns' center */
+  --scene-gap: 8px; /* between Scene cards, and between Scene rows (Figma 132:559) */
 
   position: relative;
   isolation: isolate;
@@ -61,7 +62,8 @@
     var(--rail-gap-l) var(--rail-w) var(--rail-gap-r) var(--card-size)
     32px minmax(0, 1fr) 32px var(--card-size) var(--edge-right);
   grid-template-rows:
-    minmax(16px, 100px) var(--card-size) minmax(12px, 49px) 135px
+    minmax(16px, 100px) calc(var(--scene-rows, 1) * var(--card-size) + (var(--scene-rows, 1) - 1) * var(--scene-gap))
+    minmax(12px, 49px) 135px
     minmax(12px, 49px) var(--card-size) minmax(8px, 29px) 60px minmax(8px, 28px);
   grid-template-areas:
     '.      .      .      .      .      .      .      .  .'
@@ -74,6 +76,15 @@
     'footer footer footer footer footer footer footer footer  footer'
     '.      .      .      .      .      .      .      .  .';
   align-content: center;
+  /* A tall Scene may not fit: the board then overflows upward, and is clipped
+   * under the header rather than drawn over it */
+  overflow: clip;
+}
+
+/* Two Scene rows: the board sits flush to the bottom so the hero deck and
+ * tab bar always show; if space runs out, the top Scene row is what's cut */
+.shell[data-scene-rows='2'] .table {
+  align-content: end;
 }
 
 /* ── Opening sequence (Intro) ── */

@@ -66,20 +66,31 @@ Class and backstory cards do **not** hold HP, hand size, or leveling tables. HP 
 
 1. The challenge shows its **stat** and **tier** (Easy, Medium, Dangerous). The DC number is never shown.
 2. The player commits **zero or more** cards from hand and untapped tableau.
-   - **On-stat card:** Base Stat + card value.
-   - **Off-stat card:** card value only.
-   - Base Stat is added **once per check**, not once per card.
    - **Zero cards** is always allowed (Base Stat alone), unless a card says the check auto-fails.
    - Multiple cards sum with no cap. Each tableau card can activate {{tableauActivationsPerCard}} time(s) per turn.
-3. **After** cards are committed, roll 2d6 to make the hidden DC:
+   - **Two-stat challenges** ("DEX or INT"): the player picks one of the listed stats before committing cards. That stat is the Base Stat for the check, and a card is on-stat if it matches the picked stat.
+3. Add up the **attempt score**:
+   - Add the value of **every** committed card.
+   - Add the Base Stat **once**, only if **every** committed card is on-stat (or no cards were committed).
+   - If **any** committed card is off-stat, the Base Stat is not added. Only the card values count.
+   - Flat bonuses printed on cards (e.g. "+1 to an INT check total") add to the attempt score.
+
+   | Kessa, INT 3, on an INT check | Attempt score |
+   |---|---|
+   | No cards | 3 (Base Stat alone) |
+   | INT card (4) | 3 + 4 = **7** |
+   | INT card (4) + INT card (2) | 3 + 4 + 2 = **9** |
+   | INT card (4) + STR card (2) | 4 + 2 = **6** (one off-stat card, so no Base Stat) |
+   | STR card (2) | **2** (lower than playing nothing, see Open questions) |
+4. **After** cards are committed, roll 2d6 to make the hidden DC (the **challenge score**):
    - Easy = 2d6 {{dcEasyOffset}}
    - Medium = 2d6 {{dcMediumOffset}}
    - Dangerous = 2d6 {{dcDangerousOffset}}
-   - Floored at {{dcFloor}}.
-4. Special rolls check the raw 2d6 before the offset:
+   - Floored at {{dcFloor}}: if the result is lower, the DC is {{dcFloor}}.
+5. Special rolls check the raw 2d6 before the offset:
    - **{{snakeEyesRoll}} (snake eyes):** automatic remarkable success, whatever the total.
    - **{{boxcarsRoll}} (boxcars):** automatic harsh complication, whatever the total.
-5. **Outcome:** Success (total meets or beats the DC), Fail, or **Fail with paid cost**. On {{paidCostTiers}} checks only, the player can take 1 wound to turn a Fail into "success, but." {{unpaidCostTiers}} checks carry real, unbuyable risk. **No card, ability, or item may turn a Medium or Dangerous fail into a success** unless Drew signs off and the numbers are re-simulated.
+6. **Outcome:** Success (attempt score meets or beats the DC; a tie is a success), Fail, or **Fail with paid cost**. On {{paidCostTiers}} checks only, the player can take 1 wound to turn a Fail into "success, but." {{unpaidCostTiers}} checks carry real, unbuyable risk. **No card, ability, or item may turn a Medium or Dangerous fail into a success** unless Drew signs off and the numbers are re-simulated.
 
 > The DC offsets and the multi-card rule were tuned together in simulation. Changing either one, or adding anything that buys out Medium or Dangerous risk, needs re-simulation first.
 
@@ -124,7 +135,7 @@ The Adventure Deck holds a mission's location cards, milestone cards, and extra 
 **Back [locked]:** everything else. It's an open space for authors: story, instructions, paths, pointers to other cards ("add AD-29A"), rewards, and one or more Challenges.
 
 **Challenge block [proposed]:** every Challenge on a back uses the same small block so players and the app read it the same way:
-- **Stat:** one or two stats ("DEX or INT"), or **Combat** plus the Encounter it names
+- **Stat:** one or two stats ("DEX or INT", player picks one, see 4), or **Combat** plus the Encounter it names
 - **Tier:** Easy, Medium, or Dangerous
 - **Success:** what happens (objectives, rewards)
 - **Fail:** what happens
@@ -190,3 +201,6 @@ Pools add variety. They never replace direct authoring. A location can name one 
 - How a Companion-tagged Encounter joins the party (check, choice, or reward)
 - Kessa's **Forest-Marked** strength ("see a location's tier before committing cards"): the tier is always visible before commitment, so this needs rewording, maybe as "peek at a wild or corrupted location's back before choosing to enter." It also needs a place for the "wild / corrupted" tag, which can't go on the art-only front.
 - Spell tableau cap and cantrip cost
+- **Off-stat trap:** with "any off-stat card drops the Base Stat" (section 4), a single weak off-stat card can score lower than committing nothing (INT 3 alone beats an off-stat 2). Noted, not fixed. The "all cards on-stat" rule was always the intent; the earlier simulation likely allowed mixing, so the DC offsets were tuned on the wrong model. Re-simulate after playtesting.
+- **Keep or cut off-stat?** If off-stat plays rarely happen or rarely get the player unstuck, drop the concept and let zero-card checks (Base Stat alone) plus crossover and wild cards cover the fallback. Watch during playtesting: how often off-stat cards get played, and whether they actually save a check.
+- Combat attacks: heroes attack "with any stat," so what counts as on-stat (and which Base Stat applies) for a hero attack is undecided.

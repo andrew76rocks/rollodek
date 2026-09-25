@@ -1,4 +1,5 @@
 .pile {
+  align-self: center; /* centered on the Scene band when it holds two rows */
   position: relative;
   width: var(--card-size);
   height: var(--card-size);

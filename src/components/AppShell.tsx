@@ -1,3 +1,6 @@
+import type { CSSProperties } from 'react'
+import { getScene, sceneRows } from '../data/adventureDeck.ts'
+import { useGameStore } from '../store/gameStore.ts'
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts.ts'
 import { useHeroDeckStore } from '../store/heroDeckStore.ts'
 import { useUiStore } from '../store/uiStore.ts'
@@ -16,6 +19,8 @@ import { SettingsDrawer } from './settings/SettingsDrawer.tsx'
 import { DiscardPile } from './DiscardPile.tsx'
 import { DrawFlightLayer } from './DrawFlight.tsx'
 import { Intro } from './intro/Intro.tsx'
+import { SceneDiscardLayer } from './adventure/SceneDiscard.tsx'
+import { SceneDealLayer } from './adventure/SceneDeal.tsx'
 import { useIntroStore } from '../store/introStore.ts'
 import { CardPreview } from './CardPreview.tsx'
 import { ShuffleFlightLayer } from './ShuffleFlight.tsx'
@@ -34,9 +39,21 @@ export function AppShell() {
   useKeyboardShortcuts()
 
   const introStage = useIntroStore((s) => s.stage)
+  const adventureDiscardCount = useGameStore((s) => s.adventureDiscard.length)
+  // One or two rows of Scene cards: two rows grow the Scene band and bottom-align the board
+  const sceneRowCount = useGameStore((s) => {
+    const scene = getScene(s.scene)
+    return s.missionId && scene ? sceneRows(scene).length : 1
+  })
 
   return (
-    <div className={styles.shell} data-layout={layoutMode} data-intro={introStage}>
+    <div
+      className={styles.shell}
+      data-layout={layoutMode}
+      data-intro={introStage}
+      data-scene-rows={sceneRowCount}
+      style={{ '--scene-rows': sceneRowCount } as CSSProperties}
+    >
       <TopBar />
       <BoardDnd>
         <main className={styles.table}>
@@ -44,7 +61,7 @@ export function AppShell() {
 
           <DeckPile tone="adventure" label={['Adventure', 'Deck']} />
           <SceneCards />
-          <DiscardPile tone="adventure" count={0} />
+          <DiscardPile tone="adventure" count={adventureDiscardCount} />
 
           <PlayArea />
 
@@ -57,6 +74,8 @@ export function AppShell() {
       </BoardDnd>
       <Intro />
       <DrawFlightLayer />
+      <SceneDiscardLayer />
+      <SceneDealLayer />
       <CardPreview />
       <ShuffleFlightLayer />
       <EventLogDrawer />

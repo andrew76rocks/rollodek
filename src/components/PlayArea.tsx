@@ -61,10 +61,14 @@ export function PlayArea() {
     if (reduceMotion || !target || !cards) return playStagedCards()
     const to = { x: target.x + target.width / 2, y: target.y + target.height / 2 }
     setFlights(
-      staged.map(({ cardId, from: zone }, i) => {
-        const r = cards[i].getBoundingClientRect() // rotated about its center, so the box center is the card center
-        return { cardId, zone, from: { x: r.x + r.width / 2, y: r.y + r.height / 2 }, to }
-      }),
+      staged
+        .map(({ cardId, from: zone }, i) => {
+          const r = cards[i].getBoundingClientRect() // rotated about its center, so the box center is the card center
+          // `layer` keeps the fan's stacking (later cards on top) whatever order they fly in
+          return { cardId, zone, layer: i, from: { x: r.x + r.width / 2, y: r.y + r.height / 2 }, to }
+        })
+        // Last card in the Play Area leaves first; the first card is the last to go
+        .reverse(),
     )
   }
   const buttonReady = !flights && staged.length > 0

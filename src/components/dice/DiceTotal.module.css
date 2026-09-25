@@ -1,0 +1,80 @@
+/* Default: just the faces, "3 / 3" (Figma: Source Serif Black 14, ivory); clickable */
+.plain {
+  padding: 4px 6px;
+  margin: -4px -6px;
+  border-radius: var(--radius-sm);
+  font-weight: 900;
+  font-size: 14px;
+  color: var(--ivory-mist);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+
+.plain:hover {
+  background: color-mix(in srgb, var(--ivory-mist) 10%, transparent);
+}
+
+/* Tier shield (Figma): Driftwood 2px outline, Faded Parchment text, the tier
+ * tag over the DC total */
+.total {
+  display: inline-flex;
+  align-items: center;
+}
+
+.shield {
+  position: relative;
+  width: 36px;
+  height: 40px;
+  padding: 0 0 5px; /* nudges the text up, clear of the point */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  color: var(--faded-parchment);
+  border-radius: var(--radius-sm);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.shield:active {
+  transform: scale(0.94);
+}
+
+.outline {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.outline path {
+  fill: color-mix(in srgb, var(--dungeon-ink) 35%, transparent);
+  stroke: var(--driftwood);
+  stroke-width: 2;
+  transition: fill var(--dur-fast) var(--ease-out);
+}
+
+.shield:hover .outline path {
+  fill: color-mix(in srgb, var(--dungeon-ink) 60%, transparent);
+}
+
+.tag,
+.value {
+  position: relative;
+  font-family: var(--font-body);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.tag {
+  font-weight: 800;
+  font-size: 7.5px;
+  letter-spacing: 0.04em;
+}
+
+.value {
+  font-weight: 900;
+  font-size: 15px;
+}

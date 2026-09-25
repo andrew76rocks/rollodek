@@ -64,7 +64,7 @@
 }
 
 .prose a {
-  color: var(--potion-blue);
+  color: var(--link-tone);
 }
 
 .prose code {
@@ -100,7 +100,7 @@
 .prose td {
   padding: 6px 10px;
   text-align: left;
-  border-bottom: 1px solid color-mix(in srgb, var(--storm-slate) 45%, transparent);
+  border-bottom: 1px solid var(--line-soft);
 }
 
 .prose th {

@@ -3,7 +3,7 @@
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  scrollbar-color: var(--storm-slate) transparent;
+  scrollbar-color: var(--line-strong) transparent;
   outline: none;
 }
 

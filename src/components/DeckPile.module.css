@@ -21,6 +21,7 @@
 /* Each deck is a stack: the top card, and on hover the next card showing
  * beneath it as the top one lifts off. The Hero Deck's stack is a button. */
 .stack {
+  align-self: center; /* centered on the Scene band when it holds two rows */
   position: relative;
   width: var(--card-size);
   height: var(--card-size);
