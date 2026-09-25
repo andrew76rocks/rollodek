@@ -23,6 +23,7 @@ import { SceneDiscardLayer } from './adventure/SceneDiscard.tsx'
 import { SceneDealLayer } from './adventure/SceneDeal.tsx'
 import { useIntroStore } from '../store/introStore.ts'
 import { CardPreview } from './CardPreview.tsx'
+import { DiscardPreview } from './DiscardPreview.tsx'
 import { ShuffleFlightLayer } from './ShuffleFlight.tsx'
 import { HeroRail } from './HeroRail.tsx'
 import { PlayArea } from './PlayArea.tsx'
@@ -77,6 +78,7 @@ export function AppShell() {
       <SceneDiscardLayer />
       <SceneDealLayer />
       <CardPreview />
+      <DiscardPreview />
       <ShuffleFlightLayer />
       <EventLogDrawer />
       <HelpDrawer />

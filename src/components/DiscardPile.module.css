@@ -7,7 +7,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 24px;
   border: 2px dashed var(--discard-dash);
   border-radius: var(--card-radius);
   color: var(--driftwood);
@@ -31,10 +30,22 @@
   background: color-mix(in srgb, var(--hero-tone) 22%, transparent);
 }
 
-/* Keep the icon, label and count painting above that card */
-.shuffle,
+/* Holding cards, a pile lifts out of the table's driftwood: the Adventure
+ * pile's label and eye go lavender, the Hero pile's go gold (its deck tone).
+ * Inherited, so the icons follow the label and the count keeps its ivory. */
+.pile[data-tone='adventure'][data-filled] {
+  color: var(--mist-lavender);
+}
+
+.pile[data-tone='hero'][data-filled] {
+  color: var(--hero-tone);
+}
+
+/* Keep the label and count painting above that card. Nudged below dead
+ * centre: the count hanging under the label makes true centre read high. */
 .labelGroup {
   position: relative;
+  translate: 0 10px;
 }
 
 .pile[data-tone='adventure'] {
@@ -63,8 +74,30 @@
   color: var(--ivory-mist);
 }
 
-/* Shuffle the discard back into the Hero Deck */
-.shuffle {
+/* Reshuffle into the Hero Deck, and view what's in the pile. Out of sight
+ * until the pile is hovered (or a button inside it is tabbed to), so a pile
+ * at rest is just its label and count. Out of flow too, so the label stays
+ * centred on the card either way and nothing shifts as the icons fade in. */
+.actions {
+  position: absolute;
+  bottom: calc(50% + 27px); /* follows the label's nudge, keeping the gap */
+  left: 50%;
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  /* Reads as the gap between the icons themselves: each button's -6px margin
+   * cancels its own 6px padding, so the glyphs end up exactly `gap` apart. */
+  gap: 16px;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.pile:hover .actions,
+.actions:focus-within {
+  opacity: 1;
+}
+
+.action {
   display: grid;
   place-items: center;
   padding: 6px;
@@ -74,12 +107,12 @@
   transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
 }
 
-.shuffle:not(:disabled):hover {
+.action:not(:disabled):hover {
   color: var(--ivory-mist);
   background: color-mix(in srgb, var(--ivory-mist) 8%, transparent);
 }
 
-.shuffle:disabled {
+.action:disabled {
   cursor: default;
   opacity: 0.5;
 }

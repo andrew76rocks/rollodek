@@ -1,5 +1,6 @@
-import { RecycleIcon } from '@phosphor-icons/react'
+import { EyeIcon, RecycleIcon } from '@phosphor-icons/react'
 import { shuffleDiscardIntoDeck } from '../store/cardMoves.ts'
+import { openDiscardPreview } from './DiscardPreview.tsx'
 import { startShuffleFlight } from './ShuffleFlight.tsx'
 import styles from './DiscardPile.module.css'
 
@@ -29,21 +30,37 @@ export function DiscardPile({ tone, count }: DiscardPileProps) {
       data-filled={count > 0 || undefined}
       style={{ gridArea: tone === 'adventure' ? 'adiscard' : 'hdiscard' }}
     >
-      {/* Figma shows the reshuffle icon only on the hero discard (adventure's is hidden).
-        * Always pressable: rules.md §3 has the discard cycle back in when the draw pile
-        * runs out, but the prototype lets the player reshuffle whenever they want to. */}
-      {tone === 'hero' && (
+      <div className={styles.actions}>
+        {/* Figma shows the reshuffle icon only on the hero discard (adventure's is hidden).
+          * Always pressable: rules.md §3 has the discard cycle back in when the draw pile
+          * runs out, but the prototype lets the player reshuffle whenever they want to. */}
+        {tone === 'hero' && (
+          <button
+            type="button"
+            className={styles.action}
+            disabled={count === 0}
+            onClick={shuffleWithFlight}
+            aria-label={count === 0 ? 'Shuffle into Hero Deck (discard is empty)' : `Shuffle ${count} discarded card${count === 1 ? '' : 's'} into the Hero Deck`}
+            title="Shuffle into Hero Deck"
+          >
+            <RecycleIcon size={32} aria-hidden />
+          </button>
+        )}
         <button
           type="button"
-          className={styles.shuffle}
+          className={styles.action}
           disabled={count === 0}
-          onClick={shuffleWithFlight}
-          aria-label={count === 0 ? 'Shuffle into Hero Deck (discard is empty)' : `Shuffle ${count} discarded card${count === 1 ? '' : 's'} into the Hero Deck`}
-          title="Shuffle into Hero Deck"
+          onClick={() => openDiscardPreview(tone)}
+          aria-label={
+            count === 0
+              ? `View ${tone === 'adventure' ? 'Adventure' : 'Hero'} Discard (empty)`
+              : `View all ${count} card${count === 1 ? '' : 's'} in the ${tone === 'adventure' ? 'Adventure' : 'Hero'} Discard`
+          }
+          title="View discarded cards"
         >
-          <RecycleIcon size={32} aria-hidden />
+          <EyeIcon size={32} aria-hidden />
         </button>
-      )}
+      </div>
       <div className={styles.labelGroup}>
         <span className={styles.label}>{tone === 'adventure' ? 'Adventure Discard' : 'Hero Discard'}</span>
         <span className={styles.count}>{count}</span>

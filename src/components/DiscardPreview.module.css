@@ -1,0 +1,111 @@
+/* Cards are laid out in fixed px, so the grid shows them scaled as a whole */
+.scrim {
+  /* 1 = the card's own size, so it reads exactly as it does on the table (and
+   * renders crisp, not resampled). Four across; drop toward 0.9 for smaller. */
+  --grid-scale: 1;
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+  background: rgb(30 26 46 / 0.6);
+  backdrop-filter: blur(2px);
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  /* Wide enough for four cards at full size: 4 × 250 + 3 × 16px gaps = 1048px
+   * of grid, plus 40px padding and 4px border. Narrower windows drop to three. */
+  width: min(1100px, 100%);
+  max-height: 100%;
+  background: var(--dungeon-ink);
+  border: 2px solid var(--driftwood);
+  border-radius: 20px;
+  box-shadow: var(--shadow-medium), 0 24px 64px rgb(0 0 0 / 0.5);
+  color: var(--faded-parchment);
+  overflow: hidden;
+}
+
+.panel:focus-visible {
+  box-shadow: var(--shadow-medium), 0 24px 64px rgb(0 0 0 / 0.5);
+}
+
+.head {
+  flex-shrink: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 20px 20px 16px;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--ivory-mist);
+}
+
+.count {
+  flex: 1 0 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--mist-lavender);
+}
+
+.close {
+  align-self: center;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  color: var(--faded-parchment);
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.close:hover {
+  background: color-mix(in srgb, var(--ivory-mist) 10%, transparent);
+  color: var(--ivory-mist);
+}
+
+.empty {
+  margin: 0;
+  padding: 0 20px 24px;
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--mist-lavender);
+}
+
+/* The one scrolling region: the cards themselves */
+.grid {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--card-size) * var(--grid-scale)), 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0 20px 20px;
+  list-style: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.cell {
+  width: calc(var(--card-size) * var(--grid-scale));
+  height: calc(var(--card-size) * var(--grid-scale));
+  justify-self: center;
+}
+
+/* Each card renders at its authored 250px, then scales down into the cell */
+.scale {
+  width: var(--card-size);
+  height: var(--card-size);
+  transform: scale(var(--grid-scale));
+  transform-origin: top left;
+  border-radius: var(--card-radius);
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.35);
+}
