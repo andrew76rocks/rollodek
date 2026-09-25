@@ -24,8 +24,7 @@
   color: inherit;
 }
 
-.findButton,
-.action {
+.findButton {
   padding: 8px 14px;
   border-radius: 10px;
   background: var(--dusk-violet);
@@ -35,14 +34,12 @@
   color: var(--ivory-mist);
 }
 
-.findButton:hover,
-.action:hover {
+.findButton:hover {
   filter: brightness(1.1);
 }
 
 .missing,
-.hint,
-.note {
+.hint {
   width: 100%;
   margin: 0;
   font-family: var(--font-body);
@@ -51,122 +48,12 @@
   opacity: 0.8;
 }
 
-.card {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 18px;
-  border-radius: 16px;
-  background: var(--faded-parchment);
-  color: var(--dungeon-ink);
-}
-
-.cardHead {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 8px;
-}
-
-.cardId {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 13px;
-  color: var(--storm-slate);
-}
-
-.cardTitle {
-  margin: 0;
-  font-family: var(--font-heading);
-  font-size: 20px;
-}
-
-.tag {
-  padding: 2px 8px;
-  border-radius: var(--radius-pill);
-  background: var(--ember-gold);
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 11px;
-  color: var(--dungeon-ink);
-}
-
-.text,
-.pointer,
-.outcome,
-.encounter {
-  margin: 0;
-  font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.45;
-}
-
-/* The standard Challenge block */
-.challenge {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 12px 14px;
-  border: 2px solid var(--dusk-violet);
-  border-radius: 12px;
-  background: rgb(107 91 141 / 0.08);
-}
-
-/* Visible 2d6 branch roll: clearly not a Challenge (dashed, blue) */
-.branch {
-  padding: 12px 14px;
-  border: 2px dashed var(--potion-blue);
-  border-radius: 12px;
-  background: rgb(123 163 196 / 0.1);
-}
-
-.branch ul {
-  margin: 4px 0 0;
-  padding-left: 20px;
-  font-family: var(--font-body);
-}
-
-.blockLabel {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 0;
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 15px;
-}
-
-.tier {
-  padding: 1px 8px;
-  border-radius: var(--radius-pill);
-  background: var(--dungeon-ink);
-  font-size: 12px;
-  color: var(--ivory-mist);
-}
-
-.wound {
-  color: var(--driftwood);
-}
-
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 4px;
-}
-
-.resolved {
-  margin: 0;
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 13px;
-  color: var(--storm-slate);
-}
-
-.link {
-  padding: 0;
-  font: inherit;
-  font-weight: 700;
-  color: var(--dusk-violet);
-  text-decoration: underline;
+/* The card back at its own size, as it reads on the table */
+.cardSlot {
+  flex-shrink: 0;
+  align-self: center;
+  width: var(--card-size);
+  height: var(--card-size);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-medium);
 }

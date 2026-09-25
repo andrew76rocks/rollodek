@@ -1,0 +1,100 @@
+.anchor {
+  position: relative;
+  display: inline-flex;
+  min-width: 0;
+}
+
+.trigger {
+  min-width: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.trigger:hover {
+  color: var(--ivory-mist);
+}
+
+/* Drops below the mission readout, left-aligned under it */
+.menu {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: -10px;
+  z-index: 30;
+  width: 340px;
+  padding: 6px;
+  background: var(--dungeon-ink);
+  border: 2px solid var(--driftwood);
+  border-radius: 14px;
+  box-shadow: var(--shadow-medium), 0 16px 40px rgb(0 0 0 / 0.4);
+  animation: menu-in var(--dur-fast) var(--ease-out);
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    translate: 0 -4px;
+  }
+}
+
+.hint {
+  margin: 0;
+  padding: 6px 12px 8px;
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--mist-lavender);
+}
+
+.item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 9px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--faded-parchment);
+  text-align: left;
+}
+
+.item:hover,
+.item:focus-visible {
+  background: color-mix(in srgb, var(--dusk-violet) 45%, transparent);
+  color: var(--ivory-mist);
+  box-shadow: none;
+}
+
+.text {
+  flex: 1 0 0;
+  min-width: 0;
+}
+
+/* Which card carries this objective, so it can be found in the deck */
+.card {
+  flex-shrink: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--mist-lavender);
+}
+
+.item[data-state='done'] {
+  color: var(--ember-gold);
+}
+
+.item[data-state='closed'] .text {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* Visually hidden: carries wording that colour, icons or context imply visually */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

@@ -2,10 +2,7 @@ import { useDndContext, useDroppable } from '@dnd-kit/core'
 import { useReducedMotion } from 'framer-motion'
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
 import { uiAssets } from '../config/assets.ts'
-import { useGameConfig } from '../config/gameConfig.ts'
 import { playStagedCards } from '../store/cardMoves.ts'
-import { commitAndRoll, useCheckStore } from '../store/checkStore.ts'
-import { CheckHeader, CheckStatus } from './CheckPanel.tsx'
 import { usePlayAreaStore } from '../store/playAreaStore.ts'
 import { AnyCard } from './dnd/AnyCard.tsx'
 import { PlayFlight, type Flight } from './PlayFlight.tsx'
@@ -16,7 +13,7 @@ import styles from './PlayArea.module.css'
 
 let playCardsShortcut: (() => void) | null = null
 
-/** Enter shortcut: commit to the active check, or (debugMode) play whatever is staged */
+/** Enter shortcut: play whatever is staged */
 export function playStagedFromShortcut() {
   playCardsShortcut?.()
 }
@@ -26,9 +23,12 @@ const CARD_SPACING = 181
 const TILTED_CARD_BOX = 293.73 // a 250px card rotated 11.18° fits in this square
 
 /**
- * Staging strip where committed cards sit before resolving. Cards dragged here
- * from the hand or tableau drop in tilted, showing only their tops; drag one
- * back down to return it.
+ * Staging strip where played cards sit. Cards dragged here from the hand drop
+ * in tilted, showing only their tops; drag one back down to return it, or
+ * press Play Cards to send them to the Hero Discard.
+ *
+ * What the cards are being played *into* — a check, a defence, anything else —
+ * is the player's business (docs/rules.md §4). The strip just holds them.
  */
 export function PlayArea() {
   const staged = usePlayAreaStore((s) => s.staged)
@@ -66,22 +66,12 @@ export function PlayArea() {
       }),
     )
   }
-  // During a check the button commits: zero or more hand cards, then the roll.
-  // Outside a check, playing cards is a debugMode sandbox tool (rules.md §4: cards are played into checks).
-  const check = useCheckStore((s) => s.check)
-  const debugMode = useGameConfig((c) => c.debugMode)
-  const committing = check?.step === 'committing'
-  const commit = () => {
-    commitAndRoll(staged.filter((c) => c.from === 'hand').map((c) => c.cardId))
-    if (staged.length) play()
-  }
-  const buttonReady = !flights && (committing || (!check && debugMode && staged.length > 0))
-  const onButton = committing ? commit : play
+  const buttonReady = !flights && staged.length > 0
 
   // The Enter shortcut does what the button does (ignored while a play is in flight)
   useEffect(() => {
     playCardsShortcut = () => {
-      if (buttonReady) onButton()
+      if (buttonReady) play()
     }
     return () => {
       playCardsShortcut = null
@@ -100,17 +90,7 @@ export function PlayArea() {
       data-drop-ready={receiving || undefined}
       data-drop-over={(receiving && isOver) || undefined}
     >
-      {check ? <CheckHeader check={check} /> : <h2 className={styles.label}>Play Area</h2>}
-      {check && check.step !== 'committing' && (
-        <div className={styles.checkStatus}>
-          <CheckStatus check={check} />
-        </div>
-      )}
-      {committing && staged.length === 0 && (
-        <div className={styles.checkStatus}>
-          <CheckStatus check={check} />
-        </div>
-      )}
+      <h2 className={styles.label}>Play Area</h2>
 
       <div ref={row} className={styles.staged} data-playing={flights ? true : undefined} style={{ '--staged-overlap': `${TILTED_CARD_BOX - spacing}px` } as CSSProperties}>
         {staged.map(({ cardId, from: zone }) => (
@@ -126,15 +106,7 @@ export function PlayArea() {
         ))}
       </div>
 
-      <PlayCardsButton
-        count={flights ? 0 : staged.length}
-        onPlay={onButton}
-        label={check ? 'Commit' : 'Play Cards'}
-        ready={buttonReady}
-        disabledReason={check ? 'rolling' : debugMode ? 'no cards in the Play Area' : 'cards are played into a check'}
-        // Cards are only played into a check (rules.md §4): say so when cards are waiting with no check
-        hint={!check && !debugMode && staged.length > 0 ? 'Start a check first: flip a location in Explore, then Attempt check' : undefined}
-      />
+      <PlayCardsButton count={flights ? 0 : staged.length} onPlay={play} ready={buttonReady} />
       {flights && <PlayFlight flights={flights} onDone={land} />}
     </section>
   )

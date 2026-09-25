@@ -34,6 +34,26 @@ export const uiAssets = {
 export const cardAssets = {
   valueHex: `${CARDS}/value-hex.svg`,
   statDot: `${CARDS}/stat-dot.svg`,
+  /** Figma 126:267 "Value Hex 3": small dark hex behind a stat name (not the hero card's value hex) */
+  statHex: `${CARDS}/stat-hex.svg`,
+  outcomeSuccess: `${CARDS}/outcome-success.svg`,
+  outcomeFail: `${CARDS}/outcome-fail.svg`,
+} as const
+
+/**
+ * Adventure Deck card faces (Figma 126:260 front / 126:267 back). Every card
+ * shares one front illustration for now; per-card Scene art comes later.
+ */
+export const adventureAssets = {
+  cardFront: `${CARDS}/ancient-ruin.jpg`,
+} as const
+
+/**
+ * Hero Deck card art (Figma 127:444 "Card Art"). Every card shares one
+ * illustration for now; starter-deck.json has no per-card art field yet.
+ */
+export const heroCardAssets = {
+  art: `${CARDS}/swift-strike.jpg`,
 } as const
 
 // Portrait art is per-hero; only Kessa exists so far.

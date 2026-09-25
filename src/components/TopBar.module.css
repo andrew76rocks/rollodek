@@ -66,12 +66,6 @@
   min-width: 0;
 }
 
-.brandDivider {
-  width: 1px;
-  height: 22px;
-  background: var(--storm-slate);
-}
-
 .scene {
   font-family: var(--font-heading);
   font-weight: 600;
@@ -107,9 +101,11 @@
   color: inherit;
 }
 
-/* Four phases: done · current · upcoming */
+/* Four phases: done · current · upcoming.
+ * Hidden for now — the phase name carries it. Swap back to inline-flex to
+ * restore the breadcrumbs; the pip styling below is kept intact for that. */
 .pips {
-  display: inline-flex;
+  display: none;
   gap: 4px;
 }
 
@@ -131,31 +127,25 @@
   box-shadow: 0 0 6px color-mix(in srgb, var(--ember-gold) 60%, transparent);
 }
 
-/* Matches the Help (?) icon: a 24px box whose drawn circle is ~19.7px (the
- * icon's own padding). The padding + content-box clip paints the disc at that
- * size while keeping the 24px click target; arrow knocked out in bar color. */
+/* A bare caret: the 24px box is only the click target, and keeps the focus
+ * ring round (the global ring would otherwise use the 6px corner radius). */
 .nextPhase {
   width: 24px;
   height: 24px;
-  padding: 2.15px;
+  /* Closes most of the pill's 10px gap: the 24px hit box already pads the
+   * 16px caret, so the optical gap to the phase name stays comfortable */
+  margin-left: -6px;
   display: inline-grid;
   place-items: center;
   border-radius: 50%;
-  background: var(--chrome-fg);
-  background-clip: content-box;
-  color: var(--chrome-bg);
-  transition: background var(--dur-fast) var(--ease-out);
+  background: transparent;
+  color: var(--chrome-fg);
+  /* Bare caret; the 24px box is the hit target, and keeps the focus ring round */
+  transition: color var(--dur-fast) var(--ease-out);
 }
 
 .nextPhase:not(:disabled):hover {
-  background: var(--ivory-mist);
-}
-
-/* Separates game state (left of it) from app tools (right of it) */
-.toolsDivider {
-  width: 1px;
-  height: 22px;
-  background: var(--storm-slate);
+  color: var(--ivory-mist);
 }
 
 .nextPhase:disabled {

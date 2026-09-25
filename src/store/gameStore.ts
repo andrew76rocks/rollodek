@@ -30,13 +30,10 @@ export const INITIAL_GAME_STATE = {
   phase: 'advance' as Phase,
   /** Wounds on the hero card; reaching heroHpThreshold = Hero Death */
   wounds: 0,
-  objectives: {} as Record<number, ObjectiveState>,
-  /** Adventure cards flipped to their back this session */
+  /** Keyed by objective id; ids not present are still open */
+  objectives: {} as Partial<Record<number, ObjectiveState>>,
+  /** Adventure cards currently face up; the player flips them freely */
   revealed: [] as string[],
-  /** Optional cards the player chose to skip; they stay face down for the Scene */
-  skipped: [] as string[],
-  /** Challenges already resolved, as "AD-1B#1" (card id # block index) */
-  resolved: [] as string[],
   ended: null as SessionEnd | null,
 }
 
@@ -45,14 +42,18 @@ export type GameState = typeof INITIAL_GAME_STATE
 export const useGameStore = create<GameState>()(
   persist(() => ({ ...INITIAL_GAME_STATE }), {
     name: 'rollodek-game',
-    version: 2,
-    // v1 kept separate turn and scene counters; the turn number becomes the Scene
+    version: 3,
     migrate: (persisted, version) => {
-      const old = persisted as Partial<GameState> & { turn?: number }
+      const old = persisted as Partial<GameState> & { turn?: number; skipped?: string[]; resolved?: string[] }
+      // v1 kept separate turn and scene counters; the turn number becomes the Scene
       if (version < 2) return { ...INITIAL_GAME_STATE, phase: old.phase ?? 'advance', scene: old.turn ?? 1 }
+      // v2 tracked skipped cards and resolved challenges for the check system, which is gone;
+      // a skipped card is simply one that is face down again
+      if (version < 3) {
+        const { skipped: _skipped, resolved: _resolved, ...rest } = old
+        return { ...INITIAL_GAME_STATE, ...rest }
+      }
       return old as GameState
     },
   }),
 )
-
-export const challengeKey = (cardId: string, blockIndex: number) => `${cardId}#${blockIndex}`

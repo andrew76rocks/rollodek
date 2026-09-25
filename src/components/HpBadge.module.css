@@ -5,10 +5,37 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  padding: 0 12px;
+  padding: 0 6px;
   border: 2px solid var(--ember-gold);
   border-radius: var(--radius-pill);
   white-space: nowrap;
+}
+
+/* Wounds on and off; faint until the badge is hovered or one is focused */
+.step {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  color: var(--ember-gold);
+  opacity: 0.35;
+  transition: opacity var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+
+.badge:hover .step,
+.step:focus-visible {
+  opacity: 1;
+}
+
+.step:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--ember-gold) 30%, transparent);
+}
+
+.step:disabled {
+  opacity: 0.12;
+  cursor: default;
 }
 
 .label {

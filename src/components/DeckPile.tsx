@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 import { uiAssets } from '../config/assets.ts'
-import { useGameConfig } from '../config/gameConfig.ts'
 import { useHeroDeckStore } from '../store/heroDeckStore.ts'
 import { drawToHand } from './DrawFlight.tsx'
 import styles from './DeckPile.module.css'
@@ -64,23 +63,18 @@ function HeroDeckButton({ face }: { face: ReactNode }) {
   const canDraw = deckCount + discardCount > 0
   // A second card shows underneath on hover only if one would actually be left behind
   const cardBeneath = deckCount > 1 || (deckCount === 0 && discardCount > 1)
-  // Drawing at will is a sandbox tool (docs/decisions.md); normal play draws at Setup
-  const debugMode = useGameConfig((c) => c.debugMode)
 
-  if (!debugMode) {
-    return (
-      <div className={styles.stack} data-tone="hero" data-deck="hero" data-inert style={{ gridArea: 'hdeck' }} aria-label={`Hero Deck (${deckCount} cards)`}>
-        <DeckStack face={face} tone="hero" cardBeneath={false} />
-      </div>
-    )
-  }
-
+  // Always drawable. Normal play draws at Setup (docs/rules.md §5), but the
+  // prototype lets the player pull a card whenever the table calls for one.
   return (
     <button
       type="button"
       className={styles.stack}
       data-tone="hero"
       data-deck="hero"
+      // Nothing left anywhere: the pile empties out to a slot, so the deck
+      // looks as unclickable as it is
+      data-empty={!canDraw || undefined}
       style={{ gridArea: 'hdeck' }}
       disabled={!canDraw}
       onClick={drawToHand}

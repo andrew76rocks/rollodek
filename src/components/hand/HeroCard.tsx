@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, type CSSProperties } from 'react'
-import { cardAssets } from '../../config/assets.ts'
+import { cardAssets, heroCardAssets } from '../../config/assets.ts'
 import type { HeroCardData } from '../../data/heroCard.ts'
 import styles from './HeroCard.module.css'
 
@@ -42,7 +42,7 @@ export function HeroCard({ card }: HeroCardProps) {
       <div className={styles.inset} />
       <p className={styles.title}>{card.name}</p>
       <div className={styles.art}>
-        <span>Hero art</span>
+        <img src={heroCardAssets.art} alt="" />
       </div>
       <div className={styles.typeLine}>
         <span className={styles.statDot} style={{ backgroundImage: `url(${cardAssets.statDot})` }} />

@@ -1,12 +1,16 @@
 import { getGameConfig } from '../config/gameConfig.ts'
-import { getAdventureCard, getScene, missions, printedId, type ChallengeOutcome } from '../data/adventureDeck.ts'
+import { getAdventureCard, missions, printedId } from '../data/adventureDeck.ts'
 import { logEvent } from './eventLogStore.ts'
-import { challengeKey, useGameStore, type SessionEnd } from './gameStore.ts'
+import { useGameStore, type ObjectiveState, type SessionEnd } from './gameStore.ts'
 
 /**
- * Session-level rules outside the turn clock: choosing the mission, revealing
- * Adventure cards, wounds and Hero Death, objectives, and ending the session
+ * Session-level state outside the turn clock: choosing the mission, turning
+ * Adventure cards over, wounds, objectives, and ending the session
  * (docs/rules.md §7, §10).
+ *
+ * The prototype does not adjudicate any of this. The rules live in the card
+ * text, docs/rules.md and the Help section; the player applies them and tells
+ * the app what happened. Nothing here decides an outcome on the player's behalf.
  */
 
 export const currentMission = () => missions.find((m) => m.id === useGameStore.getState().missionId)
@@ -20,115 +24,46 @@ export function chooseMission(id: string) {
 }
 
 /**
- * A card is complete once its back has been read (revealed) and every
- * Challenge on it resolved, pass or fail. Story-only cards complete on reveal.
+ * Turn an Adventure card over, either way. Any card, any time: play order and
+ * the optional-card rule are printed on the cards, not enforced by the table.
  */
-export function cardComplete(cardId: string): boolean {
-  const { revealed, resolved } = useGameStore.getState()
-  if (!revealed.includes(cardId)) return false
-  return getAdventureCard(cardId).back.every((b, i) => b.type !== 'challenge' || resolved.includes(challengeKey(cardId, i)))
-}
-
-/** The Scene's cards in play order: card-ID order (A, B, C), not panorama order (rules.md §7) */
-export function playOrder(sceneNumber: number): string[] {
-  return [...(getScene(sceneNumber)?.cards ?? [])].sort()
-}
-
-/** The card the player is on: the first in play order that's neither complete nor skipped */
-export function currentCardId(sceneNumber: number): string | undefined {
-  const { skipped } = useGameStore.getState()
-  return playOrder(sceneNumber).find((id) => !skipped.includes(id) && !cardComplete(id))
-}
-
-/**
- * When the current card is optional, the card after it can be flipped too:
- * moving on is how an optional card gets skipped.
- */
-function cardAfterOptional(sceneNumber: number): string | undefined {
-  const current = currentCardId(sceneNumber)
-  if (!current || !getAdventureCard(current).optional) return undefined
-  const { skipped } = useGameStore.getState()
-  const order = playOrder(sceneNumber)
-  return order.slice(order.indexOf(current) + 1).find((id) => !skipped.includes(id) && !cardComplete(id))
-}
-
-/**
- * Explore, in order: the current card can be flipped, or the next one if the
- * current card is optional. A skipped optional card can be revisited any time
- * during its Scene's Explore.
- */
-export function canFlip(cardId: string): boolean {
-  const { phase, scene, revealed, skipped, ended } = useGameStore.getState()
-  if (ended || phase !== 'explore' || revealed.includes(cardId) || getAdventureCard(cardId).scene !== scene) return false
-  return skipped.includes(cardId) || currentCardId(scene) === cardId || cardAfterOptional(scene) === cardId
-}
-
-/**
- * Moving on past an optional card: it turns back face down (until revisited).
- * Covers skipping it unread and moving on after reading it (a story-only
- * optional card, or one whose Challenge wasn't attempted).
- */
-function passOptionalCards(sceneNumber: number, before: string) {
-  const { revealed, resolved, skipped } = useGameStore.getState()
-  const order = playOrder(sceneNumber)
-  const passed = order.slice(0, order.indexOf(before)).filter((id) => {
-    const card = getAdventureCard(id)
-    const attempted = card.back.some((b, i) => b.type === 'challenge' && resolved.includes(challengeKey(id, i)))
-    return card.optional && !attempted && !skipped.includes(id)
-  })
-  if (!passed.length) return
+export function toggleCard(cardId: string) {
+  const { revealed } = useGameStore.getState()
+  const faceUp = revealed.includes(cardId)
   useGameStore.setState({
-    skipped: [...skipped, ...passed],
-    revealed: revealed.filter((id) => !passed.includes(id)),
+    revealed: faceUp ? revealed.filter((id) => id !== cardId) : [...revealed, cardId],
   })
-  passed.forEach((id) => logEvent('scene.explore', `Moved past ${printedId(getAdventureCard(id))}`, { cardId: id }))
+  const card = getAdventureCard(cardId)
+  logEvent('scene.explore', `${faceUp ? 'Turned back' : 'Turned over'} ${printedId(card)}: ${card.title}`, { cardId })
 }
 
 /**
- * Flip an Adventure card to its back (Explore, in play order). Moving past an
- * optional card turns it back face down; flipping a skipped one revisits it.
+ * Wounds attach to the hero card; reaching the HP threshold is Hero Death.
+ * Wounds are entered by hand, so they come back off by hand too — lowering
+ * them below the threshold takes back an accidental death.
  */
-export function revealCard(cardId: string) {
-  const { revealed, scene, skipped } = useGameStore.getState()
-  if (revealed.includes(cardId) || !canFlip(cardId)) return
-  const revisiting = skipped.includes(cardId)
-  passOptionalCards(scene, cardId)
-  useGameStore.setState((s) => ({ revealed: [...s.revealed, cardId], skipped: s.skipped.filter((id) => id !== cardId) }))
-  const card = getAdventureCard(cardId)
-  logEvent('scene.explore', `${revisiting ? 'Revisited' : 'Explored'} ${printedId(card)}: ${card.title}`, { cardId })
-}
-
-/** Going back to an already-flipped card also moves on past any optional card before it */
-export function returnToCard(cardId: string) {
-  passOptionalCards(useGameStore.getState().scene, cardId)
-}
-
-/** Wounds attach to the hero card; reaching the HP threshold is Hero Death */
-export function addWounds(count: number, reason: string) {
-  if (count <= 0) return
-  const wounds = useGameStore.getState().wounds + count
+export function adjustWounds(delta: number) {
+  const { wounds: before, ended } = useGameStore.getState()
+  const threshold = getGameConfig().heroHpThreshold
+  const wounds = Math.max(0, Math.min(threshold, before + delta))
+  if (wounds === before) return
   useGameStore.setState({ wounds })
-  logEvent('wound', `Took ${count} wound${count === 1 ? '' : 's'} (${reason})`, { wounds })
-  if (wounds >= getGameConfig().heroHpThreshold) endSession('death')
+  logEvent('wound', `${delta > 0 ? 'Took' : 'Healed'} ${Math.abs(wounds - before)} wound${Math.abs(wounds - before) === 1 ? '' : 's'} (now ${wounds} of ${threshold})`, { wounds })
+  if (wounds >= threshold) endSession('death')
+  else if (ended === 'death') {
+    useGameStore.setState({ ended: null })
+    logEvent('mission', 'Hero Death taken back (wounds lowered)', { wounds })
+  }
 }
 
-/**
- * Apply a resolved Challenge outcome: objectives, closed objectives, wounds.
- * TODO(drew): card rewards are text only for now: "draw 1 Item" (new gear goes to the
- * discard first) and milestone rewards (+1 HP threshold, draw 1 Spell/Ability) aren't automated.
- */
-export function applyOutcome(cardId: string, blockIndex: number, outcome: ChallengeOutcome, label: string) {
-  const { objectives, resolved } = useGameStore.getState()
-  const next = { ...objectives }
-  if (outcome.objective && !next[outcome.objective]) next[outcome.objective] = 'done'
-  if (outcome.closesObjective && !next[outcome.closesObjective]) next[outcome.closesObjective] = 'closed'
-  useGameStore.setState({ objectives: next, resolved: [...resolved, challengeKey(cardId, blockIndex)] })
-
-  const card = getAdventureCard(cardId)
-  logEvent('check.resolve', `${printedId(card)} ${card.title}: ${label}. ${outcome.text}`, { cardId, label })
-  if (outcome.objective) logEvent('mission', `Objective ${outcome.objective} complete`, { objective: outcome.objective })
-  if (outcome.closesObjective) logEvent('mission', `Objective ${outcome.closesObjective} closed`, { objective: outcome.closesObjective })
-  if (outcome.wounds) addWounds(outcome.wounds, `${printedId(card)} ${label.toLowerCase()}`)
+/** Mark an objective done or closed, or clear it back to open */
+export function setObjective(id: number, state: ObjectiveState | null) {
+  const objectives = { ...useGameStore.getState().objectives }
+  if (state) objectives[id] = state
+  else delete objectives[id]
+  useGameStore.setState({ objectives })
+  const text = currentMission()?.objectives.find((o) => o.id === id)?.text ?? `Objective ${id}`
+  logEvent('mission', `Objective ${id} marked ${state ?? 'open'}: ${text}`, { objective: id, state })
 }
 
 export const objectivesDone = () => Object.values(useGameStore.getState().objectives).filter((s) => s === 'done').length

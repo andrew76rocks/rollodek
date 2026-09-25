@@ -105,16 +105,3 @@
   rotate: 11.18deg;
 }
 
-/* Check prompt / roll / outcome, centered in the strip */
-.checkStatus {
-  position: absolute;
-  inset: 0 230px 0 260px;
-  z-index: 1;
-  display: grid;
-  place-items: center;
-  pointer-events: none;
-}
-
-.checkStatus > * {
-  pointer-events: auto;
-}

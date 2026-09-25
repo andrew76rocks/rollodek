@@ -1,0 +1,186 @@
+/* Figma node 126:267 "Adventure Card Back" (250 × 250 card) */
+.back {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px;
+  background: var(--card-surface);
+  border-radius: var(--card-radius);
+  color: var(--card-text);
+  /* Cards whose authored text runs longer than the Figma frame allows
+   * (AD-2C, AD-3B) scroll the whole face rather than clipping an outcome */
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* Story-only cards have no outcomes panel; centre the text instead of
+ * leaving it stranded at the top (the Figma frame only covers Challenges) */
+.back[data-story] {
+  justify-content: center;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.type {
+  margin: 0;
+  padding: 0 2px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 11px;
+  text-align: center;
+  color: var(--card-subtext);
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  height: 28px;
+}
+
+.title {
+  flex: 1 0 0;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 16px;
+  text-align: center;
+}
+
+.desc {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 11px;
+  line-height: 1.3;
+  text-align: center;
+}
+
+/* Parchment outcomes panel; the hex row straddles its top edge */
+.panel {
+  position: relative;
+  /* Fills the space left over, but never shrinks below its own content */
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 18px 8px 8px;
+  border-radius: var(--radius-md);
+  background: var(--faded-parchment);
+}
+
+.hexRow {
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 5px;
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* Hex art is a tall hexagon; the card lays it on its side */
+.hex {
+  position: relative;
+  width: 31.688px;
+  height: 22.774px;
+  display: grid;
+  place-items: center;
+}
+
+.hex img {
+  position: absolute;
+  width: 19.7225px;
+  height: 29.2986px;
+  rotate: -90deg;
+}
+
+.hex span {
+  position: relative;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 8.925px;
+  line-height: 1;
+  text-align: center;
+  color: var(--ivory-mist);
+}
+
+.slash {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 8.92px;
+  color: var(--card-subtext);
+}
+
+.tier {
+  padding: 4px 7px;
+  border: 1px solid var(--storm-slate);
+  border-radius: 50px;
+  background: var(--card-surface);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 8.92px;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--card-subtext);
+}
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  width: 100%;
+}
+
+.icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+/* Ragged right beside its icon; the card is a <button>, so without this the
+ * UA stylesheet's centred button text cascades down into the outcomes. */
+.outcomeText {
+  flex: 1 0 0;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 11px;
+  line-height: 1.3;
+  text-align: left;
+}
+
+/* Combat cards name the enemy where a stat check would list its stats */
+.enemy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--card-subtext);
+}

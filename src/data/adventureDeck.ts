@@ -71,7 +71,7 @@ export interface AdventureCard {
 export interface SceneData {
   scene: number
   title: string
-  /** Card ids, laid out left → right (the panorama order) */
+  /** Card ids, laid out left → right (table order, not play order) */
   cards: string[]
 }
 
