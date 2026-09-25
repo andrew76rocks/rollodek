@@ -4,7 +4,10 @@
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* The label floats centred (out of flow), leaving Play Cards as the one
+   * in-flow child; flex-end keeps it on the right, where space-between would
+   * have dropped a lone child to the left */
+  justify-content: flex-end;
   padding: 0 49px 0 40px;
   margin: 0 var(--play-inset-right) 0 var(--play-inset-left);
   background: var(--play-area-fill);
@@ -24,9 +27,16 @@
   box-shadow: inset 0 0 0 3px var(--ember-gold), 0 0 28px color-mix(in srgb, var(--ember-gold) 35%, transparent);
 }
 
+/* Centred in the strip, underneath the played cards so they can overlap it.
+ * No z-index: coming before .staged in the DOM puts it behind the cards. */
 .label {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  margin: 0;
+  white-space: nowrap;
+  pointer-events: none; /* never in the way of a card being dropped over it */
   font-weight: 700;
   font-size: 26px;
   text-transform: uppercase;
