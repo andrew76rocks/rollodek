@@ -64,3 +64,14 @@ export function getHeroCard(id: string): HeroCardData {
   if (!card) throw new Error(`Unknown hero card id: ${id}`)
   return card
 }
+
+/**
+ * Whether a card counts for a stat, read off its printed stat type
+ * (docs/rules.md §3): a Wild is Any, so it counts for every stat; a crossover
+ * counts for either of its two; everything else for its one printed stat.
+ */
+export function isOnStat(card: HeroCardData, stat: HeroStat): boolean {
+  if (card.type === 'wild') return true
+  if (card.type === 'crossover') return (card.stats ?? []).includes(stat)
+  return card.stat === stat
+}

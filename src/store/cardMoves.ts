@@ -4,7 +4,7 @@ import { logEvent } from './eventLogStore.ts'
 import { shuffle, useHeroDeckStore } from './heroDeckStore.ts'
 import { usePlayAreaStore } from './playAreaStore.ts'
 import { useTableauStore } from './tableauStore.ts'
-import type { CardZone } from './uiStore.ts'
+import { useUiStore, type CardZone } from './uiStore.ts'
 
 /**
  * Moving cards between the hand / tableau zones and the Play Area. Each move
@@ -62,6 +62,8 @@ export function playStagedCards() {
 
   const fromHand = staged.filter((c) => c.from === 'hand').map((c) => c.cardId)
   usePlayAreaStore.setState({ staged: [] })
+  // The tally was counting these cards; with them gone, the lit stat goes back to its base
+  useUiStore.getState().setActiveStat(null)
   useHeroDeckStore.setState((s) => ({ discard: [...s.discard, ...fromHand] }))
   staged.filter((c) => c.from !== 'hand').forEach((c) => addToZone(c.from, c.cardId))
 

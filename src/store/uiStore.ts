@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import type { HeroStat } from '../config/gameConfig.ts'
 
 /** Presentation-only preferences. Game state gets its own store later. */
 export type LayoutMode = 'default' | 'maximized'
@@ -24,6 +25,15 @@ interface UiState {
   /** Adventure card shown in the card drawer (Find Card, or a clicked Scene card) */
   viewedCard: string | null
   viewCard: (cardId: string | null) => void
+  /**
+   * The stat hex lit up as a running tally (base + matching Play Area cards).
+   * A playtest calculator only; nothing in the game reads it. One at a time,
+   * not persisted, and cleared whenever the Play Area's cards are played.
+   */
+  activeStat: HeroStat | null
+  /** Light a stat (switching off any other), or switch it off if it's already lit */
+  toggleActiveStat: (stat: HeroStat) => void
+  setActiveStat: (stat: HeroStat | null) => void
 }
 
 // Not state: just where focus goes back to when the open drawer closes
@@ -39,6 +49,9 @@ export const useUiStore = create<UiState>()(
       openDrawer: null,
       viewedCard: null,
       viewCard: (viewedCard) => set({ viewedCard }),
+      activeStat: null,
+      toggleActiveStat: (stat) => set((s) => ({ activeStat: s.activeStat === stat ? null : stat })),
+      setActiveStat: (activeStat) => set({ activeStat }),
       setOpenDrawer: (openDrawer) =>
         set((s) => {
           // Remember what opened the drawer (clicked / Enter'd button) and hand

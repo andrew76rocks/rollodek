@@ -23,14 +23,32 @@
   position: relative;
   width: 64px;
   height: 64px;
+  animation: stat-build-in var(--dur-stat-in) var(--ease-out) both;
+  animation-delay: calc(var(--build-step) * var(--stagger-stat));
+}
+
+/* The whole hex is the button that lights it up as a running tally */
+.statButton {
+  position: relative;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 5px;
+  padding: 0;
   text-align: center;
-  animation: stat-build-in var(--dur-stat-in) var(--ease-out) both;
-  animation-delay: calc(var(--build-step) * var(--stagger-stat));
+}
+
+/* A hint that the hex does something, before it's lit */
+.statButton:not([data-active]):hover .hex {
+  filter: brightness(1.3);
+}
+
+/* Lit: the hex fills gold, so the gold label turns ivory to stay readable */
+.statButton[data-active] .statLabel {
+  color: var(--ivory-mist);
 }
 
 /* Hexes stack up from the bottom: fade in while rising into place */

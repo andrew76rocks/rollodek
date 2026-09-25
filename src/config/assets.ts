@@ -7,6 +7,8 @@ export const uiAssets = {
   logo: '/assets/brand/rollodek-logo.svg',
   woodGrain: '/assets/textures/wood-grain.png',
   hexagon: `${UI}/hexagon-bg.svg`,
+  /** The same hex filled gold: a stat lit up as a running tally (derived from hexagon-bg.svg) */
+  hexagonFilled: `${UI}/hexagon-filled.svg`,
   deckDivider: `${UI}/deck-divider.svg`,
   adventureDeckArt: `${UI}/adventure-deck-art.svg`,
   heroDeckArt: `${UI}/hero-deck-art.svg`,
